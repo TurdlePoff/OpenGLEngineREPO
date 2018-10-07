@@ -1,0 +1,2 @@
+Box2DRelease.lib;SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;Box2D.lib;%(AdditionalDependencies)
+
