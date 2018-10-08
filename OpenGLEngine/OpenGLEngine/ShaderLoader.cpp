@@ -45,6 +45,8 @@ void ShaderLoader::DestroyInstance()
 {
 	if (s_pSLInstance != 0) // If there is an instance of this class
 	{
+		m_shaderMap.clear();
+		m_geoShaderMap.clear();
 		//Delete the instance
 		delete s_pSLInstance;
 		s_pSLInstance = nullptr;

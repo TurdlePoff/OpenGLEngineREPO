@@ -17,15 +17,20 @@
 #include "Camera.h"
 #include "ShaderLoader.h"
 
+/***********************
+* Star Constructor
+* @author: Vivian Ngo
+* @date: 04/10/18
+***********************/
 Star::Star()
 {
 }
 
-
-Star::~Star()
-{
-}
-
+/***********************
+* InitialiseStar: Initialises star made with geometry shader
+* @author: Vivian Ngo
+* @date: 04/10/18
+***********************/
 void Star::InitialiseStar()
 {
 	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Star");
@@ -50,6 +55,11 @@ void Star::InitialiseStar()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+/***********************
+* Render: Render star object with geometry shader
+* @author: Vivian Ngo
+* @date: 04/10/18
+***********************/
 void Star::Render()
 {
 	glUseProgram(m_program);

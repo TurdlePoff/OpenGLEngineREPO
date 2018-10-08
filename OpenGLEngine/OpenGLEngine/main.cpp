@@ -21,14 +21,11 @@
 #include "SceneManager.h"
 #include "ShaderLoader.h"
 
-
 void Init();
 void Render(void);
 void Process(void);
 void Exit();
 
-Entity* ent;
-Entity* ent2;
 //Terrain* m_terrain;
 
 /***********************

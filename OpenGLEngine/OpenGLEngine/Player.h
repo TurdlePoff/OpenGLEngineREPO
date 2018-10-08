@@ -6,7 +6,7 @@ class Player : public Entity
 {
 public:
 	Player();
-	~Player();
+	~Player() {};
 
 	void Render();
 	void Process(float _deltaTick);

@@ -55,7 +55,7 @@ void SceneManager::InitScenes()
 {
 	auto scene = std::make_shared<Scene>(1);
 
-	AddScene(scene);
+	AddScene(std::move(scene));
 
 	SwitchScene(1); //Start with start screen
 }

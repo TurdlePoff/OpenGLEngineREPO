@@ -27,10 +27,10 @@ Terrain::Terrain()
 	m_program = ShaderLoader::GetProgram((char*)"Plain");
 	
 	m_info.HeightmapFilename = "Resources/Terrain/HeightMap.raw";
-	m_info.HeightScale = 0.35f;
+	m_info.HeightScale = 0.15f;
 	m_info.HeightOffset = -20.0f;
-	m_info.NumRows = 513;
-	m_info.NumCols = 513;
+	m_info.NumRows = 257;
+	m_info.NumCols = 257;
 	m_info.CellSpacing = 1.0f;
 	m_meshOn = false;
 }
@@ -123,7 +123,7 @@ float Terrain::GetHeight(glm::vec3 _position) const
 
 	if (row < 0 || col < 0 || (int)m_info.NumCols <= row || (int)m_info.NumRows <= col)
 	{
-		return -FLT_MAX;
+		return -99999;
 	}
 
 	// Grab the heights of the cell we are in.
@@ -210,7 +210,7 @@ void Terrain::LoadHeightmap()
 	{
 		m_vHeightmap[i] = static_cast<float>(in[i]) * m_info.HeightScale + m_info.HeightOffset;
 	}
-
+	//66048
 	std::cout << "Terrain Successfully Loaded!" << std::endl;
 }
 
@@ -310,9 +310,9 @@ void Terrain::BuildVB()
 			vertices[i*m_info.NumCols + j].pos = glm::vec3(x, y, z);
 			vertices[i*m_info.NumCols + j].normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
-			// Stretch texture over grid.
-			/*vertices[i*m_info.NumCols + j].texC.x = j*du;
-			vertices[i*m_info.NumCols + j].texC.y = i*dv;*/
+			//// Stretch texture over grid.
+			//vertices[i*m_info.NumCols + j].texC.x = j*du;
+			//vertices[i*m_info.NumCols + j].texC.y = i*dv;
 		}
 	}
 
@@ -338,13 +338,14 @@ void Terrain::BuildVB()
 		}
 	}
 
+
 	//Generating vao and vbo
 	glGenVertexArrays(1, &m_vao); //Vert Array
 	glBindVertexArray(m_vao);
 
 	glGenBuffers(1, &m_vbo);	//Vert Buffer
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(TerrainVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);			//VBO Buffer
+	glBufferData(GL_ARRAY_BUFFER, sizeof(TerrainVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
 }
 

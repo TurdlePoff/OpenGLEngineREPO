@@ -3,31 +3,48 @@
 #include "Terrain.h"
 
 
+/***********************
+* Player: Player Constructor
+* @author: Vivian Ngo
+* @date: 04/10/18
+***********************/
 Player::Player()
 {
 	Init(SPR_BIRD, CUBE);
 }
 
-
-Player::~Player()
-{
-}
-
+/***********************
+* Render: Render player
+* @author: Vivian Ngo
+* @date: 04/10/18
+***********************/
 void Player::Render()
 {
 	Entity::Render();
 }
 
+/***********************
+* Process: Process player
+* @author: Vivian Ngo
+* @date: 04/10/18
+* @parameter: _deltaTick - machine time to process
+***********************/
 void Player::Process(float _deltaTick)
 {
 	Entity::Process(_deltaTick);
 	MovePlayer(_deltaTick);
 }
 
+/***********************
+* MovePlayer: Move player
+* @author: Vivian Ngo
+* @date: 04/10/18
+* @parameter: _deltaTick - machine time to process
+***********************/
 void Player::MovePlayer(float _deltaTick)
 {
-	m_fMovementSpeed = 0.01f * _deltaTick;
-	//std::cout << "CamX: " << m_vPos.x << " CamY: " << m_vPos.y << "CamZ: " << m_vPos.z << std::endl;
+	m_fMovementSpeed = 0.1f * _deltaTick;
+
 	if (Input::KeyState['W'] == INPUT_HOLD || Input::KeyState['w'] == INPUT_HOLD)
 	{
 		m_vPos.z -= m_fMovementSpeed ;

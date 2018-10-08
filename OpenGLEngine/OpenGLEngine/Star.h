@@ -5,7 +5,7 @@ class Star
 {
 public:
 	Star();
-	~Star();
+	~Star() {};
 
 	void InitialiseStar();
 	virtual void Render();
