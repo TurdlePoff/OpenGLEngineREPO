@@ -7,7 +7,7 @@ public:
 	Star();
 	~Star();
 
-	void Init(const char* _imageType, EShapes _shape);
+	void InitialiseStar();
 	virtual void Render();
 
 	//Setters and Getters

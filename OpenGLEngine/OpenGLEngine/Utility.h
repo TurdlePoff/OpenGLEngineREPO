@@ -51,6 +51,7 @@
 #include <time.h>
 #include <stdexcept>
 #include <assert.h>
+#include <chrono>
 
 enum EMouse
 {

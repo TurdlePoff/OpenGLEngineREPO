@@ -38,22 +38,19 @@ void Scene::InitScene()
 	auto ter = std::make_unique<Terrain>();
 	ter->InitialiseTerrain();
 	m_terrain = std::move(ter);
+
+	auto star = std::make_unique<Star>();
+	star->InitialiseStar();
+	m_star = std::move(star);
 	/*m_cubeMap = std::make_unique<CubeMap>();
 	m_cubeMap->InitCubeMap();*/
 }
 
 void Scene::InitStaticObjects()
 {
-	/*auto ground = std::make_unique<Entity>();
-	ground->Init(SPR_FLOOR, CUBE);
-	ground->SetPos(glm::vec3(-10.0f, -10.0f, -1.0f));
-	ground->SetRotatation(glm::vec3(0.0f, 0.0f, -0.0f));
-	ground->SetScale(glm::vec3(5, 4.0f, 5.0f));
-
-	m_mEntitiesList["Ground"] = std::move(ground);*/
 
 	auto player = std::make_unique<Player>();
-	player->SetPos(glm::vec3(-10.0f, 0.0f, -1.0f));
+	player->SetPos(glm::vec3(0.0f, 0.0f, 50.0f));
 
 	m_mEntitiesList["Player"] = std::move(player);
 
@@ -62,7 +59,7 @@ void Scene::InitStaticObjects()
 void Scene::Render()
 {
 	m_terrain->RenderTerrain();
-
+	m_star->Render();
 	//m_cubeMap->Render();
 	//Render all entities
 	for (auto it = m_mEntitiesList.begin(); it != m_mEntitiesList.end(); ++it)
@@ -83,6 +80,16 @@ void Scene::Process(float _deltaTick)
 	{
 		it->second->Process(_deltaTick);
 	}
+
+	if (Input::KeyState['n'] == INPUT_HOLD || Input::KeyState['N'] == INPUT_HOLD)
+	{
+		m_terrain->SetMeshOn(true);
+	}
+	if (Input::KeyState['m'] == INPUT_HOLD || Input::KeyState['M'] == INPUT_HOLD)
+	{
+		m_terrain->SetMeshOn(false);
+	}
+
 	m_mTextList.find("MouseX")->second->SetText("x: " + std::to_string(Input::m_fMouseX));
 	m_mTextList.find("MouseY")->second->SetText("y: " + std::to_string(Input::m_fMouseY));
 
@@ -92,6 +99,13 @@ void Scene::Process(float _deltaTick)
 	float z = m_mEntitiesList["Player"]->GetPos().z;
 
 	m_mEntitiesList["Player"]->SetPos(glm::vec3(x, y, z));
+
+
+	float xStarPos =  m_mEntitiesList["Player"]->GetPos().x;
+	float yStarPos = m_mEntitiesList["Player"]->GetPos().y + 5.0f;
+	float zStarPos = m_mEntitiesList["Player"]->GetPos().z;
+
+	m_star->SetPos(glm::vec3(xStarPos, yStarPos, zStarPos));
 
 	/*Camera::GetInstance()->SetCamPos(
 		glm::vec3(m_mEntitiesList["Player"]->GetPos().x,

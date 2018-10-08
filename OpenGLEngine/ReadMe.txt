@@ -15,3 +15,7 @@ Camera movement:
 	Mouse left click + drag to rotate the camera view
 	
 	(Note: The axis of the camera and object do not rotate along with the camera.)
+	
+Other:
+	N - Turn on mesh rendering view
+	M - Turn off mesh rendering view

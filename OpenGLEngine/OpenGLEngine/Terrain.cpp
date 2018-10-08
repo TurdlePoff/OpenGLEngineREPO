@@ -32,6 +32,7 @@ Terrain::Terrain()
 	m_info.NumRows = 513;
 	m_info.NumCols = 513;
 	m_info.CellSpacing = 1.0f;
+	m_meshOn = false;
 }
 
 /***********************
@@ -68,7 +69,15 @@ void Terrain::RenderTerrain()
 {
 	glUseProgram(m_program);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (m_meshOn)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	}
 
 	//ModelMatrix
 	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));

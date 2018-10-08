@@ -24,18 +24,17 @@ public:
 
 	static Clock* GetInstance();
 	static void DestroyInstance();
-	static float GetDeltaTime();
+	static float GetDeltaTick();
 	static void Update();
 
 private:
 	static Clock* s_pClockInstance;
 	Clock();
 	
-	static float m_fOldTime;
-	static float m_fCurrentTime;
+	static std::chrono::high_resolution_clock::time_point m_fOldTime;
+	static std::chrono::high_resolution_clock::time_point m_fCurrentTime;
 	static float m_fTimeElapsed;
-
-	static float m_fDeltaTimeTick;
+	static float m_fDeltaTick;
 
 };
 

@@ -51,20 +51,16 @@ void Init()
 	ShaderLoader::GetInstance()->CreateProgram((char*)"Plain",
 		(char*)"Resources/Shaders/PlainVertexShader.vs",
 		(char*)"Resources/Shaders/PlainFragmentShader.fs");
+	ShaderLoader::GetInstance()->CreateProgram((char*)"Star",
+		(char*)"Resources/Shaders/StarVertexShader.vs",
+		(char*)"Resources/Shaders/StarFragmentShader.fs", 
+		(char*)"Resources/Shaders/StarGeoShader.gs");
+
 	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 		(char*)"Resources/Shaders/CMapVertexShader.vs",
 		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/
 
-	
-	/*ent = new Entity();
-	ent->Init(TRIBIRB);
-	ent->SetPos(glm::vec3(-0.5f, 0.0f, -1.0f));
-
-	ent2 = new Entity();
-	ent2->Init(ROUNDBIRB);
-	ent2->SetPos(glm::vec3(0.5f, 0.0f, -1.0f));*/
 	SceneManager::GetInstance()->InitScenes();
-	//m_terrain = new Terrain();
 }
 
 /***********************
@@ -76,10 +72,7 @@ void Render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/*ent->Render();
-	ent2->Render();*/
 	SceneManager::GetInstance()->RenderScene();
-	//m_terrain->Render();
 	glutSwapBuffers();
 }
 
@@ -93,8 +86,8 @@ void Process(void)
 {
 	Clock::Update();
 
-	SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTime());
-	Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTime());
+	SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTick());
+	Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTick());
 	glutPostRedisplay(); //render function is called
 }
 
@@ -106,8 +99,9 @@ void Process(void)
 void Exit()
 {
 	SceneManager::GetInstance()->DestroyInstance();
-	//m_terrain->Terminate();
-
+	Camera::GetInstance()->DestroyInstance();
+	Clock::GetInstance()->DestroyInstance();
+	ShaderLoader::GetInstance()->DestroyInstance();
 }
 
 

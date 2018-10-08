@@ -17,7 +17,7 @@
 
 Camera* Camera::s_pCameraInstance = 0;
 glm::vec3 Camera::cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 Camera::cameraPos = glm::vec3(0.0f, 0.0f, 30.0f);
+glm::vec3 Camera::cameraPos = glm::vec3(0.0f, 0.0f, 100.0f);
 glm::vec3 Camera::cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 Camera::cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 Camera::cameraRot = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -114,31 +114,30 @@ void Camera::Process(float _deltaTick)
 ***********************/
 void Camera::CameraMovement(float _deltaTick)
 {
-	//_deltaTick = 1*10;
 	//cameraSpeed = 10.0f;
 	if (Input::KeyState['U'] == INPUT_HOLD || Input::KeyState['u'] == INPUT_HOLD)
 	{
-		cameraPos.y += cameraSpeed;
+		cameraPos.y += cameraSpeed * _deltaTick;
 	}
 	if (Input::KeyState['J'] == INPUT_HOLD || Input::KeyState['j'] == INPUT_HOLD)
 	{
-		cameraPos.y -= cameraSpeed; //-= cameraSpeed * cameraUp;
+		cameraPos.y -= cameraSpeed * _deltaTick; //-= cameraSpeed * cameraUp;
 	}
 	if (Input::KeyState['H'] == INPUT_HOLD || Input::KeyState['h'] == INPUT_HOLD)
 	{
-		cameraPos.x -= cameraSpeed; //-= glm::normalize(glm::cross(cameraFront, 	
+		cameraPos.x -= cameraSpeed *_deltaTick;
 	}
 	if (Input::KeyState['K'] == INPUT_HOLD || Input::KeyState['k'] == INPUT_HOLD)
 	{
-		cameraPos.x += cameraSpeed; //glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		cameraPos.x += cameraSpeed * _deltaTick;
 	}
 	if (Input::KeyState['Y'] == INPUT_HOLD || Input::KeyState['y'] == INPUT_HOLD)
 	{
-		cameraPos.z -= cameraSpeed; //-= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		cameraPos.z -= cameraSpeed * _deltaTick;
 	}
 	if (Input::KeyState['I'] == INPUT_HOLD || Input::KeyState['i'] == INPUT_HOLD)
 	{
-		cameraPos.z += cameraSpeed; //glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		cameraPos.z += cameraSpeed * _deltaTick;
 	}
 }
 

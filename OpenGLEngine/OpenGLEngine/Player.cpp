@@ -26,7 +26,7 @@ void Player::Process(float _deltaTick)
 
 void Player::MovePlayer(float _deltaTick)
 {
-	m_fMovementSpeed = 0.5f;
+	m_fMovementSpeed = 0.01f * _deltaTick;
 	//std::cout << "CamX: " << m_vPos.x << " CamY: " << m_vPos.y << "CamZ: " << m_vPos.z << std::endl;
 	if (Input::KeyState['W'] == INPUT_HOLD || Input::KeyState['w'] == INPUT_HOLD)
 	{
@@ -44,5 +44,4 @@ void Player::MovePlayer(float _deltaTick)
 	{
 		m_vPos.x += m_fMovementSpeed;
 	}
-
 }

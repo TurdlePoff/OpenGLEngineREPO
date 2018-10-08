@@ -1,14 +1,15 @@
 #include "Clock.h"
 
 Clock* Clock::s_pClockInstance = nullptr;
-float Clock::m_fOldTime = 0.0f;
-float Clock::m_fDeltaTimeTick = 0.0f;
+
+std::chrono::high_resolution_clock::time_point Clock::m_fOldTime;
+std::chrono::high_resolution_clock::time_point Clock::m_fCurrentTime;
+float Clock::m_fDeltaTick = 0.0f;
 float Clock::m_fTimeElapsed = 0.0f;
-float Clock::m_fCurrentTime = 0.0f;
 
 Clock::Clock()
 {
-	m_fCurrentTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME) / 1000);
+	m_fCurrentTime = std::chrono::high_resolution_clock::now();
 }
 
 /***********************
@@ -47,19 +48,25 @@ void Clock::DestroyInstance()
 * @date: 08/05/18
 * @return: delta time of the program
 ***********************/
-float Clock::GetDeltaTime()
+float Clock::GetDeltaTick()
 {
-	return m_fDeltaTimeTick;
+	return m_fDeltaTick;
 }
 
+/***********************
+* Update: Updates the clock
+* @author: Vivian Ngo
+* @date: 08/05/18
+***********************/
 void Clock::Update()
 {
 	m_fOldTime = m_fCurrentTime;
 
-	m_fCurrentTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME)/1000);
+	m_fCurrentTime = std::chrono::high_resolution_clock::now();
 
-	m_fDeltaTimeTick = m_fCurrentTime - m_fOldTime;
+	m_fDeltaTick = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>
+										(m_fCurrentTime - m_fOldTime).count());
 
-	m_fTimeElapsed += m_fDeltaTimeTick;
+	m_fTimeElapsed += m_fDeltaTick;
 }
 

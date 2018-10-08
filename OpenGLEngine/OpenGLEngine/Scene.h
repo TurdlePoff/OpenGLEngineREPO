@@ -19,6 +19,7 @@
 #include "CubeMap.h"
 #include "Terrain.h"
 #include "Player.h"
+#include "Star.h"
 
 class Scene
 {
@@ -43,6 +44,7 @@ private:
 
 	//std::unique_ptr<b2World> m_world;
 	//std::unique_ptr<CubeMap> m_cubeMap;
+	std::unique_ptr<Star> m_star;
 
 	std::unique_ptr<Terrain> m_terrain;
 	bool m_bIsOnGround;

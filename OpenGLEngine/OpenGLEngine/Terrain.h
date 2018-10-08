@@ -56,6 +56,9 @@ public:
 	void BuildVB();
 	void BuildIB();
 
+	void SetMeshOn(bool _meshOn) { m_meshOn = _meshOn; }
+	bool GetIsMeshOn() { return m_meshOn; }
+
 private:
 	InitInfo m_info;
 
@@ -69,5 +72,6 @@ private:
 	std::vector<TerrainVertex> vertices;
 	std::vector<UINT> indices; // 3 indices per face
 
+	bool m_meshOn;
 };
 
