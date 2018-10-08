@@ -18,6 +18,7 @@
 #include "Entity.h"
 #include "CubeMap.h"
 #include "Terrain.h"
+#include "Player.h"
 
 class Scene
 {

@@ -36,7 +36,7 @@ float Camera::m_fov = 45.0f; // field of view
 ***********************/
 Camera::Camera() 
 {
-	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	view = glm::lookAt(cameraPos, cameraPos + cameraFront + cameraTarget, cameraUp);
 	projection = glm::perspective(45.0f, (float)Utils::SCR_WIDTH / (float)Utils::SCR_HEIGHT, 0.1f, 10000.0f);
 
 	//projection = glm::ortho(0, Utils::SCR_WIDTH, 0, Utils::SCR_HEIGHT, 0.1f, 1000.0f);
@@ -114,41 +114,34 @@ void Camera::Process(float _deltaTick)
 ***********************/
 void Camera::CameraMovement(float _deltaTick)
 {
-	cameraSpeed = 10.0f;
+	if (_deltaTick > 0)
+	{
+		std::cout << _deltaTick << std::endl;
+	}
+	//_deltaTick = 1*10;
+	//cameraSpeed = 10.0f;
 	if (Input::KeyState['U'] == INPUT_HOLD || Input::KeyState['u'] == INPUT_HOLD)
 	{
-		//std::cout << "CamPos: <" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ">" << std::endl;
-		cameraPos.y += cameraSpeed; //+= cameraSpeed * cameraUp;
+		cameraPos.y += cameraSpeed;
 	}
 	else if (Input::KeyState['J'] == INPUT_HOLD || Input::KeyState['j'] == INPUT_HOLD)
 	{
-		//std::cout << "CamPos: <" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ">" << std::endl;
-
 		cameraPos.y -= cameraSpeed; //-= cameraSpeed * cameraUp;
 	}
 	else if (Input::KeyState['H'] == INPUT_HOLD || Input::KeyState['h'] == INPUT_HOLD)
 	{
-		//std::cout << "CamPos: <" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ">" << std::endl;
-
-		cameraPos.x -= cameraSpeed; //-= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		cameraPos.x -= cameraSpeed; //-= glm::normalize(glm::cross(cameraFront, 	
 	}
 	else if (Input::KeyState['K'] == INPUT_HOLD || Input::KeyState['k'] == INPUT_HOLD)
 	{
-		//std::cout << "CamPos: <" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ">" << std::endl;
-
 		cameraPos.x += cameraSpeed; //glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	}
-
 	else if (Input::KeyState['Y'] == INPUT_HOLD || Input::KeyState['y'] == INPUT_HOLD)
 	{
-		//std::cout << "CamPos: <" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ">" << std::endl;
-
 		cameraPos.z -= cameraSpeed; //-= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	}
 	else if (Input::KeyState['I'] == INPUT_HOLD || Input::KeyState['i'] == INPUT_HOLD)
 	{
-		//std::cout << "CamPos: <" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ">" << std::endl;
-
 		cameraPos.z += cameraSpeed; //glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	}
 }
@@ -265,7 +258,7 @@ float Camera::GetCamSpeed()
 
 glm::mat4 Camera::GetView()
 {
-	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	view = glm::lookAt(cameraPos, cameraPos + cameraFront + cameraTarget, cameraUp);
 
 	return view;
 }

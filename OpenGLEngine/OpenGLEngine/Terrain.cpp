@@ -183,14 +183,14 @@ Terrain::Terrain(float heightScale, float blockScale)
 	, m_fHeightScale(heightScale)
 	, m_fBlockScale(blockScale)
 {
-	m_program = ShaderLoader::GetProgram("Texture");
+	m_program = ShaderLoader::GetProgram("Plain");
 
 	//m_program = ShaderLoader::GetProgram("Terrain");
 	//Initialise all slots in m_GLTextures array with 0
 	memset(m_GLTextures, 0, sizeof(m_GLTextures));
 
 
-	if (!LoadHeightmap("Resources/Terrain/terrain0-16bbp-257x257.raw", 16, 100, 100))
+	if (!LoadHeightmap("Resources/Terrain/terrain0-16bbp-257x257.raw", 16, 257, 257))
 	{
 		std::cerr << "Failed to load heightmap for terrain!" << std::endl;
 	}
@@ -610,7 +610,7 @@ void Terrain::Render()
 	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	//ModelMatrix
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -500.0f, 0.0f));
+	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -410.0f, 0.0f));
 	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));

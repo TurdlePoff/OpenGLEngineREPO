@@ -3,10 +3,12 @@
 Clock* Clock::s_pClockInstance = nullptr;
 float Clock::m_fOldTime = 0.0f;
 float Clock::m_fDeltaTimeTick = 0.0f;
+float Clock::m_fTimeElapsed = 0.0f;
+float Clock::m_fCurrentTime = 0.0f;
 
 Clock::Clock()
 {
-	m_fOldTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME) / 1000.0f);
+	m_fCurrentTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME) / 1000);
 }
 
 /***********************
@@ -47,22 +49,17 @@ void Clock::DestroyInstance()
 ***********************/
 float Clock::GetDeltaTime()
 {
-	//float currentTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME) / 1000.0f);
-	//float deltaTime = currentTime - m_fOldTime;
-	//m_fOldTime = currentTime; //Set new old time
 	return m_fDeltaTimeTick;
 }
 
 void Clock::Update()
 {
-	float currentTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME) / 1000.0f);
-	float deltaTime = currentTime - m_fOldTime;
+	m_fOldTime = m_fCurrentTime;
 
-	m_fOldTime = currentTime;
-	m_fDeltaTimeTick += deltaTime;
-	if (m_fDeltaTimeTick >= 1.0f)
-	{
-		m_fDeltaTimeTick = 0.0f;
-	}
+	m_fCurrentTime = static_cast<float>(glutGet(GLUT_ELAPSED_TIME)/1000);
+
+	m_fDeltaTimeTick = m_fCurrentTime - m_fOldTime;
+
+	m_fTimeElapsed += m_fDeltaTimeTick;
 }
 

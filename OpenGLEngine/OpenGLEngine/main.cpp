@@ -48,7 +48,9 @@ void Init()
 	ShaderLoader::GetInstance()->CreateProgram((char*)"Terrain",
 		(char*)"Resources/Shaders/HeightmapVertexShader.vs",
 		(char*)"Resources/Shaders/HeightmapFragmentShader.fs");
-
+	ShaderLoader::GetInstance()->CreateProgram((char*)"Plain",
+		(char*)"Resources/Shaders/PlainVertexShader.vs",
+		(char*)"Resources/Shaders/PlainFragmentShader.fs");
 	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 		(char*)"Resources/Shaders/CMapVertexShader.vs",
 		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/
@@ -90,11 +92,9 @@ void Render(void)
 void Process(void)
 {
 	Clock::Update();
-	if (Clock::GetInstance()->GetDeltaTime() < 1.0)
-	{
-		SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTime());
-		Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTime());
-	}
+
+	SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTime());
+	Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTime());
 	glutPostRedisplay(); //render function is called
 }
 

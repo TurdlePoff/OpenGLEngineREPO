@@ -18,7 +18,7 @@
 
 Entity::Entity()
 {
-	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
+	
 }
 
 Entity::~Entity(){}
@@ -31,6 +31,8 @@ Entity::~Entity(){}
 ***********************/
 void Entity::Init(const char* _imageType, EShapes _shape)
 {
+	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
+
 	m_vPos = glm::vec3(0.0f, 0.0f, -1.0f);
 	m_vRot = glm::vec3();
 	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);

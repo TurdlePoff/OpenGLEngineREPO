@@ -32,6 +32,9 @@ private:
 	Clock();
 	
 	static float m_fOldTime;
+	static float m_fCurrentTime;
+	static float m_fTimeElapsed;
+
 	static float m_fDeltaTimeTick;
 
 };

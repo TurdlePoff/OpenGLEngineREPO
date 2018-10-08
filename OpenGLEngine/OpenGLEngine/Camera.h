@@ -65,7 +65,7 @@ private:
 	glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget); //pointing in reverse of where it is pointing
 	glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, cameraDirection));
 
-	float cameraSpeed = 0.05f;
+	float cameraSpeed = 0.5f;
 	float camZMove = 0.0f;
 	float camYMove = 0.0f;
 

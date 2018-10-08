@@ -14,6 +14,7 @@
 
 #include "Scene.h"
 #include "Input.h"
+#include "Camera.h"
 
 Scene::Scene(int _sceneNum)
 	: m_sceneNumber(_sceneNum)
@@ -43,13 +44,18 @@ void Scene::InitScene()
 
 void Scene::InitStaticObjects()
 {
-	auto ground = std::make_unique<Entity>();
+	/*auto ground = std::make_unique<Entity>();
 	ground->Init(SPR_FLOOR, CUBE);
 	ground->SetPos(glm::vec3(-10.0f, -10.0f, -1.0f));
 	ground->SetRotatation(glm::vec3(0.0f, 0.0f, -0.0f));
 	ground->SetScale(glm::vec3(5, 4.0f, 5.0f));
 
-	m_mEntitiesList["Ground"] = std::move(ground);
+	m_mEntitiesList["Ground"] = std::move(ground);*/
+
+	auto player = std::make_unique<Player>();
+	player->SetPos(glm::vec3(-10.0f, 0.0f, -1.0f));
+
+	m_mEntitiesList["Player"] = std::move(player);
 
 }
 
@@ -72,8 +78,14 @@ void Scene::Render()
 
 void Scene::Process(float _deltaTick)
 {
-
+	for (auto it = m_mEntitiesList.begin(); it != m_mEntitiesList.end(); ++it)
+	{
+		it->second->Process(_deltaTick);
+	}
 	m_mTextList.find("MouseX")->second->SetText("x: " + std::to_string(Input::m_fMouseX));
 	m_mTextList.find("MouseY")->second->SetText("y: " + std::to_string(Input::m_fMouseY));
-
+	Camera::GetInstance()->SetCamPos(
+		glm::vec3(m_mEntitiesList["Player"]->GetPos().x,
+				  m_mEntitiesList["Player"]->GetPos().y,
+				  m_mEntitiesList["Player"]->GetPos().z + 20.0f));
 }

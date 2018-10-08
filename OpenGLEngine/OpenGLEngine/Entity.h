@@ -23,8 +23,8 @@ public:
 
 	void Init(const char* _imageType, EShapes _shape);
 	//const char* GetTextureFile(EImage _spriteType);
-	void Process(float _deltaTick);
-	void Render();
+	virtual void Process(float _deltaTick);
+	virtual void Render();
 
 
 	//Setters and Getters
@@ -40,7 +40,7 @@ public:
 	//void InitB2Body(b2World& _world, b2BodyType _bodyType, EShapes _shape, bool m_rotatable, bool _hasFixture);
 
 
-private:
+protected:
 	unsigned int m_iIndicesCount;
 	GLuint m_vbo, m_vao, m_ebo, m_texture, m_program;
 	int m_iWidth, m_iHeight;
