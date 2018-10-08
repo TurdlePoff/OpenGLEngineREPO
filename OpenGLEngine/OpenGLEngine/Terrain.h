@@ -85,6 +85,8 @@ private:
 	static const unsigned int m_uiNumTextures = 3;
 	GLuint m_GLTextures[m_uiNumTextures];
 
+	GLuint m_program;
+
 	glm::mat4x4 m_LocalToWorldMatrix;
 	glm::mat4x4 m_InverseLocalToWorldMatrix;
 

@@ -183,11 +183,14 @@ Terrain::Terrain(float heightScale, float blockScale)
 	, m_fHeightScale(heightScale)
 	, m_fBlockScale(blockScale)
 {
+	m_program = ShaderLoader::GetProgram("Texture");
+
+	//m_program = ShaderLoader::GetProgram("Terrain");
 	//Initialise all slots in m_GLTextures array with 0
 	memset(m_GLTextures, 0, sizeof(m_GLTextures));
 
 
-	if (!LoadHeightmap("Resources/Terrain/terrain0-16bbp-257x257.raw", 16, 257, 257))
+	if (!LoadHeightmap("Resources/Terrain/terrain0-16bbp-257x257.raw", 16, 100, 100))
 	{
 		std::cerr << "Failed to load heightmap for terrain!" << std::endl;
 	}
@@ -478,6 +481,7 @@ float Terrain::GetHeightAt(const glm::vec3 & position)
 ***********************/
 void Terrain::Render()
 {
+	glUseProgram(m_program);
 	//Transform the current model-view matrix by the terrain’s local matrix to world matrix 
 	//	so that we can view the terrain geometry in object space.
 	glMatrixMode(GL_MODELVIEW);
@@ -490,6 +494,9 @@ void Terrain::Render()
 	glMatrixMode(GL_TEXTURE);
 	glPushMatrix();
 	glScalef(32.0f, 32.0f, 1.0f); //Tile the texture 32 times on x and z axis
+	//	glScalef(32.0f, 1.0f, 32.0f); //Tile the texture 32 times on x and z axis
+
+	glDisable(GL_CULL_FACE);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, m_GLTextures[0]);
@@ -593,7 +600,34 @@ void Terrain::Render()
 	//Bind ibo
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_GLIndexBuffer);
 
-	//Draw the terrain yAYYY
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+/*
+	glUniform1i(glGetUniformLocation(m_program, "texture"), 0);
+	glUniform1i(glGetUniformLocation(m_program, "texture1"), 1);
+	glUniform1i(glGetUniformLocation(m_program, "texture2"), 2);*/
+
+	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	//ModelMatrix
+	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, -500.0f, 0.0f));
+	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(32.0f, 1.0f, 32.0f));
+
+	glm::mat4 Model = translation * rotation * scale;
+	glm::mat4 VP = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView();
+
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
+
+
+	/*glUniformMatrix4fv(glGetUniformLocation(m_program, "vp"), 1, GL_FALSE, glm::value_ptr(VP));
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "model"), 1, GL_FALSE, glm::value_ptr(Model));
+*/
+
+	//Draw the terrain !!!!!!!!!!!!
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_IndexBuffer.size()), GL_UNSIGNED_INT, BUFFER_OFFSET(0));
 
 	//Return all the states to normal so other draw calls don't screw up
@@ -629,6 +663,7 @@ void Terrain::Render()
 #if _DEBUG
 	DebugRender();
 #endif
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 }
 

@@ -29,6 +29,7 @@ void Exit();
 
 Entity* ent;
 Entity* ent2;
+Terrain* m_terrain;
 
 /***********************
 * Init: Initialises items for the application
@@ -61,6 +62,7 @@ void Init()
 	ent2->Init(ROUNDBIRB);
 	ent2->SetPos(glm::vec3(0.5f, 0.0f, -1.0f));*/
 	SceneManager::GetInstance()->InitScenes();
+	m_terrain = new Terrain();
 }
 
 /***********************
@@ -75,6 +77,7 @@ void Render(void)
 	/*ent->Render();
 	ent2->Render();*/
 	SceneManager::GetInstance()->RenderScene();
+	m_terrain->Render();
 	glutSwapBuffers();
 }
 
@@ -89,7 +92,6 @@ void Process(void)
 	Clock::Update();
 	if (Clock::GetInstance()->GetDeltaTime() < 1.0)
 	{
-
 		SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTime());
 		Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTime());
 	}
@@ -104,6 +106,8 @@ void Process(void)
 void Exit()
 {
 	SceneManager::GetInstance()->DestroyInstance();
+	m_terrain->Terminate();
+
 }
 
 
