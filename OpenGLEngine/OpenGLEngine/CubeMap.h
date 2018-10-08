@@ -7,8 +7,8 @@
 *
 * (c) 2005 - 2018 Media Design School
 *
-* File Name	: "Terrain.h"
-* Description	: Terrain Declaration file
+* File Name	: "CubeMap.h"
+* Description	: CubeMap Declaration file
 * Author		: Vivian Ngo
 * Mail			: vivian.ngo7572@mediadesign.school.nz
 ******************************************************/

@@ -34,6 +34,12 @@ Terrain::Terrain()
 	m_info.CellSpacing = 1.0f;
 }
 
+/***********************
+* InitialiseTerrain: Set up the terrain by loading the heightmap, 
+*					 smoothing, and building the vbo and ibo
+* @author: Vivian Ngo
+* @date: 04 / 10 / 18
+***********************/
 void Terrain::InitialiseTerrain()
 {
 	m_uiNumVertices = m_info.NumRows*m_info.NumCols;
@@ -53,12 +59,16 @@ void Terrain::InitialiseTerrain()
 	glEnableVertexAttribArray(1);
 }
 
+/***********************
+* RenderTerrain: Renders the terrain.
+* @author: Vivian Ngo
+* @date: 04 / 10 / 18
+***********************/
 void Terrain::RenderTerrain()
 {
 	glUseProgram(m_program);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 
 	//ModelMatrix
 	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
@@ -78,11 +88,17 @@ void Terrain::RenderTerrain()
 	glBindVertexArray(0);
 
 	//Clear
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
 
+/***********************
+* GetHeight: Gets the height value from the terrain based on the position given.
+* @author: Vivian Ngo
+* @date: 04 / 10 / 18
+* @return: height position on terrain OR a very big negative value (-FLT_MAX) if not on the terrain.
+***********************/
 float Terrain::GetHeight(glm::vec3 _position) const
 {
 	float x = _position.x;
@@ -130,22 +146,30 @@ float Terrain::GetHeight(glm::vec3 _position) const
 	}
 }
 
+/***********************
+* Width: Gets the width of a cell
+* @date: 04 / 10 / 18
+* @return: the width of a cell
+***********************/
 float Terrain::Width() const
 {
 	return (m_info.NumCols - 1) * m_info.CellSpacing;
 }
 
+/***********************
+* Depth: Gets the depth of a cell
+* @date: 04 / 10 / 18
+* @return: the depth of a cell
+***********************/
 float Terrain::Depth() const
 {
 	return (m_info.NumRows - 1) * m_info.CellSpacing;
 }
 
-
 /***********************
 * LoadHeightmap: Loads heightmap from raw file
 * @author: Vivian Ngo
 * @date: 04 / 10 / 18
-* @return: returns true if heightmap is successfully loaded
 ***********************/
 void Terrain::LoadHeightmap()
 {
@@ -181,6 +205,10 @@ void Terrain::LoadHeightmap()
 	std::cout << "Terrain Successfully Loaded!" << std::endl;
 }
 
+/***********************
+* Smooth: Smooths the heightmap
+* @date: 04 / 10 / 18
+***********************/
 void Terrain::Smooth()
 {
 	std::vector<float> dest(m_vHeightmap.size());
@@ -197,6 +225,11 @@ void Terrain::Smooth()
 	m_vHeightmap = dest;
 }
 
+/***********************
+* InBounds: Check if ij are valid indices
+* @date: 04 / 10 / 18
+* return: whether indices are valid
+***********************/
 bool Terrain::InBounds(UINT i, UINT j)
 {
 	// True if ij are valid indices; false otherwise.
@@ -205,6 +238,11 @@ bool Terrain::InBounds(UINT i, UINT j)
 	j >= 0 && j < m_info.NumCols;
 }
 
+/***********************
+* Average: Computes the average height of ij
+* @date: 04 / 10 / 18
+* return: the average height computed
+***********************/
 float Terrain::Average(UINT i, UINT j)
 {
 	// Function computes the average height of the ij element.
@@ -238,6 +276,11 @@ float Terrain::Average(UINT i, UINT j)
 	return avg / num;
 }
 
+/***********************
+* BuildVB: Creates vertex buffer for the terrain
+* @author: Vivian Ngo
+* @date: 04 / 10 / 18
+***********************/
 void Terrain::BuildVB()
 {
 	vertices.resize(m_uiNumVertices);
@@ -296,6 +339,11 @@ void Terrain::BuildVB()
 
 }
 
+/***********************
+* BuildIB: Creates index buffer for the terrain
+* @author: Vivian Ngo
+* @date: 04 / 10 / 18
+***********************/
 void Terrain::BuildIB()
 {
 	indices.resize(m_uiNumFaces * 3); // 3 indices per face
@@ -321,11 +369,5 @@ void Terrain::BuildIB()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 	indicesSize = indices.size() * sizeof(GLuint);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, &indices[0], GL_STATIC_DRAW);    //EBO Buffer
-
-
 }
 
-
-Terrain::~Terrain()
-{
-}

@@ -40,7 +40,7 @@ public:
 
 
 	Terrain();
-	~Terrain();
+	~Terrain() {};
 
 	void InitialiseTerrain();
 	void RenderTerrain();
