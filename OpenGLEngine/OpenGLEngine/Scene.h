@@ -45,6 +45,8 @@ private:
 	//std::unique_ptr<CubeMap> m_cubeMap;
 
 	std::unique_ptr<Terrain> m_terrain;
+	bool m_bIsOnGround;
+	float m_fHeightOffset = 5.0f;
 
 };
 

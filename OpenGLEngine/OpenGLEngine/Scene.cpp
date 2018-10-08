@@ -22,7 +22,7 @@ Scene::Scene(int _sceneNum)
 	InitScene();
 	InitStaticObjects();
 	//m_terrain->Render();
-
+	m_bIsOnGround = true;
 }
 
 Scene::~Scene(){}
@@ -35,9 +35,9 @@ void Scene::InitScene()
 	m_mTextList["MouseX"] = std::move(xText);
 	m_mTextList["MouseY"] = std::move(yText);
 
-	/*auto ter = std::make_unique<Terrain>(30.0f, 2.0f);
-	m_terrain = std::move(ter);*/
-	//m_terrain->InitialiseTerrain();
+	auto ter = std::make_unique<Terrain>();
+	ter->InitialiseTerrain();
+	m_terrain = std::move(ter);
 	/*m_cubeMap = std::make_unique<CubeMap>();
 	m_cubeMap->InitCubeMap();*/
 }
@@ -61,6 +61,7 @@ void Scene::InitStaticObjects()
 
 void Scene::Render()
 {
+	m_terrain->RenderTerrain();
 
 	//m_cubeMap->Render();
 	//Render all entities
@@ -84,8 +85,16 @@ void Scene::Process(float _deltaTick)
 	}
 	m_mTextList.find("MouseX")->second->SetText("x: " + std::to_string(Input::m_fMouseX));
 	m_mTextList.find("MouseY")->second->SetText("y: " + std::to_string(Input::m_fMouseY));
-	Camera::GetInstance()->SetCamPos(
+
+	float x = m_mEntitiesList["Player"]->GetPos().x;
+	float y = m_terrain->GetHeight(m_mEntitiesList["Player"]->GetPos())
+		+ m_mEntitiesList["Player"]->GetScale().y;
+	float z = m_mEntitiesList["Player"]->GetPos().z;
+
+	m_mEntitiesList["Player"]->SetPos(glm::vec3(x, y, z));
+
+	/*Camera::GetInstance()->SetCamPos(
 		glm::vec3(m_mEntitiesList["Player"]->GetPos().x,
-				  m_mEntitiesList["Player"]->GetPos().y,
-				  m_mEntitiesList["Player"]->GetPos().z + 20.0f));
+			m_mEntitiesList["Player"]->GetPos().y + 5.0f,
+			m_mEntitiesList["Player"]->GetPos().z + 20.0f));*/
 }

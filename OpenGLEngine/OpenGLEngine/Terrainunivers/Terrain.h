@@ -21,6 +21,7 @@ namespace
 	{
 		glm::vec3 pos;
 		glm::vec3 normal;
+		glm::vec2 texC;
 	};
 }
 
@@ -30,6 +31,12 @@ public:
 	struct InitInfo
 	{
 		std::string HeightmapFilename;
+		std::string LayerMapFilename0;
+		std::string LayerMapFilename1;
+		std::string LayerMapFilename2;
+		std::string LayerMapFilename3;
+		std::string LayerMapFilename4;
+		std::string BlendMapFilename;
 
 		float HeightScale;
 		float HeightOffset;
@@ -44,7 +51,7 @@ public:
 
 	void InitialiseTerrain();
 	void RenderTerrain();
-	float GetHeight(glm::vec3 _position)const;
+	float GetHeight(float x, float z)const;
 
 	float Width()const;
 	float Depth()const;
@@ -65,7 +72,6 @@ private:
 
 	std::vector<float> m_vHeightmap;
 
-	GLsizei indicesSize;
 	std::vector<TerrainVertex> vertices;
 	std::vector<UINT> indices; // 3 indices per face
 

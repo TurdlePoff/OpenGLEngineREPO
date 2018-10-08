@@ -1,30 +1,14 @@
 #pragma once
-/****************************************************
-* Bachelor of Software Engineering
-* Media Design School
-* Auckland
-* New Zealand
-*
-* (c) 2005 - 2018 Media Design School
-*
-* File Name		: "Terrain.cpp"
-* Description	: Terrain implementation file.
-* Author		: Vivian Ngo
-* Mail			: vivian.ngo7572@mediadesign.school.nz
-******************************************************/
 
 #include "Terrain.h"
 #include "Camera.h"
 #include "ShaderLoader.h"
 
-/***********************
-* Terrain Constructor: Set up scene items
-* @author: Vivian Ngo
-* @date: 04 / 10 / 18
-***********************/
 Terrain::Terrain()
 {
-	m_program = ShaderLoader::GetProgram((char*)"Plain");
+	//m_program = "Resources/Terrain/HeightMap.raw";
+	ShaderLoader sLoader;
+	m_program = sLoader.CreateProgram((char*)"Resources/Shaders/TextureVertexShader.vs", (char*)"Resources/Shaders/TextureFragmentShader.fs");	
 	
 	m_info.HeightmapFilename = "Resources/Terrain/HeightMap.raw";
 	m_info.HeightScale = 0.35f;
@@ -39,43 +23,101 @@ void Terrain::InitialiseTerrain()
 	m_uiNumVertices = m_info.NumRows*m_info.NumCols;
 	m_uiNumFaces = (m_info.NumRows - 1)*(m_info.NumCols - 1) * 2;
 
+	vertices.resize(m_uiNumVertices);
+	indices.resize(m_uiNumFaces*3);
+
 	LoadHeightmap();
 	Smooth();
+
 	BuildVB();
 	BuildIB();
 
+	//Generating Buffers and Arrays
+	glGenVertexArrays(1, &m_vao);					//Vert Array
+	glBindVertexArray(m_vao);
+
+	glGenBuffers(1, &m_vbo);                        //Vert Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+	glGenBuffers(1, &m_ebo);						//Index Buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);			//VBO Buffer
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);    //EBO Buffer
+
 	//Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(TerrainVertex), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
 	//Color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TerrainVertex), (GLvoid*)(3 * 12));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	//Texture attribute
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
+
+	//Generating and biding the texture
+	glGenTextures(1, &m_texture);
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+
+	int width, height;
+	//Loading the image
+	unsigned char* image = SOIL_load_image("Resources/Terrain/grass.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	//Defining the texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	//Generating the texture, freeing up the data and binding it
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Terrain::RenderTerrain()
 {
 	glUseProgram(m_program);
+	glBindVertexArray(m_vao);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+
+	glUniform1i(glGetUniformLocation(m_program, "tex"), 0);
+
+	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	//ModelMatrix
-	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3());
 	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.0f, 1.0f, 1.0f));
+
+	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(32.0f, 1.0f, 32.0f));
 
 	glm::mat4 Model = translation * rotation * scale;
+	glm::mat4 MVP = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView() * Model;
 
-	glm::mat4 VP = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView();
-
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
-	glBindVertexArray(m_vao);
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(MVP));
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+
+	//Disabling backface culling
+	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
 
 	//Clear
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -83,11 +125,8 @@ void Terrain::RenderTerrain()
 	glUseProgram(0);
 }
 
-float Terrain::GetHeight(glm::vec3 _position) const
+float Terrain::GetHeight(float x, float z) const
 {
-	float x = _position.x;
-	float z = _position.z;
-
 	// Transform from terrain local space to "cell" space.
 	float c = (x + 0.5f*Width()) / m_info.CellSpacing;
 	float d = (z - 0.5f*Depth()) / -m_info.CellSpacing;
@@ -95,11 +134,6 @@ float Terrain::GetHeight(glm::vec3 _position) const
 	// Get the row and column we are in.
 	int row = (int)floorf(d);
 	int col = (int)floorf(c);
-
-	if (row < 0 || col < 0 || (int)m_info.NumCols <= row || (int)m_info.NumRows <= col)
-	{
-		return -FLT_MAX;
-	}
 
 	// Grab the heights of the cell we are in.
 	// A*--*B
@@ -140,21 +174,8 @@ float Terrain::Depth() const
 	return (m_info.NumRows - 1) * m_info.CellSpacing;
 }
 
-
-/***********************
-* LoadHeightmap: Loads heightmap from raw file
-* @author: Vivian Ngo
-* @date: 04 / 10 / 18
-* @return: returns true if heightmap is successfully loaded
-***********************/
 void Terrain::LoadHeightmap()
 {
-	if (!std::experimental::filesystem::exists(m_info.HeightmapFilename))
-	{
-		std::cerr << "Could not find file: " << m_info.HeightmapFilename << std::endl;
-		return;
-	}
-
 	// A height for each vertex
 	std::vector<unsigned char> in(m_info.NumRows * m_info.NumCols);
 
@@ -175,10 +196,8 @@ void Terrain::LoadHeightmap()
 	m_vHeightmap.resize(m_info.NumRows * m_info.NumCols, 0);
 	for (UINT i = 0; i < m_info.NumRows * m_info.NumCols; ++i)
 	{
-		m_vHeightmap[i] = static_cast<float>(in[i]) * m_info.HeightScale + m_info.HeightOffset;
+		m_vHeightmap[i] = (float)in[i] * m_info.HeightScale + m_info.HeightOffset;
 	}
-
-	std::cout << "Terrain Successfully Loaded!" << std::endl;
 }
 
 void Terrain::Smooth()
@@ -240,7 +259,7 @@ float Terrain::Average(UINT i, UINT j)
 
 void Terrain::BuildVB()
 {
-	vertices.resize(m_uiNumVertices);
+	//std::vector<TerrainVertex> vertices(m_uiNumVertices);
 
 	float halfWidth = (m_info.NumCols - 1)*m_info.CellSpacing*0.5f;
 	float halfDepth = (m_info.NumRows - 1)*m_info.CellSpacing*0.5f;
@@ -259,8 +278,8 @@ void Terrain::BuildVB()
 			vertices[i*m_info.NumCols + j].normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
 			// Stretch texture over grid.
-			/*vertices[i*m_info.NumCols + j].texC.x = j*du;
-			vertices[i*m_info.NumCols + j].texC.y = i*dv;*/
+			vertices[i*m_info.NumCols + j].texC.x = j*du;
+			vertices[i*m_info.NumCols + j].texC.y = i*dv;
 		}
 	}
 
@@ -286,19 +305,12 @@ void Terrain::BuildVB()
 		}
 	}
 
-	//Generating vao and vbo
-	glGenVertexArrays(1, &m_vao); //Vert Array
-	glBindVertexArray(m_vao);
-
-	glGenBuffers(1, &m_vbo);	//Vert Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(TerrainVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);			//VBO Buffer
-
 }
 
 void Terrain::BuildIB()
 {
-	indices.resize(m_uiNumFaces * 3); // 3 indices per face
+	//std::vector<DWORD> indices(m_uiNumFaces * 3); // 3 indices per face
+
 											   // Iterate over each quad and compute indices.
 	int k = 0;
 	for (UINT i = 0; i < m_info.NumRows - 1; ++i)
@@ -317,11 +329,7 @@ void Terrain::BuildIB()
 		}
 	}
 
-	glGenBuffers(1, &m_ebo); //Index Buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	indicesSize = indices.size() * sizeof(GLuint);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, &indices[0], GL_STATIC_DRAW);    //EBO Buffer
-
+	
 
 }
 

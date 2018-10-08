@@ -208,6 +208,11 @@ void Input::MouseScrollHold(int x, int y)
 		{
 			Pitch = -89.0f;
 		}
+
+		glm::vec3 frontVector(-cos(glm::radians(Pitch))*sin(glm::radians(Yaw)),
+			sin(glm::radians(Pitch)),
+			-cos(glm::radians(Pitch)) * cos(glm::radians(Yaw)));
+		Camera::GetInstance()->SetCamFront(glm::normalize(frontVector));
 	}
 }
 
