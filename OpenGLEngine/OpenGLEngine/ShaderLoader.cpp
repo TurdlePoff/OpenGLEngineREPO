@@ -102,8 +102,8 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, std::string
 	int compile_result = 0;
 
 	GLuint shader = glCreateShader(shaderType);
-	const char *shader_code_ptr = source.c_str();
-	const int shader_code_size = source.size();
+	const char *shader_code_ptr = static_cast<const char*>(source.c_str());
+	const int shader_code_size = static_cast<const int>(source.size());
 
 	glShaderSource(shader, 1, &shader_code_ptr, &shader_code_size);
 	glCompileShader(shader);

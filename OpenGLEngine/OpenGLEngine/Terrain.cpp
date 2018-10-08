@@ -594,7 +594,7 @@ void Terrain::Render()
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_GLIndexBuffer);
 
 	//Draw the terrain yAYYY
-	glDrawElements(GL_TRIANGLES, m_IndexBuffer.size(), GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_IndexBuffer.size()), GL_UNSIGNED_INT, BUFFER_OFFSET(0));
 
 	//Return all the states to normal so other draw calls don't screw up
 

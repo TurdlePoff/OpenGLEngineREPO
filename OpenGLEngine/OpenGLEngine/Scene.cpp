@@ -31,7 +31,7 @@ void Scene::InitScene()
 
 	m_mTextList["MouseX"] = std::move(xText);
 	m_mTextList["MouseY"] = std::move(yText);
-	m_terrain = std::make_unique<Terrain>(30, 2);
+	m_terrain = std::move(std::make_unique<Terrain>(30, 2));
 	//m_terrain->InitialiseTerrain();
 	/*m_cubeMap = std::make_unique<CubeMap>();
 	m_cubeMap->InitCubeMap();*/
