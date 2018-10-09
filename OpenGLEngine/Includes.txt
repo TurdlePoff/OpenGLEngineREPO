@@ -1,0 +1,83 @@
+glm::vec3
+	lastPos
+	currentPos
+	acceleration
+int amountOfIterations = 1 (iterating through cloth once)
+float mass 1.0f
+float damping = 20.0f;
+std::vector<Link*> m_links; (max links = 4 for standard weave cloth
+bool pinned = false;
+glm::vec3 PinVec;
+
+void funcs
+Updatephysics
+Drawparticles
+SolveLinks
+Linkto
+removeLink
+
+vec3 ballcollision
+
+void 
+Applyforce
+void pinTo - pin particle to pinvec
+
+bool grabbed = false;
+bool left
+
+
+Link 
+float restdist
+stiffness tearsensitibity
+
+partovle partivle
+
+Link //2particles, restdist, stiff, tearsensitibity
+
+link resolve
+
+draw
+
+scene ref
+
+
+Cloth
+curstate struct - BIWEAVE, 
+vec particles, pinnedparticles
+//pinned poarticles dont have force etc
+float gracity
+scene ref
+cloth height
+cloth width
+int numHooks
+
+currentstate state
+
+cloth pos
+restingdistance stiffnes 
+curtaintearsensitivity
+
+Setupphysics
+drawcloth
+updategraphics
+addparticle
+removeparticl
+createcloth
+deletecloth
+updatephysics
+
+physics* physics
+
+
+
+Rendering the cloth //In tge link
+glbeginlines
+vert 1 vert2
+glend
+
+mvp
+
+uniformlocation mvp
+
+in particles
+//link- check if drawn

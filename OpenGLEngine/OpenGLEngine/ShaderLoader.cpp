@@ -18,7 +18,7 @@
 #include <fstream>
 #include <vector>
 
-ShaderLoader* ShaderLoader::s_pSLInstance = 0;
+std::shared_ptr<ShaderLoader> ShaderLoader::s_pSLInstance = 0;
 std::map<std::string, std::pair<std::pair<GLuint, GLuint>, GLuint>> ShaderLoader::m_shaderMap;
 std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLuint>>>  ShaderLoader::m_geoShaderMap;
 
@@ -27,11 +27,11 @@ std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLu
 * @author: Vivian Ngo
 * @date: 08/05/18
 ***********************/
-ShaderLoader * ShaderLoader::GetInstance()
+std::shared_ptr<ShaderLoader> ShaderLoader::GetInstance()
 {
 	if (s_pSLInstance == 0)
 	{
-		s_pSLInstance = new ShaderLoader();
+		s_pSLInstance = std::make_shared<ShaderLoader>();
 	}
 	return s_pSLInstance;
 }
@@ -45,10 +45,8 @@ void ShaderLoader::DestroyInstance()
 {
 	if (s_pSLInstance != 0) // If there is an instance of this class
 	{
-		m_shaderMap.clear();
-		m_geoShaderMap.clear();
 		//Delete the instance
-		delete s_pSLInstance;
+		delete s_pSLInstance.get();
 		s_pSLInstance = nullptr;
 	}
 }
@@ -65,7 +63,11 @@ ShaderLoader::ShaderLoader(void) {}
 * @author: Vivian Ngo
 * @date: 08/05/18
 ***********************/
-ShaderLoader::~ShaderLoader(void) {}
+ShaderLoader::~ShaderLoader(void) {
+	m_shaderMap.clear();
+	m_geoShaderMap.clear();
+
+}
 
 /***********************
 * ReadShader: Read Shader file

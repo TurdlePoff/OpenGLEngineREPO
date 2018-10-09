@@ -19,7 +19,7 @@ class ShaderLoader
 {
 
 public:
-	static ShaderLoader* GetInstance();
+	static std::shared_ptr<ShaderLoader> GetInstance();
 	static void DestroyInstance();
 
 	ShaderLoader(void);
@@ -32,7 +32,7 @@ public:
 	static GLuint GetProgram(char* shaderName);
 
 private:
-	static ShaderLoader* s_pSLInstance;
+	static std::shared_ptr<ShaderLoader> s_pSLInstance;
 	static std::map<std::string, std::pair<std::pair<GLuint, GLuint>, GLuint>> m_shaderMap;
 	static std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLuint>>> m_geoShaderMap;
 

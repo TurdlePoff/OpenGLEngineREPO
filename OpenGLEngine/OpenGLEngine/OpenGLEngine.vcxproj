@@ -70,20 +70,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -105,7 +105,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -121,7 +121,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,7 +136,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
