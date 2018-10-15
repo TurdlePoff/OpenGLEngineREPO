@@ -28,6 +28,13 @@ Scene::Scene(int _sceneNum)
 	m_bIsOnGround = true;
 }
 
+Scene::~Scene()
+{
+	m_mTextList.clear();
+	m_mEntitiesList.clear();
+
+}
+
 /***********************
 * InitScene: Initialises scene objects
 * @author: Vivian Ngo

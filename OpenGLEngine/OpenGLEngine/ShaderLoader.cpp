@@ -64,8 +64,8 @@ ShaderLoader::ShaderLoader(void) {}
 * @date: 08/05/18
 ***********************/
 ShaderLoader::~ShaderLoader(void) {
-	m_shaderMap.clear();
-	m_geoShaderMap.clear();
+	//m_shaderMap.clear();
+	//m_geoShaderMap.clear();
 
 }
 

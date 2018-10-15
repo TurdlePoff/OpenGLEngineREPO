@@ -26,7 +26,7 @@ class Scene
 public:
 	Scene() {};
 	Scene(int _sceneNum);
-	Scene::~Scene() {}
+	Scene::~Scene();
 
 	void InitScene();
 

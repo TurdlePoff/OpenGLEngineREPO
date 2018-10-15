@@ -15,19 +15,17 @@
 #include "Utility.h"
 #include "TextLabel.h"
 #include "Entity.h"
-//#include "Input.h"
-//#include "Camera.h"
-//#include "Clock.h"
-//#include "SceneManager.h"
-//#include "ShaderLoader.h"
+#include "Input.h"
+#include "Camera.h"
+#include "Clock.h"
+#include "SceneManager.h"
+#include "ShaderLoader.h"
 #include <vld.h> 
 
 void Init();
 void Render(void);
 void Process(void);
 void Exit();
-
-//std::map<std::string, int> hi;
 
 /***********************
 * Init: Initialises items for the application
@@ -37,9 +35,8 @@ void Exit();
 void Init()
 {
 	srand((unsigned int)time(NULL));
-	//hi["shoo"] = 1;
 
-	/*ShaderLoader::GetInstance()->CreateProgram((char*)"Texture", 
+	ShaderLoader::GetInstance()->CreateProgram((char*)"Texture", 
 		(char*)"Resources/Shaders/TextureVertexShader.vs", 
 		(char*)"Resources/Shaders/TextureFragmentShader.fs");
 	ShaderLoader::GetInstance()->CreateProgram((char*)"Text", 
@@ -55,12 +52,12 @@ void Init()
 		(char*)"Resources/Shaders/StarVertexShader.vs",
 		(char*)"Resources/Shaders/StarFragmentShader.fs", 
 		(char*)"Resources/Shaders/StarGeoShader.gs");
-*/
+
 	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 		(char*)"Resources/Shaders/CMapVertexShader.vs",
 		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/
 
-	//SceneManager::GetInstance()->InitScenes();
+	SceneManager::GetInstance()->InitScenes();
 }
 
 /***********************
@@ -72,7 +69,7 @@ void Render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//SceneManager::GetInstance()->RenderScene();
+	SceneManager::GetInstance()->RenderScene();
 	glutSwapBuffers();
 }
 
@@ -84,10 +81,9 @@ void Render(void)
 ***********************/
 void Process(void)
 {
-	//Clock::Update();
-	//std::cout << "SHOO: " <<  hi.find("shoo")->second << std::endl;
-	//SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTick());
-	//Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTick());
+	Clock::Update();
+	SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTick());
+	Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTick());
 	glutPostRedisplay(); //render function is called
 }
 
@@ -98,12 +94,11 @@ void Process(void)
 ***********************/
 void Exit()
 {
-	//SceneManager::GetInstance()->DestroyInstance();
-	//Camera::GetInstance()->DestroyInstance();
-	//Clock::GetInstance()->DestroyInstance();
-	ShaderLoader::DestroyInstance();
-	//Input::GetInstance()->DestroyInstance();
-
+	SceneManager::GetInstance()->DestroyInstance();
+	Camera::GetInstance()->DestroyInstance();
+	Clock::GetInstance()->DestroyInstance();
+	Input::GetInstance()->DestroyInstance();
+	exit(0);
 }
 
 
@@ -128,12 +123,13 @@ int main(int argc, char **argv)
 	glewInit();
 	Init();
 
-	//Input::ProcessInput();
+	Input::ProcessInput();
+
 
 	glutDisplayFunc(Render);
 	glutIdleFunc(Process);
+	glutCloseFunc(Exit);
 	glutMainLoop();
 
-	glutCloseFunc(Exit);
 	return 0;
 }
