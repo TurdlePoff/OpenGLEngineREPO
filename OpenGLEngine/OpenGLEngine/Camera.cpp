@@ -115,27 +115,27 @@ void Camera::Process(float _deltaTick)
 void Camera::CameraMovement(float _deltaTick)
 {
 	//cameraSpeed = 10.0f;
-	if (Input::KeyState['U'] == INPUT_HOLD || Input::KeyState['u'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['U' ] == INPUT_HOLD || Input::GetInstance()->KeyState['u'] == INPUT_HOLD)
 	{
 		cameraPos.y += cameraSpeed * _deltaTick;
 	}
-	if (Input::KeyState['J'] == INPUT_HOLD || Input::KeyState['j'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['J'] == INPUT_HOLD || Input::GetInstance()->KeyState['j'] == INPUT_HOLD)
 	{
 		cameraPos.y -= cameraSpeed * _deltaTick; //-= cameraSpeed * cameraUp;
 	}
-	if (Input::KeyState['H'] == INPUT_HOLD || Input::KeyState['h'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['H'] == INPUT_HOLD || Input::GetInstance()->KeyState['h'] == INPUT_HOLD)
 	{
 		cameraPos.x -= cameraSpeed *_deltaTick;
 	}
-	if (Input::KeyState['K'] == INPUT_HOLD || Input::KeyState['k'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['K'] == INPUT_HOLD || Input::GetInstance()->KeyState['k'] == INPUT_HOLD)
 	{
 		cameraPos.x += cameraSpeed * _deltaTick;
 	}
-	if (Input::KeyState['Y'] == INPUT_HOLD || Input::KeyState['y'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['Y'] == INPUT_HOLD || Input::GetInstance()->KeyState['y'] == INPUT_HOLD)
 	{
 		cameraPos.z -= cameraSpeed * _deltaTick;
 	}
-	if (Input::KeyState['I'] == INPUT_HOLD || Input::KeyState['i'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['I'] == INPUT_HOLD || Input::GetInstance()->KeyState['i'] == INPUT_HOLD)
 	{
 		cameraPos.z += cameraSpeed * _deltaTick;
 	}

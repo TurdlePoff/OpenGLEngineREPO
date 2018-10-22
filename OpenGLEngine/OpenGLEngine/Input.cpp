@@ -17,25 +17,14 @@
 
 Input* Input::s_pInputInstance = 0;
 
-//Static variables
-GLfloat Input::MouseSensitivity = 0.05f;
-GLfloat Input::Yaw = 0.0f;
-GLfloat Input::Pitch = 0.0f;
-GLfloat Input::Roll = 0.0f;
-GLfloat Input::LastX = (float)Utils::SCR_WIDTH;
-GLfloat Input::LastY = (float)Utils::SCR_HEIGHT;
-float Input::LastScrollY = 365.0f;
-bool Input::FirstMouse = true;
-float Input::m_fMouseX = 0.0f;
-float Input::m_fMouseY = 0.0f;
-
-unsigned int Input::MouseState[3];
-unsigned int Input::KeyState[255];
-unsigned int Input::SpecKeyState[4];
-unsigned int Input::SpaceState[255];
-
-GLfloat xOffset;
-GLfloat yOffset;
+void LKeyboard_Down(unsigned char keyPressed, int x, int y);
+void LKeyboard_Up(unsigned char keyPressed, int x, int y);
+void LMouseClicked(int buttonPressed, int glutState, int x, int y);
+void LMousePassiveMovement(int x, int y);
+void LMouseScrollHold(int x, int y);
+void LScrollCallback(int button, int glutState, int xOffset, int yOffset);
+void LSpecialKeyPress(int key, int x, int y);
+void LSpecialKeyRelease(int key, int x, int y);
 
 /***********************
 * GetInstance: Gets the instance of the Singleton Input class
@@ -43,7 +32,7 @@ GLfloat yOffset;
 * @date: 08/05/18
 * @return: s_pInputInstance - Instance of the Input singleton class
 ***********************/
-Input * Input::GetInstance()
+Input* Input::GetInstance()
 {
 	if (s_pInputInstance == 0)
 	{
@@ -72,24 +61,70 @@ void Input::DestroyInstance()
 * @author: Vivian Ngo
 * @date: 08/05/18
 ***********************/
-Input::~Input() {}
+Input::~Input() 
+{
+	std::fill(MouseState, MouseState + 3, INPUT_RELEASED);
+	std::fill(KeyState, KeyState + 255, INPUT_RELEASED);
+}
+
+/***********************
+* Update: Updates input from first press to hold
+* @author: Vivian Ngo
+* @date: 08/05/18
+***********************/
+void Input::Update()
+{
+	//Handle Keyboard states
+	for (unsigned int i = 0; i < 255; ++i)
+	{
+		if (KeyState[i] == INPUT_FIRST_PRESS)
+		{
+			KeyState[i] = INPUT_HOLD;
+		}
+		if (KeyState[i] == INPUT_FIRST_RELEASE)
+		{
+			KeyState[i] = INPUT_RELEASED;
+		}
+	}
+
+	//Handle Special Keyboard states
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		if (SpecKeyState[i] = INPUT_FIRST_PRESS)
+		{
+			SpecKeyState[i] = INPUT_HOLD;
+		}
+		if (SpecKeyState[i] == INPUT_FIRST_RELEASE)
+		{
+			SpecKeyState[i] = INPUT_RELEASED;
+		}
+	}
+
+	//Handle Mouse states
+	for (unsigned int i = 0; i < 3; ++i)
+	{
+		if (MouseState[i] = INPUT_FIRST_PRESS)
+		{
+			MouseState[i] = INPUT_HOLD;
+		}
+		if (MouseState[i] == INPUT_FIRST_RELEASE)
+		{
+			MouseState[i] = INPUT_RELEASED;
+		}
+	}
+}
 
 /***********************
 * Keyboard_Down: Sets the KeyState of the given pressed key as INPUT_HOLD
 * @author: Vivian Ngo
 * @date: 08/05/18
 * @parameter: key - the character inputted
+* @parameter: x - x position of the mouse at time character was pressed
+* @parameter: y - y position of the mouse at time character was pressed
 ***********************/
 void Input::Keyboard_Down(unsigned char key, int x, int y)
-{ 
-	if (key != ' ')
-	{
-		KeyState[key] = INPUT_HOLD;
-	}
-	else
-	{
-  		SpaceState[key] = INPUT_HOLD;
-	}
+{
+	KeyState[key] = INPUT_FIRST_PRESS;
 }
 
 /***********************
@@ -97,20 +132,12 @@ void Input::Keyboard_Down(unsigned char key, int x, int y)
 * @author: Vivian Ngo 
 * @date: 08/05/18
 * @parameter: key - the character released
+* @parameter: x - x position of the mouse at time character was released
+* @parameter: y - y position of the mouse at time character was released
 ***********************/
 void Input::Keyboard_Up(unsigned char key, int x, int y)
 {
-
-	if (SpaceState[key] == INPUT_HOLD)
-	{
-		SpaceState[key] = INPUT_RELEASED;
-	}
-	
-	if(KeyState[key] == INPUT_HOLD)
-	{
-		KeyState[key] = INPUT_RELEASED;
-
-	}
+	KeyState[key] = INPUT_FIRST_RELEASE;
 }
 
 /***********************
@@ -119,12 +146,14 @@ void Input::Keyboard_Up(unsigned char key, int x, int y)
 * @date: 08/05/18
 * @parameter: button - the mouse button clicked/released
 * @parameter: glutState - the state of the mouse button
+* @parameter: x - x position of the mouse
+* @parameter: y - y position of the mouse
 ***********************/
 void Input::MouseClicked(int button, int glutState, int x, int y)
 { 
 	if (button < 3) 
 	{ 
-		MouseState[button] = (glutState == GLUT_DOWN) ? INPUT_HOLD : INPUT_RELEASED;
+		MouseState[button] = (glutState == GLUT_DOWN) ? INPUT_FIRST_PRESS : INPUT_FIRST_RELEASE;
 	} 
 }
 
@@ -149,11 +178,11 @@ void Input::MousePassiveMovement(int x, int y)
 	LastX = (GLfloat)x;
 	LastY = (GLfloat)y;
 
-	xOffset *= MouseSensitivity;
-	yOffset *= MouseSensitivity;
+	xPassiveOffset *= MouseSensitivity;
+	yPassiveOffset *= MouseSensitivity;
 
-	Yaw -= xOffset;
-	Pitch -= yOffset;
+	Yaw -= xPassiveOffset;
+	Pitch -= yPassiveOffset;
 
 	// Clamp 'Pitch' so screen doesn’t flip
 	if (Pitch > 89.0f)
@@ -225,7 +254,7 @@ void Input::MouseScrollHold(int x, int y)
 * @parameter: xOffset - x offset
 * @parameter: yOffset - y offset
 ***********************/
-void Input::ScollCallback(int button, int glutState, int xOffset, int yOffset)
+void Input::ScrollCallback(int button, int glutState, int xOffset, int yOffset)
 {
 	Camera * c = Camera::GetInstance();
 	float movement = 0.1f;
@@ -264,23 +293,23 @@ void Input::SpecialKeyPress(int key, int x, int y)
 	{
 		case GLUT_KEY_UP:
 		{
-			SpecKeyState[0] = INPUT_HOLD;
+			SpecKeyState[0] = INPUT_FIRST_PRESS;
 			break;
 		}
 		case GLUT_KEY_DOWN:
 		{
-			SpecKeyState[1] = INPUT_HOLD;
+			SpecKeyState[1] = INPUT_FIRST_PRESS;
 			break;
 
 		}
 		case GLUT_KEY_LEFT:
 		{
-			SpecKeyState[2] = INPUT_HOLD;
+			SpecKeyState[2] = INPUT_FIRST_PRESS;
 			break;
 		}
 		case GLUT_KEY_RIGHT:
 		{
-			SpecKeyState[3] = INPUT_HOLD;
+			SpecKeyState[3] = INPUT_FIRST_PRESS;
 			break;
 		} 
 	}
@@ -300,39 +329,103 @@ void Input::SpecialKeyRelease(int key, int x, int y)
 	{
 		case GLUT_KEY_UP:
 		{
-			SpecKeyState[0] = INPUT_RELEASED;
+			SpecKeyState[0] = INPUT_FIRST_RELEASE;
 			break;
 		}
 		case GLUT_KEY_DOWN:
 		{
-			SpecKeyState[1] = INPUT_RELEASED;
+			SpecKeyState[1] = INPUT_FIRST_RELEASE;
 			break;
 
 		}
 		case GLUT_KEY_LEFT:
 		{
-			SpecKeyState[2] = INPUT_RELEASED;
+			SpecKeyState[2] = INPUT_FIRST_RELEASE;
 			break;
 		}
 		case GLUT_KEY_RIGHT:
 		{
-			SpecKeyState[3] = INPUT_RELEASED;
+			SpecKeyState[3] = INPUT_FIRST_RELEASE;
 			break;
 		}
 	}
 }
 
-void Input::ProcessInput()
+void Input::HandleInput()
 {
 	//Keyboard Input
-	glutKeyboardFunc(Keyboard_Down);
-	glutKeyboardUpFunc(Keyboard_Up);
-	glutSpecialFunc(SpecialKeyPress);
-	glutSpecialUpFunc(SpecialKeyRelease);
+	glutKeyboardFunc(LKeyboard_Down);
+	glutKeyboardUpFunc(LKeyboard_Up);
+	glutSpecialFunc(LSpecialKeyPress);
+	glutSpecialUpFunc(LSpecialKeyRelease);
 
 	//Mouse Input
-	glutMouseFunc(MouseClicked);
-	glutPassiveMotionFunc(MousePassiveMovement);
-	glutMotionFunc(MouseScrollHold);
-	glutMouseWheelFunc(ScollCallback);
+	glutMouseFunc(LMouseClicked);
+	glutPassiveMotionFunc(LMousePassiveMovement);
+	glutMotionFunc(LMouseScrollHold);
+	glutMouseWheelFunc(LScrollCallback);
+}
+
+/***********************
+* LKeyboard_Down: Local function to handle OpenGL glutKeyboardFunc input
+***********************/
+void LKeyboard_Down(unsigned char keyPressed, int x, int y)
+{
+	Input::GetInstance()->Keyboard_Down(keyPressed, x, y);
+}
+
+/***********************
+* LKeyboard_Up: Local function to handle OpenGL glutKeyboardUpFunc input
+***********************/
+void LKeyboard_Up(unsigned char keyPressed, int x, int y)
+{
+	Input::GetInstance()->Keyboard_Up(keyPressed, x, y);
+}
+
+/***********************
+* LMouseClicked: Local function to handle OpenGL glutMouseFunc input
+***********************/
+void LMouseClicked(int buttonPressed, int glutState, int x, int y)
+{
+	Input::GetInstance()->MouseClicked(buttonPressed, glutState, x, y);
+}
+
+/***********************
+* LMousePassiveMovement: Local function to handle OpenGL glutPassiveMotionFunc input
+***********************/
+void LMousePassiveMovement(int x, int y)
+{
+	Input::GetInstance()->MousePassiveMovement(x, y);
+}
+
+/***********************
+* LMouseScrollHold: Local function to handle OpenGL glutMotionFunc input
+***********************/
+void LMouseScrollHold(int x, int y)
+{
+	Input::GetInstance()->MouseScrollHold(x, y);
+}
+
+/***********************
+* LScrollCallback: Local function to handle OpenGL glutMouseWheelFunc input
+***********************/
+void LScrollCallback(int button, int glutState, int xOffset, int yOffset)
+{
+	Input::GetInstance()->MouseClicked(button, glutState, xOffset, yOffset);
+}
+
+/***********************
+* LSpecialKeyPress: Local function to handle OpenGL glutSpecialFunc input
+***********************/
+void LSpecialKeyPress(int key, int x, int y)
+{
+	Input::GetInstance()->SpecialKeyPress(key, x, y);
+}
+
+/***********************
+* LSpecialKeyRelease: Local function to handle OpenGL glutSpecialUpFunc input
+***********************/
+void LSpecialKeyRelease(int key, int x, int y)
+{
+	Input::GetInstance()->SpecialKeyRelease(key, x, y);
 }

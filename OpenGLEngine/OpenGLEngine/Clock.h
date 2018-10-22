@@ -7,8 +7,8 @@
 *
 * (c) 2005 - 2018 Media Design School
 *
-* File Name	: "Camera.h"
-* Description	: Camera Declaration file
+* File Name		: "Clock.h"
+* Description	: Clock Declaration file
 * Author		: Vivian Ngo
 * Mail			: vivian.ngo7572@mediadesign.school.nz
 ******************************************************/
@@ -24,17 +24,17 @@ public:
 
 	static Clock* GetInstance();
 	static void DestroyInstance();
-	static float GetDeltaTick();
-	static void Update();
+	float GetDeltaTick();
+	void Update();
 
 private:
 	static Clock* s_pClockInstance;
 	Clock();
 	
-	static std::chrono::high_resolution_clock::time_point m_fOldTime;
-	static std::chrono::high_resolution_clock::time_point m_fCurrentTime;
-	static float m_fTimeElapsed;
-	static float m_fDeltaTick;
+	std::chrono::high_resolution_clock::time_point m_fOldTime;
+	std::chrono::high_resolution_clock::time_point m_fCurrentTime;
+	float m_fTimeElapsed;
+	float m_fDeltaTick;
 
 };
 

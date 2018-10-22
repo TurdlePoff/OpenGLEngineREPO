@@ -15,6 +15,8 @@
 
 #include "SceneManager.h"
 #include "Scene.h"
+#include "Level.h"
+
 #include "Utility.h"
 
 class SceneManager
@@ -25,9 +27,9 @@ public:
 	static void DestroyInstance();
 
 	void InitScenes();
-	void AddScene(std::shared_ptr<Scene> scene);
-	void RemoveScene(int scene);
-	void SwitchScene(int level);
+	//void AddScene(std::shared_ptr<Scene> scene);
+	void RemoveScene(std::string _level);
+	void SwitchScene(std::string _level);
 	void ResetLevels();
 	void ProcessScene(float _deltaTick);
 	void RenderScene();
@@ -36,16 +38,19 @@ public:
 	void SetPlayerPos(glm::vec3 pos) { pPos = pos; }
 	glm::vec3 GetPlayerPosition() { return pPos; }
 
-	std::shared_ptr<Scene> GetCurrentScene();
-	int GetCurrentSceneNumber();
+	std::string GetCurrentScene();
+	//int GetCurrentSceneNumber();
 
 private:
 	static SceneManager* s_pSceneInstance;
 	SceneManager() {};
 
-	std::vector<std::shared_ptr<Scene>>::iterator it;
-	std::vector<std::shared_ptr<Scene>> scenesList;
-	std::shared_ptr<Scene> currentScene;
+	std::map<std::string, std::shared_ptr<Scene>>::iterator it;
+	//std::vector<std::shared_ptr<Scene>> scenesMap;
+	/*std::shared_ptr<Scene> currentScene;*/
+	std::string m_sCurrentLevel;
+	std::map<std::string, std::shared_ptr<Scene>> scenesMap;
+
 
 	glm::vec3 pPos;
 	bool m_bWinner;

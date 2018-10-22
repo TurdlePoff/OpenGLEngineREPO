@@ -1,11 +1,19 @@
+/****************************************************
+* Bachelor of Software Engineering
+* Media Design School
+* Auckland
+* New Zealand
+*
+* (c) 2005 - 2018 Media Design School
+*
+* File Name		: "Clock.cpp"
+* Description	: Clock Implementation file
+* Author		: Vivian Ngo
+* Mail			: vivian.ngo7572@mediadesign.school.nz
+******************************************************/
 #include "Clock.h"
 
 Clock* Clock::s_pClockInstance = nullptr;
-
-std::chrono::high_resolution_clock::time_point Clock::m_fOldTime;
-std::chrono::high_resolution_clock::time_point Clock::m_fCurrentTime;
-float Clock::m_fDeltaTick = 0.0f;
-float Clock::m_fTimeElapsed = 0.0f;
 
 Clock::Clock()
 {

@@ -53,22 +53,9 @@ void SceneManager::DestroyInstance()
 ***********************/
 void SceneManager::InitScenes()
 {
-	auto scene = std::make_shared<Scene>(1);
-
-	AddScene(std::move(scene));
-
-	SwitchScene(1); //Start with start screen
-}
-
-/***********************
-* AddScene: Add scene to scene manager
-* @author: Vivian Ngo
-* @date: 04 / 10 / 18
-* @parameter: scene - scene to add
-***********************/
-void SceneManager::AddScene(std::shared_ptr<Scene> scene)
-{
-	scenesList.push_back(scene);
+	auto terrainLevel = std::make_shared<Level>();
+	scenesMap["TerrainLevel"] = (std::move(terrainLevel));
+	SwitchScene("TerrainLevel"); //Start with start screen
 }
 
 /***********************
@@ -77,26 +64,29 @@ void SceneManager::AddScene(std::shared_ptr<Scene> scene)
 * @date: 04 / 10 / 18
 * @parameter: scene - scene to add
 ***********************/
-void SceneManager::RemoveScene(int scene)
+void SceneManager::RemoveScene(std::string _level)
 {
-	std::shared_ptr<Scene> tempScene;
-	for (unsigned int i = 0; i < scenesList.size(); ++i)
+	it = scenesMap.find(_level);
+	scenesMap.erase(scenesMap.find(_level), scenesMap.end());
+
+	/*std::shared_ptr<Scene> tempScene;
+	for (unsigned int i = 0; i < scenesMap.size(); ++i)
 	{
-		if (scene == scenesList[i]->GetLevelNum())
+		if (scene == scenesMap[i]->GetLevelNum())
 		{
-			tempScene = scenesList[i];
+			tempScene = scenesMap[i];
 			break;
 		}
 	}
 
-	it = scenesList.begin();
+	it = scenesMap.begin();
 
-	it = std::find(scenesList.begin(), scenesList.end(), tempScene);
-	if (it != scenesList.end())
+	it = std::find(scenesMap.begin(), scenesMap.end(), tempScene);
+	if (it != scenesMap.end())
 	{
-		scenesList.erase(it);
-		scenesList.shrink_to_fit();
-	}
+		scenesMap.erase(it);
+		scenesMap.shrink_to_fit();
+	}*/
 }
 
 /***********************
@@ -105,16 +95,17 @@ void SceneManager::RemoveScene(int scene)
 * @date: 04 / 10 / 18
 * @parameter: level - scene to change to
 ***********************/
-void SceneManager::SwitchScene(int level)
+void SceneManager::SwitchScene(std::string _level)
 {
-	for (unsigned int i = 0; i < scenesList.size(); ++i)
+	m_sCurrentLevel = _level;
+	/*for (unsigned int i = 0; i < scenesMap.size(); ++i)
 	{
-		if (level == scenesList[i]->GetLevelNum())
+		if (level == scenesMap[i]->GetLevelNum())
 		{
-			currentScene = scenesList[i];
+			currentScene = scenesMap[i];
 			break;
 		}
-	}
+	}*/
 }
 
 /***********************
@@ -148,7 +139,7 @@ void SceneManager::ResetLevels()
 ***********************/
 void SceneManager::ProcessScene(float _deltaTick)
 {
-	currentScene->Process(_deltaTick);
+	scenesMap[m_sCurrentLevel]->Process(_deltaTick);
 }
 
 /***********************
@@ -159,7 +150,7 @@ void SceneManager::ProcessScene(float _deltaTick)
 ***********************/
 void SceneManager::RenderScene()
 {
-	currentScene->Render();
+	scenesMap[m_sCurrentLevel]->Render();
 }
 
 /***********************
@@ -168,18 +159,18 @@ void SceneManager::RenderScene()
 * @date: 04 / 10 / 18
 * @return: currentScene - the current scene
 ***********************/
-std::shared_ptr<Scene> SceneManager::GetCurrentScene()
+std::string SceneManager::GetCurrentScene()
 {
-	return currentScene;
+	return m_sCurrentLevel;
 }
-
-/***********************
-* GetCurrentSceneNumber: Gets the current scene number
-* @author: Vivian Ngo
-* @date: 04 / 10 / 18
-* @return: currentScene->GetLevelNum() - the current scene's level number
-***********************/
-int SceneManager::GetCurrentSceneNumber()
-{
-	return currentScene->GetLevelNum();
-}
+//
+///***********************
+//* GetCurrentSceneNumber: Gets the current scene number
+//* @author: Vivian Ngo
+//* @date: 04 / 10 / 18
+//* @return: currentScene->GetLevelNum() - the current scene's level number
+//***********************/
+//int SceneManager::GetCurrentSceneNumber()
+//{
+//	return currentScene->GetLevelNum();
+//}

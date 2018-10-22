@@ -6,7 +6,7 @@
 *
 * (c) 2005 - 2018 Media Design School
 *
-* File Name	: "TextLabel.cpp"
+* File Name		: "TextLabel.cpp"
 * Description	: TextLabel implementation file
 * Author		: Vivian Ngo
 * Mail			: vivian.ngo7572@mediadesign.school.nz
@@ -29,7 +29,7 @@ TextLabel::TextLabel(std::string newText, std::string newFont, glm::vec2 pos)
 	scale = 0.5f;
 	SetPosition(pos);
 
-	textProgram = ShaderLoader::GetProgram((char*)"Text");
+	textProgram = ShaderLoader::GetInstance()->GetProgram((char*)"Text");
 	//textProgram = shaderLoader.CreateProgram((char*)"Resources/Shaders/TextVertexShader.vs", (char*)"Resources/Shaders/TextFragmentShader.fs");
 	glm::mat4 proj = glm::ortho(0.0f, (GLfloat)Utils::SCR_WIDTH, 0.0f, (GLfloat)Utils::SCR_HEIGHT);
 

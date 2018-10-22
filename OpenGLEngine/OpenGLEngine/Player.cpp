@@ -1,7 +1,19 @@
+/****************************************************
+* Bachelor of Software Engineering
+* Media Design School
+* Auckland
+* New Zealand
+*
+* (c) 2005 - 2018 Media Design School
+*
+* File Name		: "Player.cpp"
+* Description	: Player Implementation file
+* Author		: Vivian Ngo
+* Mail			: vivian.ngo7572@mediadesign.school.nz
+******************************************************/
 #include "Player.h"
 #include "Input.h"
 #include "Terrain.h"
-
 
 /***********************
 * Player: Player Constructor
@@ -45,19 +57,19 @@ void Player::MovePlayer(float _deltaTick)
 {
 	m_fMovementSpeed = 0.1f * _deltaTick;
 
-	if (Input::KeyState['W'] == INPUT_HOLD || Input::KeyState['w'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['W'] == INPUT_HOLD || Input::GetInstance()->KeyState['w'] == INPUT_HOLD)
 	{
 		m_vPos.z -= m_fMovementSpeed ;
 	}
-	if (Input::KeyState['S'] == INPUT_HOLD || Input::KeyState['s'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['S'] == INPUT_HOLD || Input::GetInstance()->KeyState['s'] == INPUT_HOLD)
 	{
 		m_vPos.z += m_fMovementSpeed;
 	}
-	if (Input::KeyState['A'] == INPUT_HOLD || Input::KeyState['a'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['A'] == INPUT_HOLD || Input::GetInstance()->KeyState['a'] == INPUT_HOLD)
 	{
 		m_vPos.x -= m_fMovementSpeed;
 	}
-	if (Input::KeyState['D'] == INPUT_HOLD || Input::KeyState['d'] == INPUT_HOLD)
+	if (Input::GetInstance()->KeyState['D'] == INPUT_HOLD || Input::GetInstance()->KeyState['d'] == INPUT_HOLD)
 	{
 		m_vPos.x += m_fMovementSpeed;
 	}

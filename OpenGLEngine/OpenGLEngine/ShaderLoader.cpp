@@ -6,7 +6,7 @@
 *
 * (c) 2005 - 2018 Media Design School
 *
-* File Name	: "ShaderLoader.cpp"
+* File Name		: "ShaderLoader.cpp"
 * Description	: ShaderLoader implementation file
 * Author		: Vivian Ngo
 * Mail			: vivian.ngo7572@mediadesign.school.nz
@@ -19,8 +19,8 @@
 #include <vector>
 
 std::shared_ptr<ShaderLoader> ShaderLoader::s_pSLInstance = 0;
-std::map<std::string, std::pair<std::pair<GLuint, GLuint>, GLuint>> ShaderLoader::m_shaderMap;
-std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLuint>>>  ShaderLoader::m_geoShaderMap;
+//std::map<std::string, std::pair<std::pair<GLuint, GLuint>, GLuint>> ShaderLoader::m_shaderMap;
+//std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLuint>>>  ShaderLoader::m_geoShaderMap;
 
 /***********************
 * ShaderLoader: ShaderLoader constructor

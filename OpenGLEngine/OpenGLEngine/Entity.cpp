@@ -148,7 +148,8 @@ void Entity::Render()
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);
 
-	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
 	if (m_eShape == QUAD)
 	{
@@ -167,7 +168,6 @@ void Entity::Render()
 		glEnable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CW);*/
-
 		glEnable(GL_DEPTH_TEST); 
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CW);

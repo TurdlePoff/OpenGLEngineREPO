@@ -24,7 +24,7 @@
 ***********************/
 Terrain::Terrain()
 {
-	m_program = ShaderLoader::GetProgram((char*)"Plain");
+	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Plain");
 	
 	m_info.HeightmapFilename = "Resources/Terrain/HeightMap.raw";
 	m_info.HeightScale = 0.15f;

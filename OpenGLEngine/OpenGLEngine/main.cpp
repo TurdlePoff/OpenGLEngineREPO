@@ -52,10 +52,9 @@ void Init()
 		(char*)"Resources/Shaders/StarVertexShader.vs",
 		(char*)"Resources/Shaders/StarFragmentShader.fs", 
 		(char*)"Resources/Shaders/StarGeoShader.gs");
-
-	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
+	ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 		(char*)"Resources/Shaders/CMapVertexShader.vs",
-		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/
+		(char*)"Resources/Shaders/CMapFragmentShader.fs");
 
 	SceneManager::GetInstance()->InitScenes();
 }
@@ -68,7 +67,6 @@ void Init()
 void Render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	SceneManager::GetInstance()->RenderScene();
 	glutSwapBuffers();
 }
@@ -81,10 +79,13 @@ void Render(void)
 ***********************/
 void Process(void)
 {
-	Clock::Update();
+	Clock::GetInstance()->Update();
 	SceneManager::GetInstance()->ProcessScene(Clock::GetInstance()->GetDeltaTick());
 	Camera::GetInstance()->Process(Clock::GetInstance()->GetDeltaTick());
+	Input::GetInstance()->Update();
+
 	glutPostRedisplay(); //render function is called
+
 }
 
 /***********************
@@ -113,7 +114,9 @@ int main(int argc, char **argv)
 
 	//OpenGL window
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(485, 50);
+	glutInitWindowPosition(100, 50);
+
+	//glutInitWindowPosition(485, 50);
 	//glutInitWindowPosition(2300, 50);
 
 	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
@@ -123,7 +126,7 @@ int main(int argc, char **argv)
 	glewInit();
 	Init();
 
-	Input::ProcessInput();
+	Input::GetInstance()->HandleInput();
 
 
 	glutDisplayFunc(Render);

@@ -31,7 +31,6 @@ public:
 	~CubeMap();
 
 	void InitCubeMap();
-
 	void Render();
 
 private:
@@ -41,5 +40,6 @@ private:
 	GLuint m_program;
 
 	GLuint m_texture;
+	unsigned int m_iIndicesCount;
 
 };

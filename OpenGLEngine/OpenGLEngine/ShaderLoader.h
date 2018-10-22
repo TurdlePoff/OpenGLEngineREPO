@@ -29,12 +29,12 @@ public:
 	void CreateProgram(char* shaderName, char* VertexShaderFilename,
 		char* FragmentShaderFilename, char* GeoShaderFileName);
 
-	static GLuint GetProgram(char* shaderName);
+	GLuint GetProgram(char* shaderName);
 
 private:
 	static std::shared_ptr<ShaderLoader> s_pSLInstance;
-	static std::map<std::string, std::pair<std::pair<GLuint, GLuint>, GLuint>> m_shaderMap;
-	static std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLuint>>> m_geoShaderMap;
+	std::map<std::string, std::pair<std::pair<GLuint, GLuint>, GLuint>> m_shaderMap;
+	std::map<std::string, std::pair<std::pair<GLuint, GLuint>, std::pair<GLuint, GLuint>>> m_geoShaderMap;
 
 	std::string ReadShader(char *filename);
 	GLuint CreateShader(GLenum shaderType, std::string source, char* shaderName);
