@@ -31,7 +31,7 @@ void ClothLevel::Init()
 void ClothLevel::Render()
 {
 
-	Scene::Render(); // Render on top
+	Scene::Render(); // Render last and on top
 }
 
 /***********************
