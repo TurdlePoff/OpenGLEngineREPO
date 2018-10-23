@@ -16,8 +16,13 @@
 #include "Particle.h"
 
 
-Particle::Particle()
+Particle::Particle(glm::vec3 _pos) 
+	: m_vPos(_pos), m_vOldPosition(_pos)
+	, m_vAcceleration(glm::vec3(0, 0, 0))
+	, m_fMass(1)
+	, m_bIsPinned(true)
 {
+
 }
 
 Particle::~Particle()

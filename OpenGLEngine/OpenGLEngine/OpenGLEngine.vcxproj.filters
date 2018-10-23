@@ -72,11 +72,11 @@
     <ClCompile Include="Particle.cpp">
       <Filter>Cloth</Filter>
     </ClCompile>
-    <ClCompile Include="Constraint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Cloth.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Cloth</Filter>
+    </ClCompile>
+    <ClCompile Include="Constraint.cpp">
+      <Filter>Cloth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,11 +134,11 @@
     <ClInclude Include="Particle.h">
       <Filter>Cloth</Filter>
     </ClInclude>
-    <ClInclude Include="Constraint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Cloth.h">
-      <Filter>Header Files</Filter>
+      <Filter>Cloth</Filter>
+    </ClInclude>
+    <ClInclude Include="Constraint.h">
+      <Filter>Cloth</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

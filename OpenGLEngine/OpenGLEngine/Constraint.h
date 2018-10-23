@@ -19,6 +19,8 @@
 class Constraint
 {
 public:
+	Constraint() {};
+
 	Constraint(Particle* _p1, Particle* _p2);
 	~Constraint();
 
