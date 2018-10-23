@@ -20,16 +20,12 @@
 /***********************
 * Star Constructor
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
-Star::Star()
-{
-}
+Star::Star(){}
 
 /***********************
 * InitialiseStar: Initialises star made with geometry shader
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 void Star::InitialiseStar()
 {
@@ -58,16 +54,13 @@ void Star::InitialiseStar()
 /***********************
 * Render: Render star object with geometry shader
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 void Star::Render()
 {
 	glUseProgram(m_program);
 	//ModelMatrix
 	glm::mat4 translation = glm::translate(glm::mat4(), m_vPos);
-
 	glm::mat4 model = translation;
-
 	glm::mat4 mvp = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView() * model;
 
 	GLint vpLoc = glGetUniformLocation(m_program, "mvp");

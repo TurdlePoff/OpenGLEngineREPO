@@ -151,6 +151,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Shapes.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="Shapes.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="Terrain.h" />

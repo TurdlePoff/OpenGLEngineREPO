@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Entity.h"
+#include "Shapes.h"
 
-class Player : public Entity
+class Player : public Shapes
 {
 public:
 	Player();

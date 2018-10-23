@@ -32,7 +32,6 @@ float Camera::m_fov = 45.0f; // field of view
 /***********************
 * Camera: Camera constructor
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 Camera::Camera() 
 {
@@ -46,7 +45,6 @@ Camera::Camera()
 /***********************
 * GetInstance: Gets the instance of the camera singleton class
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: s_pCameraInstance - Instance of the Camera singleton class
 ***********************/
 Camera* Camera::GetInstance()
@@ -61,7 +59,6 @@ Camera* Camera::GetInstance()
 /***********************
 * DestroyInstance: Destroys the instance of the camera singleton class if there is one
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Camera::DestroyInstance()
 {
@@ -76,7 +73,6 @@ void Camera::DestroyInstance()
 ///***********************
 //* GetCam: Gets the camera
 //* @author: Vivian Ngo
-//* @date: 08/05/18
 //* @return: projection view of camera object
 //***********************/
 //glm::mat4 Camera::GetCam()
@@ -97,7 +93,6 @@ void Camera::DestroyInstance()
 /*********************** 
 * Process: Process camera
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Camera::Process(float _deltaTick)
 {
@@ -109,7 +104,6 @@ void Camera::Process(float _deltaTick)
 /***********************
 * SetFOV: Sets the field of view
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: _camSpeed speed of the camera
 ***********************/
 void Camera::CameraMovement(float _deltaTick)
@@ -144,7 +138,6 @@ void Camera::CameraMovement(float _deltaTick)
 /***********************
 * SetFOV: Sets the field of view
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: _fov to change
 ***********************/
 void Camera::SetFOV(float _fov)
@@ -155,7 +148,6 @@ void Camera::SetFOV(float _fov)
 /***********************
 * GetFOV: Gets the field of view
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: _fov
 ***********************/
 float Camera::GetFOV()
@@ -166,7 +158,6 @@ float Camera::GetFOV()
 /***********************
 * SetCamFront: Sets the camera front
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: _cFront - the coordinates of the camera front to change to
 ***********************/
 void Camera::SetCamFront(glm::vec3 _cFront)
@@ -177,7 +168,6 @@ void Camera::SetCamFront(glm::vec3 _cFront)
 /***********************
 * SetCamUp: Sets camera up
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: _cUp - the coordinates of camera up to change to
 ***********************/
 void Camera::SetCamUp(glm::vec3 _cUp)
@@ -188,7 +178,6 @@ void Camera::SetCamUp(glm::vec3 _cUp)
 /***********************
 * GetCamFront: Gets the camera front
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: cameraFront - the camera front
 ***********************/
 glm::vec3 Camera::GetCamFront()
@@ -199,7 +188,6 @@ glm::vec3 Camera::GetCamFront()
 /***********************
 * SetCamPos: Sets the camera position
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: _cPos - the coordinates of the camera position to change to
 ***********************/
 void Camera::SetCamPos(glm::vec3 _cPos)
@@ -210,7 +198,6 @@ void Camera::SetCamPos(glm::vec3 _cPos)
 /***********************
 * GetCamPos: Gets the camera's position
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: cameraPos - the camera's position
 ***********************/
 glm::vec3 Camera::GetCamPos()
@@ -221,7 +208,6 @@ glm::vec3 Camera::GetCamPos()
 /***********************
 * GetCamUp: Gets the camera up coordinates
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: cameraUp - the camera up coordinate
 ***********************/
 glm::vec3 Camera::GetCamUp()
@@ -232,7 +218,6 @@ glm::vec3 Camera::GetCamUp()
 /***********************
 * SetCamSpeed: Sets the speed of the camera
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: _cSpeed - the camera speed to change to
 ***********************/
 void Camera::SetCamSpeed(float _cSpeed)
@@ -243,7 +228,6 @@ void Camera::SetCamSpeed(float _cSpeed)
 /***********************
 * GetCamSpeed: Gets the camera speed
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: cameraSpeed - the camera speed
 ***********************/
 float Camera::GetCamSpeed()

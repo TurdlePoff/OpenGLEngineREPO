@@ -17,7 +17,6 @@
 /***********************
 * Scene: Constructor
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 Scene::Scene()
 {
@@ -32,7 +31,6 @@ Scene::~Scene()
 /***********************
 * Render: Render scene objects
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 void Scene::Render()
 {
@@ -52,7 +50,6 @@ void Scene::Render()
 /***********************
 * Process: Process scene objects
 * @author: Vivian Ngo
-* @date: 04/10/18
 * @parameter: _deltaTick - machine time to process
 ***********************/
 void Scene::Process(float _deltaTick)

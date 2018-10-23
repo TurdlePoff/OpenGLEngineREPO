@@ -25,7 +25,6 @@ std::shared_ptr<ShaderLoader> ShaderLoader::s_pSLInstance = 0;
 /***********************
 * ShaderLoader: ShaderLoader constructor
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 std::shared_ptr<ShaderLoader> ShaderLoader::GetInstance()
 {
@@ -39,7 +38,6 @@ std::shared_ptr<ShaderLoader> ShaderLoader::GetInstance()
 /***********************
 * DestroyInstance: Destroy Instance
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void ShaderLoader::DestroyInstance()
 {
@@ -54,14 +52,12 @@ void ShaderLoader::DestroyInstance()
 /***********************
 * ShaderLoader: ShaderLoader Constructor
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 ShaderLoader::ShaderLoader(void) {}
 
 /***********************
 * ~ShaderLoader: ShaderLoader destructor
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 ShaderLoader::~ShaderLoader(void) {
 	//m_shaderMap.clear();
@@ -72,7 +68,6 @@ ShaderLoader::~ShaderLoader(void) {
 /***********************
 * ReadShader: Read Shader file
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: filename - file to read from
 ***********************/
 std::string ShaderLoader::ReadShader(char *filename)
@@ -96,7 +91,6 @@ std::string ShaderLoader::ReadShader(char *filename)
 /***********************
 * CreateShader: Creates Shader file
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: shaderType - type of shader
 * @parameter: source - shader source
 * @parameter: shaderName - name of shader
@@ -130,7 +124,6 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, std::string
 /***********************
 * CreateProgram: Creates Shader program
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: vertexShaderFilename - vertex shader file
 * @parameter: fragmentShaderFilename - fragment shader file
 ***********************/
@@ -185,7 +178,6 @@ void ShaderLoader::CreateProgram(char* shaderName, char* VertexShaderFilename,
 /***********************
 * CreateProgram: Creates a GeoShader program
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: vertexShaderFilename - vertex shader file
 * @parameter: fragmentShaderFilename - fragment shader file
 ***********************/

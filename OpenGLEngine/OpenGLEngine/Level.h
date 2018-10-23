@@ -23,17 +23,19 @@ class Level : public Scene
 public:
 	Level();
 	~Level();
+
+	void Init();
 	void Render();
 	void Process(float _deltaTick);
 
 
 private: 
 
-	std::unique_ptr<CubeMap> m_cubeMap;
-	std::unique_ptr<Star> m_star;
-
+	//std::unique_ptr<CubeMap> m_cubeMap;
 	std::unique_ptr<Terrain> m_terrain;
+
 	bool m_bIsOnGround;
 	float m_fHeightOffset = 5.0f;
-	float yPrevious = 0.0f;
+	float previousHeight = 0.0f;
+
 };

@@ -14,12 +14,28 @@
 #include "Level.h"
 
 
+/***********************
+* Level Constructor
+* @author: Vivian Ngo
+***********************/
 Level::Level()
+{
+	Init();
+}
+
+
+/***********************
+* Level Destructor
+* @author: Vivian Ngo
+***********************/
+Level::~Level(){}
+
+void Level::Init()
 {
 	//Initialise text
 	auto xText = std::make_unique<TextLabel>("x: ", "Resources/Fonts/bubble.TTF", glm::vec2());
 	auto yText = std::make_unique<TextLabel>("y: ", "Resources/Fonts/bubble.TTF", glm::vec2(Utils::SCR_WIDTH / 2, 0.0f));
-	auto instr = std::make_unique<TextLabel>("Toggle Wireframe with 'M'", "Resources/Fonts/arial.TTF", glm::vec2(100.0f, Utils::SCR_HEIGHT - 50.0f));
+	auto instr = std::make_unique<TextLabel>("Toggle Terrain Wireframe with 'M'", "Resources/Fonts/arial.TTF", glm::vec2(100.0f, Utils::SCR_HEIGHT - 50.0f));
 
 	m_mTextList["MouseX"] = std::move(xText);
 	m_mTextList["MouseY"] = std::move(yText);
@@ -33,7 +49,8 @@ Level::Level()
 	//Initialise Star
 	auto star = std::make_unique<Star>();
 	star->InitialiseStar();
-	m_star = std::move(star);
+	//m_star = std::move(star);
+	m_mEntitiesList["Star"] = std::move(star);
 
 	//Initialise player object to move
 	auto player = std::make_unique<Player>();
@@ -41,43 +58,33 @@ Level::Level()
 	m_mEntitiesList["Player"] = std::move(player);
 
 	m_bIsOnGround = true;
-	
-	auto cubeMap = std::make_unique<CubeMap>();
+
+	/*auto cubeMap = std::make_unique<CubeMap>();
 	cubeMap->InitCubeMap();
-	m_cubeMap = std::move(cubeMap);
-}
-
-
-Level::~Level()
-{
+	m_cubeMap = std::move(cubeMap);*/
 }
 
 /***********************
 * Render: Render scene objects
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 void Level::Render()
 {
-	m_cubeMap->Render();
+	//m_cubeMap->Render();
 
 	m_terrain->RenderTerrain(); //Render Terrain
-	m_star->Render(); //Render Star
 	Scene::Render(); //Render last as entities and text should go on top
 }
 
 /***********************
 * Process: Process scene objects
 * @author: Vivian Ngo
-* @date: 04/10/18
 * @parameter: _deltaTick - machine time to process
 ***********************/
 void Level::Process(float _deltaTick)
 {
-	Scene::Process(_deltaTick);
-
 	//Turn mesh on and off
-	if (Input::GetInstance()->KeyState['m'] == INPUT_FIRST_PRESS || Input::GetInstance()->KeyState['M'] == INPUT_FIRST_PRESS)
+	if (Input::GetInstance()->KeyState['m'] == INPUT_FIRST_PRESS ||		Input::GetInstance()->KeyState['M'] == INPUT_FIRST_PRESS)
 	{
 		if (m_terrain->GetIsMeshOn())
 		{
@@ -102,13 +109,13 @@ void Level::Process(float _deltaTick)
 	//Checks if player is off of the terrain
 	if (!isnan(y) && y != -99998)
 	{
-		yPrevious = y;
+		previousHeight = y;
 		m_mEntitiesList["Player"]->SetPos(glm::vec3(x, y, z));
 
 	}
 	else
 	{
-		m_mEntitiesList["Player"]->SetPos(glm::vec3(x, yPrevious, z));
+		m_mEntitiesList["Player"]->SetPos(glm::vec3(x, previousHeight, z));
 	}
 
 	//Set the star position above the player
@@ -116,5 +123,7 @@ void Level::Process(float _deltaTick)
 	float yStarPos = m_mEntitiesList["Player"]->GetPos().y + 5.0f;
 	float zStarPos = m_mEntitiesList["Player"]->GetPos().z;
 
-	m_star->SetPos(glm::vec3(xStarPos, yStarPos, zStarPos));
+	m_mEntitiesList["Star"]->SetPos(glm::vec3(xStarPos, yStarPos, zStarPos));
+
+	Scene::Process(_deltaTick);
 }

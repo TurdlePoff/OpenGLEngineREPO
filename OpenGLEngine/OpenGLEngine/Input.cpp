@@ -29,7 +29,6 @@ void LSpecialKeyRelease(int key, int x, int y);
 /***********************
 * GetInstance: Gets the instance of the Singleton Input class
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: s_pInputInstance - Instance of the Input singleton class
 ***********************/
 Input* Input::GetInstance()
@@ -44,7 +43,6 @@ Input* Input::GetInstance()
 /***********************
 * DestroyInstance: Destroys the instance of the Singleton Input class
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Input::DestroyInstance()
 {
@@ -59,7 +57,6 @@ void Input::DestroyInstance()
 /***********************
 * ~CInput Destructor
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 Input::~Input() 
 {
@@ -70,7 +67,6 @@ Input::~Input()
 /***********************
 * Update: Updates input from first press to hold
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Input::Update()
 {
@@ -117,7 +113,6 @@ void Input::Update()
 /***********************
 * Keyboard_Down: Sets the KeyState of the given pressed key as INPUT_HOLD
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: key - the character inputted
 * @parameter: x - x position of the mouse at time character was pressed
 * @parameter: y - y position of the mouse at time character was pressed
@@ -129,8 +124,7 @@ void Input::Keyboard_Down(unsigned char key, int x, int y)
 
 /***********************
 * Keyboard_Down: Sets the KeyState of the given released key as INPUT_RELEASED
-* @author: Vivian Ngo 
-* @date: 08/05/18
+* @author: Vivian Ngo
 * @parameter: key - the character released
 * @parameter: x - x position of the mouse at time character was released
 * @parameter: y - y position of the mouse at time character was released
@@ -143,7 +137,6 @@ void Input::Keyboard_Up(unsigned char key, int x, int y)
 /***********************
 * MouseClicked: Sets the MouseState as the currently held/released mouse button
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: button - the mouse button clicked/released
 * @parameter: glutState - the state of the mouse button
 * @parameter: x - x position of the mouse
@@ -160,7 +153,6 @@ void Input::MouseClicked(int button, int glutState, int x, int y)
 /***********************
 * MousePassiveMovement: Allows screen to change pitch and yaw when navigating window
 * @author: Vivian Ngo
-* @date: 29/05/18
 * @parameter: x - x position of the mouse
 * @parameter: y - y position of the mouse
 ***********************/
@@ -198,7 +190,6 @@ void Input::MousePassiveMovement(int x, int y)
 /***********************
 * MousePassiveMovement: Allows screen to change pitch and yaw when navigating window
 * @author: Vivian Ngo
-* @date: 29/05/18
 * @parameter: x - x position of the mouse
 * @parameter: y - y position of the mouse
 ***********************/
@@ -248,7 +239,6 @@ void Input::MouseScrollHold(int x, int y)
 /***********************
 * ScollCallback: Scroll window
 * @author: Vivian Ngo
-* @date: 29/05/18
 * @parameter: button - button 
 * @parameter: glutState - scroll state
 * @parameter: xOffset - x offset
@@ -282,7 +272,6 @@ void Input::ScrollCallback(int button, int glutState, int xOffset, int yOffset)
 /***********************
 * SpecialKeyPress: Sets special key as pressed
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: key - key pressed
 * @parameter: x
 * @parameter: y
@@ -318,7 +307,6 @@ void Input::SpecialKeyPress(int key, int x, int y)
 /***********************
 * SpecialKeyRelease: Release special keys
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @parameter: key - key pressed
 * @parameter: x
 * @parameter: y

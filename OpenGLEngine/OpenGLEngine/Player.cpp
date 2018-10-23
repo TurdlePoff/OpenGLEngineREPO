@@ -18,7 +18,6 @@
 /***********************
 * Player: Player Constructor
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 Player::Player()
 {
@@ -28,29 +27,26 @@ Player::Player()
 /***********************
 * Render: Render player
 * @author: Vivian Ngo
-* @date: 04/10/18
 ***********************/
 void Player::Render()
 {
-	Entity::Render();
+	Shapes::Render();
 }
 
 /***********************
 * Process: Process player
 * @author: Vivian Ngo
-* @date: 04/10/18
 * @parameter: _deltaTick - machine time to process
 ***********************/
 void Player::Process(float _deltaTick)
 {
-	Entity::Process(_deltaTick);
+	Shapes::Process(_deltaTick);
 	MovePlayer(_deltaTick);
 }
 
 /***********************
 * MovePlayer: Move player
 * @author: Vivian Ngo
-* @date: 04/10/18
 * @parameter: _deltaTick - machine time to process
 ***********************/
 void Player::MovePlayer(float _deltaTick)

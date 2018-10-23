@@ -55,9 +55,8 @@ public:
 	float Average(UINT i, UINT j);
 	void BuildVB();
 	void BuildIB();
-	int GetFileLength(std::istream& file);
 
-	void SetMeshOn(bool _meshOn) { std::cout << "m" << std::endl; m_meshOn = _meshOn; }
+	void SetMeshOn(bool _meshOn) { m_meshOn = _meshOn; }
 	bool GetIsMeshOn() { return m_meshOn; }
 
 private:

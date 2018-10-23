@@ -19,7 +19,6 @@ CSoundManager* CSoundManager::s_pSoundInstance = 0;
 /***********************
 * GetInstance: Gets Sound manager Instance
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * return s_pSoundInstance - instance of sound manager
 ***********************/
 CSoundManager* CSoundManager::GetInstance()
@@ -34,7 +33,6 @@ CSoundManager* CSoundManager::GetInstance()
 /***********************
 * DestroyInstance: Destroys Sound manager Instance
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void CSoundManager::DestroyInstance()
 {
@@ -49,7 +47,6 @@ void CSoundManager::DestroyInstance()
 /***********************
 * InitFmod: Initialises FMOD
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @return bool - true if initialised, else, false.
 ***********************/
 bool CSoundManager::InitFmod() 
@@ -73,7 +70,6 @@ bool CSoundManager::InitFmod()
 /***********************
 * LoadAudio: Loads audio
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @return const bool - true if loaded successfully
 ***********************/
 const bool CSoundManager::LoadAudio() 
@@ -94,7 +90,6 @@ const bool CSoundManager::LoadAudio()
 /***********************
 * InitSound: Plays sound
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void CSoundManager::InitBackground()
 {
@@ -106,7 +101,6 @@ void CSoundManager::InitBackground()
 /***********************
 * InitSound: Plays sound
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void CSoundManager::InitThump()
 {

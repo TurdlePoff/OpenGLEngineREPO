@@ -20,7 +20,6 @@
 /***********************
 * Terrain Constructor: Set up scene items
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 Terrain::Terrain()
 {
@@ -39,7 +38,6 @@ Terrain::Terrain()
 * InitialiseTerrain: Set up the terrain by loading the heightmap, 
 *					 smoothing, and building the vbo and ibo
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void Terrain::InitialiseTerrain()
 {
@@ -63,7 +61,6 @@ void Terrain::InitialiseTerrain()
 /***********************
 * RenderTerrain: Renders the terrain.
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void Terrain::RenderTerrain()
 {
@@ -105,7 +102,6 @@ void Terrain::RenderTerrain()
 /***********************
 * GetHeight: Gets the height value from the terrain based on the position given.
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @return: height position on terrain OR a very big negative value (-FLT_MAX) if not on the terrain.
 ***********************/
 float Terrain::GetHeight(glm::vec3 _position) const
@@ -157,7 +153,6 @@ float Terrain::GetHeight(glm::vec3 _position) const
 
 /***********************
 * Width: Gets the width of a cell
-* @date: 04 / 10 / 18
 * @return: the width of a cell
 ***********************/
 float Terrain::Width() const
@@ -167,7 +162,6 @@ float Terrain::Width() const
 
 /***********************
 * Depth: Gets the depth of a cell
-* @date: 04 / 10 / 18
 * @return: the depth of a cell
 ***********************/
 float Terrain::Depth() const
@@ -178,7 +172,6 @@ float Terrain::Depth() const
 /***********************
 * LoadHeightmap: Loads heightmap from raw file
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void Terrain::LoadHeightmap()
 {
@@ -216,7 +209,6 @@ void Terrain::LoadHeightmap()
 
 /***********************
 * Smooth: Smooths the heightmap
-* @date: 04 / 10 / 18
 ***********************/
 void Terrain::Smooth()
 {
@@ -236,7 +228,6 @@ void Terrain::Smooth()
 
 /***********************
 * InBounds: Check if ij are valid indices
-* @date: 04 / 10 / 18
 * return: whether indices are valid
 ***********************/
 bool Terrain::InBounds(UINT i, UINT j)
@@ -249,7 +240,6 @@ bool Terrain::InBounds(UINT i, UINT j)
 
 /***********************
 * Average: Computes the average height of ij
-* @date: 04 / 10 / 18
 * return: the average height computed
 ***********************/
 float Terrain::Average(UINT i, UINT j)
@@ -288,7 +278,6 @@ float Terrain::Average(UINT i, UINT j)
 /***********************
 * BuildVB: Creates vertex buffer for the terrain
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void Terrain::BuildVB()
 {
@@ -352,7 +341,6 @@ void Terrain::BuildVB()
 /***********************
 * BuildIB: Creates index buffer for the terrain
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void Terrain::BuildIB()
 {

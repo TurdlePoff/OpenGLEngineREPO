@@ -19,7 +19,6 @@ SceneManager* SceneManager::s_pSceneInstance = 0;
 /***********************
 * GetInstance: Gets scene manager Instance
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * return s_pSoundInstance - instance of sound manager
 ***********************/
 SceneManager* SceneManager::GetInstance()
@@ -34,7 +33,6 @@ SceneManager* SceneManager::GetInstance()
 /***********************
 * DestroyInstance: Destroys scene manager Instance
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void SceneManager::DestroyInstance()
 {
@@ -49,7 +47,6 @@ void SceneManager::DestroyInstance()
 /***********************
 * SetUpScenes: Set up scene items
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void SceneManager::InitScenes()
 {
@@ -61,7 +58,6 @@ void SceneManager::InitScenes()
 /***********************
 * RemoveScene: Remove scene from scene manager
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @parameter: scene - scene to add
 ***********************/
 void SceneManager::RemoveScene(std::string _level)
@@ -92,7 +88,6 @@ void SceneManager::RemoveScene(std::string _level)
 /***********************
 * SwitchScene: Switch scene to the number specified
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @parameter: level - scene to change to
 ***********************/
 void SceneManager::SwitchScene(std::string _level)
@@ -111,7 +106,6 @@ void SceneManager::SwitchScene(std::string _level)
 /***********************
 * ResetLevels: Method resetting all levels of the game + player stats
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void SceneManager::ResetLevels()
 {
@@ -134,7 +128,6 @@ void SceneManager::ResetLevels()
 /***********************
 * UpdateScene: Update the scene specified
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @parameter: scene - scene to update
 ***********************/
 void SceneManager::ProcessScene(float _deltaTick)
@@ -145,7 +138,6 @@ void SceneManager::ProcessScene(float _deltaTick)
 /***********************
 * RenderScene: Render the scene specified
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @parameter: scene - scene to render
 ***********************/
 void SceneManager::RenderScene()
@@ -156,7 +148,6 @@ void SceneManager::RenderScene()
 /***********************
 * GetCurrentScene: Gets the current scene
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @return: currentScene - the current scene
 ***********************/
 std::string SceneManager::GetCurrentScene()
@@ -167,7 +158,6 @@ std::string SceneManager::GetCurrentScene()
 ///***********************
 //* GetCurrentSceneNumber: Gets the current scene number
 //* @author: Vivian Ngo
-//* @date: 04 / 10 / 18
 //* @return: currentScene->GetLevelNum() - the current scene's level number
 //***********************/
 //int SceneManager::GetCurrentSceneNumber()

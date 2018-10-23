@@ -14,6 +14,8 @@
 ******************************************************/
 
 #include "Utility.h"
+#include "ShaderLoader.h"
+#include "Camera.h"
 
 class Entity
 {
@@ -21,24 +23,17 @@ public:
 	Entity();
 	~Entity();
 
-	void Init(const char* _imageType, EShapes _shape);
-	//const char* GetTextureFile(EImage _spriteType);
 	virtual void Process(float _deltaTick);
 	virtual void Render();
 
-
 	//Setters and Getters
-	void SetPos(glm::vec3 Movement);
-	void SetRotatation(glm::vec3 Rotation);
-	void SetScale(glm::vec3 scale);
+	void SetPos(glm::vec3 Movement) { m_vPos = Movement; }
+	void SetRotatation(glm::vec3 Rotation) { m_vRot = Rotation; }
+	void SetScale(glm::vec3 scale) { m_vScale = scale; }
 
-	glm::vec3 GetPos();
-	glm::vec3 GetRot();
-	glm::vec3 GetScale();
-
-	//b2Body* GetBody() { return m_b2body;}
-	//void InitB2Body(b2World& _world, b2BodyType _bodyType, EShapes _shape, bool m_rotatable, bool _hasFixture);
-
+	glm::vec3 GetPos() { return m_vPos; }
+	glm::vec3 GetRot() { return m_vRot; }
+	glm::vec3 GetScale() { return m_vScale; }
 
 protected:
 	unsigned int m_iIndicesCount;
@@ -51,7 +46,5 @@ protected:
 	glm::vec4 m_vColour;//Sprite Colour
 	EShapes m_eShape;
 	EImage m_eImageType;
-
-	//b2Body* m_b2body;
 };
 

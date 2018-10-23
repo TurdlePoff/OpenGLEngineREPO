@@ -23,7 +23,6 @@ Clock::Clock()
 /***********************
 * GetInstance: Gets the instance of the clock singleton class
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: s_pClockInstance - Instance of the clock singleton class
 ***********************/
 Clock* Clock::GetInstance()
@@ -38,7 +37,6 @@ Clock* Clock::GetInstance()
 /***********************
 * DestroyInstance: Destroys the instance of the clock singleton class if there is one
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Clock::DestroyInstance()
 {
@@ -53,7 +51,6 @@ void Clock::DestroyInstance()
 /***********************
 * GetDeltaTime: Gets the delta time of the program
 * @author: Vivian Ngo
-* @date: 08/05/18
 * @return: delta time of the program
 ***********************/
 float Clock::GetDeltaTick()
@@ -64,7 +61,6 @@ float Clock::GetDeltaTick()
 /***********************
 * Update: Updates the clock
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Clock::Update()
 {

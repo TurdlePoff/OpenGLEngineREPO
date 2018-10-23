@@ -30,7 +30,6 @@ void Exit();
 /***********************
 * Init: Initialises items for the application
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Init()
 {
@@ -52,9 +51,9 @@ void Init()
 		(char*)"Resources/Shaders/StarVertexShader.vs",
 		(char*)"Resources/Shaders/StarFragmentShader.fs", 
 		(char*)"Resources/Shaders/StarGeoShader.gs");
-	ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
+	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 		(char*)"Resources/Shaders/CMapVertexShader.vs",
-		(char*)"Resources/Shaders/CMapFragmentShader.fs");
+		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/
 
 	SceneManager::GetInstance()->InitScenes();
 }
@@ -62,11 +61,10 @@ void Init()
 /***********************
 * Render: Renders objects of the application
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Render(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	SceneManager::GetInstance()->RenderScene();
 	glutSwapBuffers();
 }
@@ -75,7 +73,6 @@ void Render(void)
 /***********************
 * Update: Updates the application
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Process(void)
 {
@@ -91,7 +88,6 @@ void Process(void)
 /***********************
 * Exit: Destroys all singleton instances of the application
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 void Exit()
 {
@@ -106,7 +102,6 @@ void Exit()
 /***********************
 * main: main for OpenGL application
 * @author: Vivian Ngo
-* @date: 08/05/18
 ***********************/
 int main(int argc, char **argv)
 {

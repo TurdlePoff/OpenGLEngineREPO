@@ -17,7 +17,6 @@
 /***********************
 * CTextLabel: CTextLabel constructor
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 * @parameter: newText - text to set up
 * @parameter: newFont - font of text
 * @parameter: pos - position of text
@@ -30,7 +29,6 @@ TextLabel::TextLabel(std::string newText, std::string newFont, glm::vec2 pos)
 	SetPosition(pos);
 
 	textProgram = ShaderLoader::GetInstance()->GetProgram((char*)"Text");
-	//textProgram = shaderLoader.CreateProgram((char*)"Resources/Shaders/TextVertexShader.vs", (char*)"Resources/Shaders/TextFragmentShader.fs");
 	glm::mat4 proj = glm::ortho(0.0f, (GLfloat)Utils::SCR_WIDTH, 0.0f, (GLfloat)Utils::SCR_HEIGHT);
 
 	glUseProgram(textProgram);
@@ -112,7 +110,6 @@ TextLabel::TextLabel(std::string newText, std::string newFont, glm::vec2 pos)
 /***********************
 * Render: Renders Textlabel onto screen
 * @author: Vivian Ngo
-* @date: 04 / 10 / 18
 ***********************/
 void TextLabel::Render()
 {
