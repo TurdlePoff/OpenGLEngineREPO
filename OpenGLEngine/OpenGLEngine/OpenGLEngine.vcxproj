@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="ClothLevel.cpp" />
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Clock.h" />
+    <ClInclude Include="ClothLevel.h" />
     <ClInclude Include="CubeMap.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Input.h" />
