@@ -57,6 +57,13 @@ void Level::Init()
 	player->SetPos(glm::vec3(0.0f, 0.0f, 50.0f));
 	m_mEntitiesList["Player"] = std::move(player);
 
+	//Initialise player object to move
+	auto m_Sphere = std::make_unique<Shapes>();
+	m_Sphere->Init(SPR_STRIPE, 10.0f);
+
+	m_Sphere->SetPos(glm::vec3(0.0f, 10.0f, 50.0f));
+	m_mEntitiesList["Sphere"] = std::move(m_Sphere);
+
 	m_bIsOnGround = true;
 
 	/*auto cubeMap = std::make_unique<CubeMap>();
@@ -73,6 +80,7 @@ void Level::Render()
 	//m_cubeMap->Render();
 
 	m_terrain->RenderTerrain(); //Render Terrain
+
 	Scene::Render(); //Render last as entities and text should go on top
 }
 

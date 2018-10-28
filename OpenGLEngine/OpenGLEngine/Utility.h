@@ -16,6 +16,8 @@
 #ifndef __UTILITY_H__
 #define __UTILITY_H__
 
+#define _USE_MATH_DEFINES
+
 #pragma region Sprites
 #define SPR_BIRD "Resources/Sprites/noot.png"
 #define SPR_TRIBIRD "Resources/Sprites/triNoot.png"
@@ -23,6 +25,10 @@
 
 #define SPR_FLOOR "Resources/Sprites/floor.png"
 #define SPR_BACKGROUND "Resources/Sprites/blue_grass.png"
+
+#define SPR_STRIPE "Resources/Sprites/stripe.jpg"
+#define SPR_RED "Resources/Sprites/red.jpg"
+
 #pragma endregion Sprite Locations
 
 //Dependencies
@@ -35,7 +41,7 @@
 #include "Dependencies\FMOD\fmod.hpp"
 //#include <glm/gtx/compatibility.hpp>
 
-#include  <Box2D/Box2D.h>
+//#include  <Box2D/Box2D.h>
 
 //Includes
 #include <iostream>
@@ -53,6 +59,7 @@
 #include <assert.h>
 #include <chrono>
 #include <cmath> 
+#include <math.h>
 
 enum EMouse
 {

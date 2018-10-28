@@ -14,6 +14,7 @@
 ******************************************************/
 
 #include "Utility.h"
+#include "Entity.h"
 
 /* Some physics constants */
 #define DAMPING 0.01f // how much to damp the cloth simulation each frame
@@ -21,16 +22,13 @@
 
 
 
-class Particle
+class Particle : public Entity
 {
 public:
 	Particle() {};
 	Particle(glm::vec3 _pos);
 	~Particle();
 
-	//Base functions
-	void Init();
-	void Render();
 	void Process(float _deltaTick);
 
 	//Particle Functions

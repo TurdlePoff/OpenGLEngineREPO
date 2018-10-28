@@ -16,6 +16,11 @@
 #include "Particle.h"
 
 
+/***********************
+* Particle: Constructor
+* @author: Vivian Ngo
+* @parameter: _pos - position of the particle
+***********************/
 Particle::Particle(glm::vec3 _pos) 
 	: m_vPos(_pos), m_vOldPosition(_pos)
 	, m_vAcceleration(glm::vec3(0, 0, 0))
@@ -25,18 +30,19 @@ Particle::Particle(glm::vec3 _pos)
 
 }
 
+/***********************
+* Particle: Destructor
+* @author: Vivian Ngo
+***********************/
 Particle::~Particle()
 {
 }
 
-void Particle::Init()
-{
-}
-
-void Particle::Render()
-{
-}
-
+/***********************
+* Process: Processes the individual particle
+* @author: Vivian Ngo
+* @parameter: _deltaTick
+***********************/
 void Particle::Process(float _deltaTick)
 {
 	//iterate through all connections and see if destroyed
@@ -50,6 +56,11 @@ void Particle::Process(float _deltaTick)
 	}
 }
 
+/***********************
+* AddForce: Adds Force to the individual particle
+* @author: Vivian Ngo
+* @parameter: _f - amount of force added to particle
+***********************/
 void Particle::AddForce(glm::vec3 _f)
 {
 	m_vAcceleration += _f / m_fMass;

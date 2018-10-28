@@ -13,19 +13,38 @@
 ******************************************************/
 #include "Cloth.h"
 
-Cloth::Cloth(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight) : m_fParticlesWidth(_numParticlesWidth), m_fParticlesHeight(_numParticlesHeight)
+/***********************
+* Cloth: Destructor
+* @author: Vivian Ngo
+***********************/
+Cloth::~Cloth(){}
+
+/***********************
+* Init: Initialises the cloth
+* @author: Vivian Ngo
+* @parameter: _width - width of cloth
+* @parameter: _height - height of cloth
+* @parameter: _numParticlesWidth - num of particles in width
+* @parameter: _numParticlesHeight - num of particles in height
+***********************/
+void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight)
 {
-	m_vParticles.resize(_numParticlesWidth * _numParticlesHeight); //I am essentially using this vector as an array with room for _numParticlesWidth*_numParticlesHeight particles
+	//Reset particles and constraints
+	m_fParticlesWidth = _numParticlesWidth;
+	m_fParticlesHeight = _numParticlesHeight;
+
+	m_vParticles.clear();
+	m_vConstraints.clear();
+
+	m_vParticles.resize(_numParticlesWidth * _numParticlesHeight); 
 
 	// creating particles in a grid of particles from (0,0,0) to (width,-height,0)
-	for (int x = 0; x<_numParticlesWidth; x++)
+	for (int x = 0; x < _numParticlesWidth; x++)
 	{
-		for (int y = 0; y<_numParticlesHeight; y++)
-		{
-			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth),
-				-_height * (y / (float)_numParticlesHeight),
+		for (int y = 0; y < _numParticlesHeight; y++) {
+			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth), -_height * (y / (float)_numParticlesHeight),
 				0);
-			m_vParticles[y*_numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
+			m_vParticles[y  * _numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
 		}
 	}
 
@@ -53,7 +72,6 @@ Cloth::Cloth(float _width, float _height, int _numParticlesWidth, int _numPartic
 		}
 	}
 
-
 	// making the upper left most three and right most three particles unmovable
 	for (int i = 0; i<3; i++)
 	{
@@ -65,15 +83,35 @@ Cloth::Cloth(float _width, float _height, int _numParticlesWidth, int _numPartic
 	}
 }
 
-
-Cloth::~Cloth()
+/***********************
+* Render: Renders the cloth
+* @author: Vivian Ngo
+***********************/
+void Cloth::Render()
 {
+
+
+	//Instead of this, render constraints in cloth
+	for (int i = 0; i < m_vParticles.size(); ++i)
+	{
+		m_vParticles[i].Render();
+	}
+
+	for (int i = 0; i < m_vConstraints.size(); ++i)
+	{
+		m_vConstraints[i].Render();
+	}
 }
 
+/***********************
+* Process: Processes the cloth
+* @author: Vivian Ngo
+* @parameter: _deltaTick
+***********************/
 void Cloth::Process(float _deltaTick)
 {
 	std::vector<Constraint>::iterator constraint;
-	for (int i = 0; i<CONSTRAINT_ITERATIONS; i++) // iterate over all constraints several times
+	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) // iterate over all constraints several times
 	{
 		for (constraint = m_vConstraints.begin(); constraint != m_vConstraints.end(); constraint++)
 		{
@@ -88,6 +126,11 @@ void Cloth::Process(float _deltaTick)
 	}
 }
 
+/***********************
+* AddForce: Adds Force the cloth
+* @author: Vivian Ngo
+* @parameter: _deltaTick
+***********************/
 void Cloth::AddForce(const glm::vec3 _direction)
 {
 	std::vector<Particle>::iterator particle;
@@ -97,6 +140,11 @@ void Cloth::AddForce(const glm::vec3 _direction)
 	}
 }
 
+/***********************
+* WindForce: Adds Wind Force to the cloth
+* @author: Vivian Ngo
+* @parameter: _direction - direction of wind to blow at the cloth
+***********************/
 void Cloth::WindForce(const glm::vec3 _direction)
 {
 	for (int x = 0; x<m_fParticlesWidth - 1; x++)
@@ -109,6 +157,12 @@ void Cloth::WindForce(const glm::vec3 _direction)
 	}
 }
 
+/***********************
+* BallCollision: Adds Wind Force to the cloth
+* @author: Vivian Ngo
+* @parameter: _center - center of ball
+* @parameter: _radius - radius of ball
+***********************/
 void Cloth::BallCollision(const glm::vec3 _center, const float _radius)
 {
 	std::vector<Particle>::iterator particle;
@@ -123,16 +177,35 @@ void Cloth::BallCollision(const glm::vec3 _center, const float _radius)
 	}
 }
 
+/***********************
+* GetParticle: Gets particle given the position specified
+* @author: Vivian Ngo
+* @parameter: x - x pos of particle
+* @parameter: y - y pos of particle
+***********************/
 Particle * Cloth::GetParticle(int x, int y)
 {
 	return &m_vParticles[y * m_fParticlesWidth + x];
 }
 
+/***********************
+* MakeConstraint: Creates a constraint between two particles (connecion)
+* @author: Vivian Ngo
+* @parameter: p1 - particle 1
+* @parameter: p2 - particle 2
+***********************/
 void Cloth::MakeConstraint(Particle * p1, Particle * p2)
 {
 	m_vConstraints.push_back(Constraint(p1, p2));
 }
 
+/***********************
+* CalcTriangleNormal: Calculates the triangle normal of three particles within the cloth
+* @author: Vivian Ngo
+* @parameter: p1 - particle 1
+* @parameter: p2 - particle 2
+* @parameter: p3 - particle 3
+***********************/
 glm::vec3 Cloth::CalcTriangleNormal(Particle * p1, Particle * p2, Particle * p3)
 {
 	glm::vec3 pos1 = p1->GetPos();
@@ -145,6 +218,14 @@ glm::vec3 Cloth::CalcTriangleNormal(Particle * p1, Particle * p2, Particle * p3)
 	return glm::cross(v1, v2);
 }
 
+/***********************
+* AddWindForcesForTriangle: Applies wind force to the section applied
+* @author: Vivian Ngo
+* @parameter: p1 - particle 1
+* @parameter: p2 - particle 2
+* @parameter: p3 - particle 3
+* @parameter: direction - direction of force
+***********************/
 void Cloth::AddWindForcesForTriangle(Particle * p1, Particle * p2, Particle * p3, const glm::vec3 direction)
 {
 	glm::vec3 normal = CalcTriangleNormal(p1, p2, p3);

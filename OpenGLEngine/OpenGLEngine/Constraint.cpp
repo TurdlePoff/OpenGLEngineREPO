@@ -12,31 +12,47 @@
 * Mail			: vivian.ngo7572@mediadesign.school.nz
 ******************************************************/
 
-
 #include "Constraint.h"
 
+/***********************
+* Constraint Constructor
+* @author: Vivian Ngo
+* @parameter: _p1 - particle 1 of the connection
+* @parameter: _p2 - particle 2 of the connection
+***********************/
 Constraint::Constraint(Particle* _p1, Particle* _p2) 
 	: m_p1(_p1), m_p2(_p2), m_bDestroyed(false)
 {
-	glm::vec3 vec = m_p1->GetPos() - m_p2->GetPos();
-	m_fRestDist = vec.length();
+	p1_to_p2 = m_p1->GetPos() - m_p2->GetPos();
+	m_fRestDist = p1_to_p2.length();
 }
 
-
+/***********************
+* Constraint Destructor
+* @author: Vivian Ngo
+***********************/
 Constraint::~Constraint()
 {
 
 }
 
+/***********************
+* Render: Renders the individual constraint/connection
+* @author: Vivian Ngo
+***********************/
 void Constraint::Render()
 {
 	//GL_LINES
 
 }
 
+/***********************
+* Process: Processes the individual constraint/connection between it's own two particles
+* @author: Vivian Ngo
+***********************/
 void Constraint::Process(float _deltaTick)
 {
-	glm::vec3 p1_to_p2 = m_p2->GetPos() - m_p1->GetPos(); // vector from p1 to p2
+	p1_to_p2 = m_p2->GetPos() - m_p1->GetPos(); // vector from p1 to p2
 	float current_distance = p1_to_p2.length(); // current distance between p1 and p2
 
 	if (current_distance < m_fRestDist + 0.5f)

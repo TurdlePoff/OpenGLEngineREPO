@@ -22,6 +22,10 @@ Scene::Scene()
 {
 }
 
+/***********************
+* Scene Destructor
+* @author: Vivian Ngo
+***********************/
 Scene::~Scene()
 {
 	m_mTextList.clear();

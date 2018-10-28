@@ -299,7 +299,7 @@ void Terrain::BuildVB()
 			vertices[i*m_info.NumCols + j].pos = glm::vec3(x, y, z);
 			vertices[i*m_info.NumCols + j].normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
-			//// Stretch texture over grid.
+			// Stretch texture over grid.
 			//vertices[i*m_info.NumCols + j].texC.x = j*du;
 			//vertices[i*m_info.NumCols + j].texC.y = i*dv;
 		}
@@ -345,7 +345,7 @@ void Terrain::BuildVB()
 void Terrain::BuildIB()
 {
 	indices.resize(m_uiNumFaces * 3); // 3 indices per face
-											   // Iterate over each quad and compute indices.
+	// Iterate over each quad and compute indices.
 	int k = 0;
 	for (UINT i = 0; i < m_info.NumRows - 1; ++i)
 	{

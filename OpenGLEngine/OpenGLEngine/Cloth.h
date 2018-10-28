@@ -18,15 +18,17 @@
 #include "Utility.h"
 #include "Particle.h"
 #include "Constraint.h"
+#include "Entity.h"
 
-class Cloth
+class Cloth : public Entity
 {
 public:
 	Cloth() {};
 
-	Cloth(float width, float height, int num_particles_width, int num_particles_height);
 	~Cloth();
 
+	void Init(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight);
+	void Render();
 	void Process(float _deltaTick);
 	void AddForce(const glm::vec3 _direction);
 	void WindForce(const glm::vec3 _direction);

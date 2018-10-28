@@ -95,6 +95,114 @@ void Shapes::Init(const char * _imageType, EShapes _shape)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void Shapes::Init(const char * _imageType, float _radius)
+{
+	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
+
+	m_vPos = glm::vec3(0.0f, 0.0f, -1.0f);
+	m_vRot = glm::vec3();
+	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+	float radius = _radius; //default 1
+
+	const int sections = 20;
+	const int vertexAttrib = 8;
+	const int indexPerQuad = 6;
+
+	double phi = 0;
+	double theta = 0;
+
+	float vertices[(sections) * (sections)* vertexAttrib];
+	int offset = 0;
+	for (int i = 0; i < sections; i++)
+	{
+		theta = 0;
+
+		for (int j = 0; j < sections; j++)
+		{
+			float x = cos(phi) * sin(theta);
+			float y = cos(theta);
+			float z = sin(phi) * sin(theta);
+
+			vertices[offset++] = x * radius;
+			vertices[offset++] = y * radius;
+			vertices[offset++] = z * radius;
+
+			vertices[offset++] = x;
+			vertices[offset++] = y;
+			vertices[offset++] = z;
+
+			vertices[offset++] = (float)i / (sections - 1);
+			vertices[offset++] = (float)j / (sections - 1);
+
+			theta += (M_PI / (sections - 1));
+		}
+
+		phi += (2 * M_PI) / (sections - 1);
+	}
+
+
+	GLuint indices[(sections) * (sections)* indexPerQuad];
+	offset = 0;
+	for (int i = 0; i < sections; i++)
+	{
+		for (int j = 0; j < sections; j++)
+		{
+			indices[offset++] = (((i + 1) % sections) * sections) + ((j + 1) % sections);
+			indices[offset++] = (((i + 1) % sections) * sections) + (j);
+			indices[offset++] = (i * sections) + (j);
+
+			indices[offset++] = (i * sections) + ((j + 1) % sections);
+			indices[offset++] = (((i + 1) % sections) * sections) + ((j + 1) % sections);
+			indices[offset++] = (i * sections) + (j);
+		}
+	}
+
+	glGenVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
+
+	glGenBuffers(1, &m_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
+	m_iIndicesCount = sizeof(indices) / sizeof(GLuint);
+
+	//Generating and biding the texture
+	glGenTextures(1, &m_texture);
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+
+	//Loading the image
+	unsigned char* image = SOIL_load_image(_imageType, &m_iWidth, &m_iHeight, 0, SOIL_LOAD_RGBA);
+	//Defining the texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_iWidth, m_iHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	//Generating the texture, freeing up the data and binding it
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void Shapes::Render()
 {
 	glUseProgram(m_program);

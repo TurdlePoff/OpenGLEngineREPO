@@ -25,6 +25,8 @@ public:
 	~Shapes();
 
 	void Init(const char* _imageType, EShapes _shape);
+	void Init(const char* _imageType, float _radius = 1.0f);
+
 	virtual void Render();
 };
 
