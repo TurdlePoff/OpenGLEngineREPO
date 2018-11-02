@@ -28,6 +28,8 @@ public:
 	void Process(float _deltaTick);
 	void Destroy() { m_bDestroyed = true; };
 	bool GetDestroyed() { return m_bDestroyed; };
+	Particle* GetParticleOne() { return m_p1; };
+	Particle* GetParticleTwo() { return m_p2; };
 
 private:
 	Particle *m_p1, *m_p2;

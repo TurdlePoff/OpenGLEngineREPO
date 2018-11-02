@@ -32,6 +32,10 @@ Level::~Level(){}
 
 void Level::Init()
 {
+	auto cloth = std::make_shared<Cloth>();
+	cloth->Init(5, 5, 10, 10);
+	m_cloth = std::move(cloth);
+
 	//Initialise text
 	auto xText = std::make_unique<TextLabel>("x: ", "Resources/Fonts/bubble.TTF", glm::vec2());
 	auto yText = std::make_unique<TextLabel>("y: ", "Resources/Fonts/bubble.TTF", glm::vec2(Utils::SCR_WIDTH / 2, 0.0f));
@@ -79,6 +83,7 @@ void Level::Render()
 {
 	//m_cubeMap->Render();
 
+	m_cloth->Render();
 	m_terrain->RenderTerrain(); //Render Terrain
 
 	Scene::Render(); //Render last as entities and text should go on top
@@ -132,6 +137,8 @@ void Level::Process(float _deltaTick)
 	float zStarPos = m_mEntitiesList["Player"]->GetPos().z;
 
 	m_mEntitiesList["Star"]->SetPos(glm::vec3(xStarPos, yStarPos, zStarPos));
+
+	m_cloth->Process(_deltaTick);
 
 	Scene::Process(_deltaTick);
 }

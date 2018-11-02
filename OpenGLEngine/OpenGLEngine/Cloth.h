@@ -28,6 +28,7 @@ public:
 	~Cloth();
 
 	void Init(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight);
+	void GenerateBuffers();
 	void Render();
 	void Process(float _deltaTick);
 	void AddForce(const glm::vec3 _direction);

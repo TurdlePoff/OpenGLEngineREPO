@@ -14,7 +14,6 @@
 ******************************************************/
 
 #include "Scene.h"
-#include "Cloth.h"
 
 
 class ClothLevel : public Scene
@@ -26,7 +25,6 @@ public:
 	void Init();
 	void Render();
 	void Process(float _deltaTick);
-
 
 };
 

@@ -17,7 +17,10 @@
 * Cloth: Destructor
 * @author: Vivian Ngo
 ***********************/
-Cloth::~Cloth(){}
+Cloth::~Cloth()
+{
+	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
+}
 
 /***********************
 * Init: Initialises the cloth
@@ -44,7 +47,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 		for (int y = 0; y < _numParticlesHeight; y++) {
 			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth), -_height * (y / (float)_numParticlesHeight),
 				0);
-			m_vParticles[y  * _numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
+			m_vParticles[y  * _numParticlesWidth + x] = Particle(pos, x); // insert particle in column x at y'th row
 		}
 	}
 
@@ -84,23 +87,76 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 }
 
 /***********************
+* GenerateBuffers: Generate Buffers for the cloth
+* @author: Vivian Ngo
+***********************/
+void Cloth::GenerateBuffers()
+{
+	m_vPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_vRot = glm::vec3();
+	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	//Generating Buffers and Arrays
+	glGenVertexArrays(1, &m_vao);					//Vert Array
+	glBindVertexArray(m_vao);
+
+	glGenBuffers(1, &m_vbo);                        //Vert Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+	glGenBuffers(1, &m_ebo);						//Index Buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSquare), verticesSquare, GL_STATIC_DRAW);			//VBO Buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesSquare), indicesSquare, GL_STATIC_DRAW);    //EBO Buffer
+	m_iIndicesCount = sizeof(indicesSquare);
+}
+
+/***********************
 * Render: Renders the cloth
 * @author: Vivian Ngo
 ***********************/
 void Cloth::Render()
 {
-
-
-	//Instead of this, render constraints in cloth
-	for (int i = 0; i < m_vParticles.size(); ++i)
+	//glUseProgram(m_program);
+	for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
 	{
-		m_vParticles[i].Render();
+		glLineWidth(2.0f);
+
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(m_vConstraints[i].GetParticleOne()->GetPos().x, 
+					m_vConstraints[i].GetParticleOne()->GetPos().y,
+					m_vConstraints[i].GetParticleOne()->GetPos().z);
+		glVertex3f(m_vConstraints[i].GetParticleTwo()->GetPos().x,
+					m_vConstraints[i].GetParticleTwo()->GetPos().y,
+					m_vConstraints[i].GetParticleTwo()->GetPos().z);
+		glEnd();
 	}
 
-	for (int i = 0; i < m_vConstraints.size(); ++i)
-	{
-		m_vConstraints[i].Render();
-	}
+	//ModelMatrix
+	/*glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.0f, 1.0f, 1.0f));
+
+	glm::mat4 Model = translation * rotation * scale;
+
+	glm::mat4 VP = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView();
+
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));*/
+
+	////Instead of this, render constraints in cloth
+	//for (int i = 0; i < m_vParticles.size(); ++i)
+	//{
+	//	m_vParticles[i].Render();
+	//}
+
+	//for (int i = 0; i < m_vConstraints.size(); ++i)
+	//{
+	//	m_vConstraints[i].Render();
+	//}
 }
 
 /***********************

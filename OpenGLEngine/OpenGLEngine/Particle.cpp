@@ -21,13 +21,13 @@
 * @author: Vivian Ngo
 * @parameter: _pos - position of the particle
 ***********************/
-Particle::Particle(glm::vec3 _pos) 
+Particle::Particle(glm::vec3 _pos, int _id) 
 	: m_vPos(_pos), m_vOldPosition(_pos)
 	, m_vAcceleration(glm::vec3(0, 0, 0))
 	, m_fMass(1)
 	, m_bIsPinned(true)
 {
-
+	m_iID = _id;
 }
 
 /***********************

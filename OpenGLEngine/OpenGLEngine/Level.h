@@ -17,6 +17,7 @@
 #include "CubeMap.h"
 #include "Terrain.h"
 #include "Star.h"
+#include "Cloth.h"
 
 class Level : public Scene
 {
@@ -38,5 +39,6 @@ private:
 	bool m_bIsOnGround;
 	float m_fHeightOffset = 5.0f;
 	float previousHeight = 0.0f;
+	std::shared_ptr<Cloth> m_cloth;
 
 };
