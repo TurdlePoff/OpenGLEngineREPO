@@ -36,7 +36,7 @@ public:
 	glm::vec3 GetScale() { return m_vScale; }
 
 protected:
-	unsigned int m_iIndicesCount;
+	unsigned int m_iIndicesCount, m_iVerticesCount;
 	GLuint m_vbo, m_vao, m_ebo, m_texture, m_program;
 	int m_iWidth, m_iHeight;
 

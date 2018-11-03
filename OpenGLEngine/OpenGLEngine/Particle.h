@@ -26,7 +26,7 @@ class Particle : public Entity
 {
 public:
 	Particle() {};
-	Particle(glm::vec3 _pos, int _id);
+	Particle(glm::vec3 _pos);
 	~Particle();
 
 	void Process(float _deltaTick);
@@ -39,12 +39,16 @@ public:
 	void SetPos(glm::vec3 Movement) { m_vPos = Movement; }
 	glm::vec3 GetPos() { return m_vPos; }
 	glm::vec3 GetOldPos() { return m_vOldPosition; }
-	int GetID() { return m_iID; }
+	int GetVertID() { return m_iVertID; }
+	int GetIndicesID() { return m_iIndicesID; }
+	void SetVertID(int _id) { m_iVertID = _id; }
+	void SetIndicesID(int _id) { m_iIndicesID = _id; }
 
 private:
 	bool m_bIsPinned;
 	float m_fMass;
-	int m_iID;
+	int m_iVertID;
+	int m_iIndicesID;
 
 	glm::vec3 m_vPos;
 	glm::vec3 m_vOldPosition;

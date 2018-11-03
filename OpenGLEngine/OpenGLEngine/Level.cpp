@@ -34,6 +34,8 @@ void Level::Init()
 {
 	auto cloth = std::make_shared<Cloth>();
 	cloth->Init(5, 5, 10, 10);
+	cloth->SetPos(glm::vec3(0.0f, 10.0f, 50.0f));
+
 	m_cloth = std::move(cloth);
 
 	//Initialise text
@@ -65,7 +67,7 @@ void Level::Init()
 	auto m_Sphere = std::make_unique<Shapes>();
 	m_Sphere->Init(SPR_STRIPE, 10.0f);
 
-	m_Sphere->SetPos(glm::vec3(0.0f, 10.0f, 50.0f));
+	m_Sphere->SetPos(glm::vec3(-20.0f, 10.0f, 50.0f));
 	m_mEntitiesList["Sphere"] = std::move(m_Sphere);
 
 	m_bIsOnGround = true;
@@ -137,6 +139,7 @@ void Level::Process(float _deltaTick)
 	float zStarPos = m_mEntitiesList["Player"]->GetPos().z;
 
 	m_mEntitiesList["Star"]->SetPos(glm::vec3(xStarPos, yStarPos, zStarPos));
+
 
 	m_cloth->Process(_deltaTick);
 

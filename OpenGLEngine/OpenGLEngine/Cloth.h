@@ -23,7 +23,7 @@
 class Cloth : public Entity
 {
 public:
-	Cloth() {};
+	Cloth();
 
 	~Cloth();
 
@@ -36,6 +36,10 @@ public:
 	void BallCollision(const glm::vec3 _center, const float _radius);
 
 private:
+	std::vector<float> m_fVerticesPoints;
+	std::vector<int> m_iIndicesPoints;
+	
+
 	int m_fParticlesWidth; // number of particles in "width" direction
 	int m_fParticlesHeight; // number of particles in "height" direction
 

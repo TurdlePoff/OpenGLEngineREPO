@@ -13,13 +13,23 @@
 ******************************************************/
 #include "Cloth.h"
 
+Cloth::Cloth()
+{
+
+	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Plain");
+
+
+	m_vPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_vRot = glm::vec3();
+	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+}
+
 /***********************
 * Cloth: Destructor
 * @author: Vivian Ngo
 ***********************/
 Cloth::~Cloth()
 {
-	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
 }
 
 /***********************
@@ -42,19 +52,19 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	m_vParticles.resize(_numParticlesWidth * _numParticlesHeight); 
 
 	// creating particles in a grid of particles from (0,0,0) to (width,-height,0)
-	for (int x = 0; x < _numParticlesWidth; x++)
+	for (int x = 0; x < _numParticlesWidth; ++x)
 	{
 		for (int y = 0; y < _numParticlesHeight; y++) {
 			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth), -_height * (y / (float)_numParticlesHeight),
 				0);
-			m_vParticles[y  * _numParticlesWidth + x] = Particle(pos, x); // insert particle in column x at y'th row
+			m_vParticles[y  * _numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
 		}
 	}
 
 	// Connecting immediate neighbor particles with constraints (distance 1 and sqrt(2) in the grid)
-	for (int x = 0; x<_numParticlesWidth; x++)
+	for (int x = 0; x<_numParticlesWidth; ++x)
 	{
-		for (int y = 0; y<_numParticlesHeight; y++)
+		for (int y = 0; y<_numParticlesHeight; ++y)
 		{
 			if (x<_numParticlesWidth - 1) MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y));
 			if (y<_numParticlesHeight - 1) MakeConstraint(GetParticle(x, y), GetParticle(x, y + 1));
@@ -64,9 +74,9 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	}
 
 	// Connecting secondary neighbors with constraints (distance 2 and sqrt(4) in the grid)
-	for (int x = 0; x<_numParticlesWidth; x++)
+	for (int x = 0; x<_numParticlesWidth; ++x)
 	{
-		for (int y = 0; y<_numParticlesHeight; y++)
+		for (int y = 0; y<_numParticlesHeight; ++y)
 		{
 			if (x<_numParticlesWidth - 2) MakeConstraint(GetParticle(x, y), GetParticle(x + 2, y));
 			if (y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x, y), GetParticle(x, y + 2));
@@ -76,7 +86,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	}
 
 	// making the upper left most three and right most three particles unmovable
-	for (int i = 0; i<3; i++)
+	for (int i = 0; i < 3; ++i)
 	{
 		GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
 		GetParticle(0 + i, 0)->SetPinned(true);
@@ -84,6 +94,8 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 		GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(-0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
 		GetParticle(_numParticlesWidth - 1 - i, 0)->SetPinned(true);
 	}
+
+	GenerateBuffers();
 }
 
 /***********************
@@ -92,9 +104,25 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 ***********************/
 void Cloth::GenerateBuffers()
 {
-	m_vPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_vRot = glm::vec3();
-	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+	//Create vertices array
+	for (unsigned int i = 0; i < m_vParticles.size(); ++i)
+	{
+		m_vParticles[i].SetVertID(i);
+
+		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().x);
+		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().y);
+		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().z);
+
+		m_fVerticesPoints.push_back(0.6f);
+		m_fVerticesPoints.push_back(0.3f);
+		m_fVerticesPoints.push_back(0.7f);
+	}
+
+	for (auto& constraint : m_vConstraints)
+	{
+		m_iIndicesPoints.push_back(constraint.GetParticleOne()->GetVertID());
+		m_iIndicesPoints.push_back(constraint.GetParticleTwo()->GetVertID());
+	}
 
 	//Generating Buffers and Arrays
 	glGenVertexArrays(1, &m_vao);					//Vert Array
@@ -106,9 +134,17 @@ void Cloth::GenerateBuffers()
 	glGenBuffers(1, &m_ebo);						//Index Buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSquare), verticesSquare, GL_STATIC_DRAW);			//VBO Buffer
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesSquare), indicesSquare, GL_STATIC_DRAW);    //EBO Buffer
-	m_iIndicesCount = sizeof(indicesSquare);
+	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints[0], GL_STATIC_DRAW);			//VBO Buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_STATIC_DRAW);    //EBO Buffer
+	m_iIndicesCount = m_iIndicesPoints.size();
+
+
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 }
 
 /***********************
@@ -117,8 +153,8 @@ void Cloth::GenerateBuffers()
 ***********************/
 void Cloth::Render()
 {
-	//glUseProgram(m_program);
-	for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
+
+	/*for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
 	{
 		glLineWidth(2.0f);
 
@@ -131,21 +167,41 @@ void Cloth::Render()
 					m_vConstraints[i].GetParticleTwo()->GetPos().y,
 					m_vConstraints[i].GetParticleTwo()->GetPos().z);
 		glEnd();
-	}
+	}*/
+
+	glUseProgram(m_program);
+	glDisable(GL_CULL_FACE);
 
 	//ModelMatrix
-	/*glm::mat4 translation = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 translation = glm::translate(glm::mat4(), m_vPos);
 	glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::mat4 rotation = glm::rotate(glm::mat4(), glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	rotation = glm::rotate(glm::mat4(), glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	rotation = glm::rotate(glm::mat4(), glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(1.0f, 1.0f, 1.0f));
+	glm::mat4 scale = glm::scale(glm::mat4(), m_vScale);
 
 	glm::mat4 Model = translation * rotation * scale;
 
 	glm::mat4 VP = Camera::GetInstance()->GetProjection() * Camera::GetInstance()->GetView();
 
-	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));*/
+	//Constantly update vertices and indices when rendering
+	glBindVertexArray(m_vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo); 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo); 
+
+	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints[0], GL_STATIC_DRAW);			//VBO Buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_STATIC_DRAW);    //EBO Buffer
+	m_iIndicesCount = m_iIndicesPoints.size();
+
+	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
+	
+	//Draw the cloth
+
+	glDrawElements(GL_LINES, m_iIndicesCount, GL_UNSIGNED_INT, 0);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	////Instead of this, render constraints in cloth
 	//for (int i = 0; i < m_vParticles.size(); ++i)
