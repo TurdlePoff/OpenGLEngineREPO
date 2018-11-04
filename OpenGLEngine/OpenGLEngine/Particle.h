@@ -22,7 +22,7 @@
 
 
 
-class Particle : public Entity
+class Particle
 {
 public:
 	Particle() {};

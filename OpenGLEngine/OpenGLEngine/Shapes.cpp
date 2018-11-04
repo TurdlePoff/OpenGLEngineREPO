@@ -104,7 +104,7 @@ void Shapes::Init(const char * _imageType, float _radius)
 	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);
 
 
-	float radius = _radius; //default 1
+	m_radius = _radius; //default 1
 
 	const int sections = 20;
 	const int vertexAttrib = 8;
@@ -125,9 +125,9 @@ void Shapes::Init(const char * _imageType, float _radius)
 			float y = cos(theta);
 			float z = sin(phi) * sin(theta);
 
-			vertices[offset++] = x * radius;
-			vertices[offset++] = y * radius;
-			vertices[offset++] = z * radius;
+			vertices[offset++] = x * m_radius;
+			vertices[offset++] = y * m_radius;
+			vertices[offset++] = z * m_radius;
 
 			vertices[offset++] = x;
 			vertices[offset++] = y;

@@ -23,8 +23,8 @@
 #define SPR_TRIBIRD "Resources/Sprites/triNoot.png"
 #define SPR_PIG "Resources/Sprites/pig.png"
 
-#define SPR_FLOOR "Resources/Sprites/floor.png"
-#define SPR_BACKGROUND "Resources/Sprites/blue_grass.png"
+#define SPR_FLOOR "Resources/Sprites/floorBg.jpg"
+#define SPR_BACKGROUND "Resources/Sprites/ocean.jpg"
 
 #define SPR_STRIPE "Resources/Sprites/stripe.jpg"
 #define SPR_RED "Resources/Sprites/red.jpg"

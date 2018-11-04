@@ -5,7 +5,9 @@
 class Player : public Shapes
 {
 public:
-	Player();
+	Player() {};
+	Player(float _radius);
+
 	~Player() {};
 
 	void Render();

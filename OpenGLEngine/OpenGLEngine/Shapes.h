@@ -28,5 +28,11 @@ public:
 	void Init(const char* _imageType, float _radius = 1.0f);
 
 	virtual void Render();
+
+	void SetRadius(float _radius) { m_radius = _radius; };
+	float GetRadius() { return m_radius; };
+
+private:
+	float m_radius = 1.0f;
 };
 

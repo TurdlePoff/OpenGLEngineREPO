@@ -50,48 +50,68 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	m_vConstraints.clear();
 
 	m_vParticles.resize(_numParticlesWidth * _numParticlesHeight); 
-
+	
+	int verticesID = 0;
 	// creating particles in a grid of particles from (0,0,0) to (width,-height,0)
-	for (int x = 0; x < _numParticlesWidth; ++x)
+	for (int x = 0; x<_numParticlesWidth; x++)
 	{
-		for (int y = 0; y < _numParticlesHeight; y++) {
-			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth), -_height * (y / (float)_numParticlesHeight),
+		for (int y = 0; y<_numParticlesHeight; y++)
+		{
+			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth),
+				-_height * (y / (float)_numParticlesHeight),
 				0);
-			m_vParticles[y  * _numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
+			m_vParticles[y*_numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
+
+			m_vParticles[y*_numParticlesWidth + x].SetVertID(verticesID);
+			++verticesID;
+
+			m_fVerticesPoints.push_back(pos.x);
+			m_fVerticesPoints.push_back(pos.y);
+			m_fVerticesPoints.push_back(pos.z);
+
+			m_fVerticesPoints.push_back(0.0f);
+			m_fVerticesPoints.push_back(1.0f);
+			m_fVerticesPoints.push_back(1.0f);
 		}
 	}
 
-	// Connecting immediate neighbor particles with constraints (distance 1 and sqrt(2) in the grid)
-	for (int x = 0; x<_numParticlesWidth; ++x)
+	//// Connecting immediate neighbor particles with constraints (distance 1 and sqrt(2) in the grid)
+	for (int x = 0; x<_numParticlesWidth; x++)
 	{
-		for (int y = 0; y<_numParticlesHeight; ++y)
+		for (int y = 0; y<_numParticlesHeight; y++)
 		{
-			if (x<_numParticlesWidth - 1) MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y));
-			if (y<_numParticlesHeight - 1) MakeConstraint(GetParticle(x, y), GetParticle(x, y + 1));
-			if (x<_numParticlesWidth - 1 && y<_numParticlesHeight - 1) MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y + 1));
-			if (x<_numParticlesWidth - 1 && y<_numParticlesHeight - 1) MakeConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
+			if (x<_numParticlesWidth - 1) 
+				MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y));
+			if (y<_numParticlesHeight - 1) 
+				MakeConstraint(GetParticle(x, y), GetParticle(x, y + 1));
+			if (x<_numParticlesWidth - 1 && y<_numParticlesHeight - 1) 
+				MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y + 1));
+			if (x<_numParticlesWidth - 1 && y<_numParticlesHeight - 1) 
+				MakeConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
 		}
 	}
 
-	// Connecting secondary neighbors with constraints (distance 2 and sqrt(4) in the grid)
-	for (int x = 0; x<_numParticlesWidth; ++x)
-	{
-		for (int y = 0; y<_numParticlesHeight; ++y)
-		{
-			if (x<_numParticlesWidth - 2) MakeConstraint(GetParticle(x, y), GetParticle(x + 2, y));
-			if (y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x, y), GetParticle(x, y + 2));
-			if (x<_numParticlesWidth - 2 && y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2));
-			if (x<_numParticlesWidth - 2 && y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2));
-		}
-	}
+
+	//// Connecting secondary neighbors with constraints (distance 2 and sqrt(4) in the grid)
+	//for (int x = 0; x<_numParticlesWidth; x++)
+	//{
+	//	for (int y = 0; y<_numParticlesHeight; y++)
+	//	{
+	//		if (x<_numParticlesWidth - 2) MakeConstraint(GetParticle(x, y), GetParticle(x + 2, y));
+	//		if (y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x, y), GetParticle(x, y + 2));
+	//		if (x<_numParticlesWidth - 2 && y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x, y), GetParticle(x + 2, y + 2));
+	//		if (x<_numParticlesWidth - 2 && y<_numParticlesHeight - 2) MakeConstraint(GetParticle(x + 2, y), GetParticle(x, y + 2));
+	//	}
+	//}
+
 
 	// making the upper left most three and right most three particles unmovable
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i<3; i++)
 	{
-		GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
+		//GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
 		GetParticle(0 + i, 0)->SetPinned(true);
 
-		GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(-0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
+		//GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(-0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
 		GetParticle(_numParticlesWidth - 1 - i, 0)->SetPinned(true);
 	}
 
@@ -105,7 +125,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 void Cloth::GenerateBuffers()
 {
 	//Create vertices array
-	for (unsigned int i = 0; i < m_vParticles.size(); ++i)
+	/*for (unsigned int i = 0; i < m_vParticles.size(); ++i)
 	{
 		m_vParticles[i].SetVertID(i);
 
@@ -113,10 +133,10 @@ void Cloth::GenerateBuffers()
 		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().y);
 		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().z);
 
-		m_fVerticesPoints.push_back(0.6f);
-		m_fVerticesPoints.push_back(0.3f);
-		m_fVerticesPoints.push_back(0.7f);
-	}
+		m_fVerticesPoints.push_back(0.0f);
+		m_fVerticesPoints.push_back(0.0f);
+		m_fVerticesPoints.push_back(1.0f);
+	}*/
 
 	for (auto& constraint : m_vConstraints)
 	{
@@ -134,11 +154,9 @@ void Cloth::GenerateBuffers()
 	glGenBuffers(1, &m_ebo);						//Index Buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 
-	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints[0], GL_STATIC_DRAW);			//VBO Buffer
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_STATIC_DRAW);    //EBO Buffer
+	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints[0], GL_DYNAMIC_DRAW);			//VBO Buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);    //EBO Buffer
 	m_iIndicesCount = m_iIndicesPoints.size();
-
-
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -190,9 +208,15 @@ void Cloth::Render()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo); 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo); 
 
-	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints[0], GL_STATIC_DRAW);			//VBO Buffer
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_STATIC_DRAW);    //EBO Buffer
+	glBufferData(GL_ARRAY_BUFFER, m_fVerticesPoints.size() * sizeof(GLfloat), &m_fVerticesPoints[0], GL_DYNAMIC_DRAW);			//VBO Buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iIndicesPoints.size() * sizeof(GLuint), &m_iIndicesPoints[0], GL_DYNAMIC_DRAW);    //EBO Buffer
 	m_iIndicesCount = m_iIndicesPoints.size();
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
 	
@@ -202,17 +226,6 @@ void Cloth::Render()
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	////Instead of this, render constraints in cloth
-	//for (int i = 0; i < m_vParticles.size(); ++i)
-	//{
-	//	m_vParticles[i].Render();
-	//}
-
-	//for (int i = 0; i < m_vConstraints.size(); ++i)
-	//{
-	//	m_vConstraints[i].Render();
-	//}
 }
 
 /***********************
@@ -231,10 +244,21 @@ void Cloth::Process(float _deltaTick)
 		}
 	}
 
+	//	for (auto& constraint : m_vConstraints)
+	int i = 0;
 	std::vector<Particle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
+		
 		(*particle).Process(_deltaTick); // calculate the position of each particle at the next time step.
+
+		/*std::cout << "Particle eg: x: " << particle->GetPos().x << ", y: "
+			<< particle->GetPos().y << ", z: " << particle->GetPos().z << std::endl;*/
+
+		m_fVerticesPoints[i] = (particle->GetPos().x);
+		m_fVerticesPoints[i + 1] = (particle->GetPos().y);
+		m_fVerticesPoints[i + 2] = (particle->GetPos().z);
+		i += 6;
 	}
 }
 
@@ -248,7 +272,7 @@ void Cloth::AddForce(const glm::vec3 _direction)
 	std::vector<Particle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
-		(*particle).AddForce(_direction); // add the forces to each particle
+			(*particle).AddForce(_direction); // add the forces to each particle
 	}
 }
 

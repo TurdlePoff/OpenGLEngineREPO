@@ -19,9 +19,9 @@
 * Player: Player Constructor
 * @author: Vivian Ngo
 ***********************/
-Player::Player()
+Player::Player(float _radius)
 {
-	Init(SPR_BIRD, CUBE);
+	Init(SPR_STRIPE, _radius);
 }
 
 /***********************
@@ -51,7 +51,7 @@ void Player::Process(float _deltaTick)
 ***********************/
 void Player::MovePlayer(float _deltaTick)
 {
-	m_fMovementSpeed = 0.1f * _deltaTick;
+	m_fMovementSpeed = 0.05f * _deltaTick;
 
 	if (Input::GetInstance()->KeyState['W'] == INPUT_HOLD || Input::GetInstance()->KeyState['w'] == INPUT_HOLD)
 	{
