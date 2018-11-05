@@ -35,7 +35,7 @@ public:
 	void AddForce(glm::vec3 _f);
 	void AddGravity(const glm::vec3 _direction);
 
-	void AdjusttPos(const glm::vec3 v) { if (!m_bIsPinned) m_vPos += v; }
+	void AdjustPos(const glm::vec3 v) { if (!m_bIsPinned) m_vPos += v; }
 	void SetPinned(bool _isPinned) { m_bIsPinned = _isPinned; }
 	void SetPos(glm::vec3 Movement) { m_vPos = Movement; }
 	glm::vec3 GetPos() { return m_vPos; }
@@ -44,15 +44,15 @@ public:
 	int GetIndicesID() { return m_iIndicesID; }
 	void SetVertID(int _id) { m_iVertID = _id; }
 	void SetIndicesID(int _id) { m_iIndicesID = _id; }
-	void SetBroken(bool _broken) { m_constraintBroken = _broken; }
-	bool GetBroken() { return m_constraintBroken; }
+	void SetBroken(bool _broken) { m_broken = _broken; }
+	bool GetBroken() { return m_broken; }
 
 private:
 	bool m_bIsPinned;
 	float m_fMass;
 	int m_iVertID;
 	int m_iIndicesID;
-	bool m_constraintBroken;
+	bool m_broken;
 
 	glm::vec3 m_vPos;
 	glm::vec3 m_vOldPosition;

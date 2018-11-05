@@ -110,6 +110,42 @@ void Input::Update()
 	}
 }
 
+bool Input::UpdateMousePicking(glm::vec3& _position, float _posRadius)
+{
+	//screen pos
+	glm::vec2 normalizedScreenPos = glm::vec2(m_fMousePickingX, m_fMousePickingY);
+	//screenposto ProjSpace
+	glm::vec4 clipCoords = glm::vec4(normalizedScreenPos.x, normalizedScreenPos.y, -1.0f, 1.0f);
+	//ProjSpace to eye space
+	glm::mat4 invProjMat = glm::inverse(Camera::GetInstance()->GetProjection());
+	glm::vec4 eyeCoords = invProjMat* clipCoords;
+	eyeCoords = glm::vec4(eyeCoords.x, eyeCoords.y, -1.0f, 0.0f);
+
+	//eyespaceto world space
+	glm::mat4 invViewMat = glm::inverse(Camera::GetInstance()->GetView());
+	glm::vec4 rayWorld = invViewMat* eyeCoords;
+	rayDirection = glm::normalize(glm::vec3(rayWorld));
+
+	glm::vec3 camPos = Camera::GetInstance()->GetCamPos();
+	glm::vec3 dirVector = _position - camPos;
+
+	float fA = glm::dot(rayDirection, rayDirection);
+	float fB = 2.0f * glm::dot(dirVector, rayDirection);
+	float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
+	float fD = fB * fB - 4.0f * fA * fC;
+
+	float distance = glm::distance(camPos, _position);
+	_position = rayDirection * distance + camPos;
+
+	if (fD > 0.0f)
+	{
+		std::cout << "Picking!!" << std::endl;
+		return true;
+	}
+
+	return false;
+}
+
 /***********************
 * Keyboard_Down: Sets the KeyState of the given pressed key as INPUT_HOLD
 * @author: Vivian Ngo
@@ -158,6 +194,9 @@ void Input::MouseClicked(int button, int glutState, int x, int y)
 ***********************/
 void Input::MousePassiveMovement(int x, int y)
 {
+	m_fMousePickingX = (2.0f * x) / (float)Utils::SCR_WIDTH - 1.0f;
+	m_fMousePickingY = 1.0f - (2.0f * y) / (float)Utils::SCR_HEIGHT;
+
 	m_fMouseX = (float)x;
 	m_fMouseY = (float)y;
 	if (FirstMouse == true)// Run only once to initialize the 'Last' vars
@@ -229,10 +268,10 @@ void Input::MouseScrollHold(int x, int y)
 			Pitch = -89.0f;
 		}
 
-		glm::vec3 frontVector(-cos(glm::radians(Pitch))*sin(glm::radians(Yaw)),
+		/*glm::vec3 frontVector(-cos(glm::radians(Pitch))*sin(glm::radians(Yaw)),
 			sin(glm::radians(Pitch)),
 			-cos(glm::radians(Pitch)) * cos(glm::radians(Yaw)));
-		Camera::GetInstance()->SetCamFront(glm::normalize(frontVector));
+		Camera::GetInstance()->SetCamFront(glm::normalize(frontVector));*/
 	}
 }
 

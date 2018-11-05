@@ -33,8 +33,7 @@ Level::~Level(){}
 void Level::Init()
 {
 	auto cloth = std::make_shared<Cloth>();
-	cloth->Init(10, 10, 10, 10); //14, 10, 55, 45
-	cloth->SetPos(glm::vec3(0.0f, 5.0f, 60.0f));
+	cloth->Init(5, 5, 10, 10, glm::vec3(0.0f, 3.0f, 55.0f)); //14, 10, 55, 45
 
 	m_cloth = std::move(cloth);
 
@@ -48,8 +47,8 @@ void Level::Init()
 	//m_mTextList["Instr1"] = std::move(instr);
 
 	//Initialise player object to move
-	auto player = std::make_unique<Player>(1.0f);
-	player->SetPos(glm::vec3(0.0f, 0.0f, 50.0f));
+	auto player = std::make_unique<Player>(0.5f);
+	player->SetPos(glm::vec3(0.0f, -0.8f, 60.0f));
 	m_player = std::move(player);
 
 	auto floor = std::make_unique<Shapes>();
@@ -91,29 +90,48 @@ void Level::Process(float _deltaTick)
 	m_mTextList.find("MouseY")->second->SetText("y: " + std::to_string(Input::GetInstance()->m_fMouseY));
 	m_player->Process(_deltaTick);
 
-	m_cloth->AddForce(glm::vec3(0, -0.0000098f, 0)*_deltaTick);
+
+	float windDir = 0.1f;
+	if (Input::GetInstance()->KeyState['a'] == INPUT_HOLD)
+	{
+		windHorizontal = -windDir;
+	}
+	else if(Input::GetInstance()->KeyState['d'] == INPUT_HOLD)
+	{
+		windHorizontal = windDir;
+	}
+	else if (Input::GetInstance()->KeyState['w'] == INPUT_HOLD)
+	{
+		windVertical = windDir;
+	}
+	else if (Input::GetInstance()->KeyState['s'] == INPUT_HOLD)
+	{
+		windVertical = windDir;
+	}
+	
+	if (Input::GetInstance()->KeyState['r'] == INPUT_FIRST_PRESS || Input::GetInstance()->KeyState['R'] == INPUT_FIRST_PRESS)
+	{
+		m_cloth->Init(5, 5, 10, 10, glm::vec3(0.0f, 3.0f, 55.0f)); //14, 10, 55, 45
+	}
+
+	if (Input::GetInstance()->KeyState['t'] == INPUT_FIRST_PRESS || Input::GetInstance()->KeyState['T'] == INPUT_FIRST_PRESS)
+	{
+		m_cloth->UnpinAll();
+	}
 
 
-	if (Input::GetInstance()->KeyState['a'])
-	{
-		windHorizontal = 1.0f;
-	}
-	else if(Input::GetInstance()->KeyState['d'])
-	{
-		windHorizontal = 1.0f;
-	}
-	else if (Input::GetInstance()->KeyState['w'])
-	{
-		windVertical = 1.0f;
-	}
-	else if (Input::GetInstance()->KeyState['s'])
-	{
-		windVertical = 1.0f;
-	}
 
-	m_cloth->WindForce(glm::vec3(windHorizontal, windVertical, -0.2)*_deltaTick/100000.0f); // generate some wind each frame
+	m_cloth->AddForce(glm::vec3(0, -0.0000048f, 0)*_deltaTick);
+
+	//m_cloth->WindForce(glm::vec3(windHorizontal, windVertical, -0.01)*_deltaTick/10000.0f); // generate some wind each frame
 	m_cloth->Process(_deltaTick);
 	m_cloth->BallCollision(m_player->GetPos(), m_player->GetRadius()); // resolve collision with the ball
 
 	Scene::Process(_deltaTick);
+
+	if (Input::GetInstance()->KeyState['f'] == INPUT_FIRST_PRESS || Input::GetInstance()->KeyState['F'] == INPUT_FIRST_PRESS)
+	{
+		m_cloth->DeleteRandomParticle();
+	}
+
 }

@@ -23,6 +23,8 @@ public:
 	~Input();
 
 	void Update();
+	bool UpdateMousePicking(glm::vec3& _position, float _posRadius);
+
 	void Keyboard_Down(unsigned char keyPressed, int x, int y);
 	void Keyboard_Up(unsigned char keyPressed, int x, int y);
 	void MouseClicked(int buttonPressed, int glutState, int x, int y);
@@ -55,5 +57,10 @@ private:
 	GLfloat yPassiveOffset = 0;
 	GLfloat LastScrollY = 365.0f;
 	bool FirstMouse = true;
+
+	//Mouse picking
+	glm::vec3 rayDirection;
+	float m_fMousePickingX = 0.0f;
+	float m_fMousePickingY = 0.0f;
 };
 

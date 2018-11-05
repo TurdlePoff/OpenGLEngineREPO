@@ -121,9 +121,9 @@ void Shapes::Init(const char * _imageType, float _radius)
 
 		for (int j = 0; j < sections; j++)
 		{
-			float x = cos(phi) * sin(theta);
-			float y = cos(theta);
-			float z = sin(phi) * sin(theta);
+			float x = (float)cos(phi) * sin(theta);
+			float y = (float)cos(theta);
+			float z = (float)sin(phi) * sin(theta);
 
 			vertices[offset++] = x * m_radius;
 			vertices[offset++] = y * m_radius;

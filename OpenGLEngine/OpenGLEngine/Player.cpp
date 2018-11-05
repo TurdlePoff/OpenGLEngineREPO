@@ -51,7 +51,7 @@ void Player::Process(float _deltaTick)
 ***********************/
 void Player::MovePlayer(float _deltaTick)
 {
-	m_fMovementSpeed = 0.05f * _deltaTick;
+	m_fMovementSpeed = 0.005f * _deltaTick;
 
 	if (Input::GetInstance()->KeyState['W'] == INPUT_HOLD || Input::GetInstance()->KeyState['w'] == INPUT_HOLD)
 	{

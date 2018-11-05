@@ -27,7 +27,7 @@ public:
 
 	~Cloth();
 
-	void Init(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight);
+	void Init(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight, glm::vec3 _pos);
 	void GenerateBuffers();
 	void Render();
 	void Process(float _deltaTick);
@@ -35,6 +35,8 @@ public:
 	void AddGravity(const glm::vec3 _direction);
 	void WindForce(const glm::vec3 _direction);
 	void BallCollision(const glm::vec3 _center, const float _radius);
+	void UnpinAll();
+	void DeleteRandomParticle();
 
 private:
 	std::vector<float> m_fVerticesPoints;
@@ -53,6 +55,5 @@ private:
 
 	glm::vec3 CalcTriangleNormal(Particle *p1, Particle *p2, Particle *p3);
 	void AddWindForcesForTriangle(Particle *p1, Particle *p2, Particle *p3, const glm::vec3 direction);
-
 };
 
