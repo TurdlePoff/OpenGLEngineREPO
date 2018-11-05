@@ -40,11 +40,19 @@ void Level::Init()
 	//Initialise text
 	auto xText = std::make_unique<TextLabel>("x: ", "Resources/Fonts/bubble.TTF", glm::vec2());
 	auto yText = std::make_unique<TextLabel>("y: ", "Resources/Fonts/bubble.TTF", glm::vec2(Utils::SCR_WIDTH / 2, 0.0f));
-	//auto instr = std::make_unique<TextLabel>("Toggle Terrain Wireframe with 'M'", "Resources/Fonts/arial.TTF", glm::vec2(100.0f, Utils::SCR_HEIGHT - 50.0f));
+	auto instr1 = std::make_unique<TextLabel>("Reset cloth with 'R'", "Resources/Fonts/arial.TTF", glm::vec2(30.0f, Utils::SCR_HEIGHT - 30.0f));
+	auto instr2 = std::make_unique<TextLabel>("Remove pins 'T'", "Resources/Fonts/arial.TTF", glm::vec2(30.0f, Utils::SCR_HEIGHT - 60.0f));
+	auto instr3 = std::make_unique<TextLabel>("Randomly delete a constraint 'F'", "Resources/Fonts/arial.TTF", glm::vec2(30.0f, Utils::SCR_HEIGHT - 90.0f));
+	auto instr4 = std::make_unique<TextLabel>("Hold Scroll button + UJ (up, down) HK (left, right) to navigate with camera", "Resources/Fonts/arial.TTF", glm::vec2(30.0f, 60.0f));
+	auto instr5 = std::make_unique<TextLabel>("Control player via WASD + QE(up, down)", "Resources/Fonts/arial.TTF", glm::vec2(30.0f, 30.0f));
 
 	m_mTextList["MouseX"] = std::move(xText);
 	m_mTextList["MouseY"] = std::move(yText);
-	//m_mTextList["Instr1"] = std::move(instr);
+	m_mTextList["Instr1"] = std::move(instr1);
+	m_mTextList["Instr2"] = std::move(instr2);
+	m_mTextList["Instr3"] = std::move(instr3);
+	m_mTextList["Instr4"] = std::move(instr4);
+	m_mTextList["Instr5"] = std::move(instr5);
 
 	//Initialise player object to move
 	auto player = std::make_unique<Player>(0.5f);
@@ -118,6 +126,7 @@ void Level::Process(float _deltaTick)
 	{
 		m_cloth->UnpinAll();
 	}
+
 
 
 

@@ -36,6 +36,13 @@ Input* Input::GetInstance()
 	if (s_pInputInstance == 0)
 	{
 		s_pInputInstance = new Input();
+
+		std::fill(s_pInputInstance->MouseState, s_pInputInstance->MouseState + 3, INPUT_RELEASED);
+		std::fill(s_pInputInstance->KeyState, s_pInputInstance->KeyState + 255, INPUT_RELEASED);
+		s_pInputInstance->MouseState[0] = INPUT_RELEASED;
+		s_pInputInstance->MouseState[1] = INPUT_RELEASED;
+		s_pInputInstance->MouseState[2] = INPUT_RELEASED;
+
 	}
 	return s_pInputInstance;
 }
@@ -60,8 +67,6 @@ void Input::DestroyInstance()
 ***********************/
 Input::~Input() 
 {
-	std::fill(MouseState, MouseState + 3, INPUT_RELEASED);
-	std::fill(KeyState, KeyState + 255, INPUT_RELEASED);
 }
 
 /***********************
@@ -86,7 +91,7 @@ void Input::Update()
 	//Handle Special Keyboard states
 	for (unsigned int i = 0; i < 4; ++i)
 	{
-		if (SpecKeyState[i] = INPUT_FIRST_PRESS)
+		if (SpecKeyState[i] == INPUT_FIRST_PRESS)
 		{
 			SpecKeyState[i] = INPUT_HOLD;
 		}
@@ -99,7 +104,7 @@ void Input::Update()
 	//Handle Mouse states
 	for (unsigned int i = 0; i < 3; ++i)
 	{
-		if (MouseState[i] = INPUT_FIRST_PRESS)
+		if (MouseState[i] == INPUT_FIRST_PRESS)
 		{
 			MouseState[i] = INPUT_HOLD;
 		}
@@ -110,7 +115,7 @@ void Input::Update()
 	}
 }
 
-bool Input::UpdateMousePicking(glm::vec3& _position, float _posRadius)
+glm::vec3 Input::ScreenToWorldRay()
 {
 	//screen pos
 	glm::vec2 normalizedScreenPos = glm::vec2(m_fMousePickingX, m_fMousePickingY);
@@ -126,24 +131,7 @@ bool Input::UpdateMousePicking(glm::vec3& _position, float _posRadius)
 	glm::vec4 rayWorld = invViewMat* eyeCoords;
 	rayDirection = glm::normalize(glm::vec3(rayWorld));
 
-	glm::vec3 camPos = Camera::GetInstance()->GetCamPos();
-	glm::vec3 dirVector = _position - camPos;
-
-	float fA = glm::dot(rayDirection, rayDirection);
-	float fB = 2.0f * glm::dot(dirVector, rayDirection);
-	float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
-	float fD = fB * fB - 4.0f * fA * fC;
-
-	float distance = glm::distance(camPos, _position);
-	_position = rayDirection * distance + camPos;
-
-	if (fD > 0.0f)
-	{
-		std::cout << "Picking!!" << std::endl;
-		return true;
-	}
-
-	return false;
+	return rayDirection;
 }
 
 /***********************
@@ -199,31 +187,31 @@ void Input::MousePassiveMovement(int x, int y)
 
 	m_fMouseX = (float)x;
 	m_fMouseY = (float)y;
-	if (FirstMouse == true)// Run only once to initialize the 'Last' vars
-	{
-		LastX = (GLfloat)x;
-		LastY = (GLfloat)y;
-		FirstMouse = false;
-	}
+	//if (FirstMouse == true)// Run only once to initialize the 'Last' vars
+	//{
+	//	LastX = (GLfloat)x;
+	//	LastY = (GLfloat)y;
+	//	FirstMouse = false;
+	//}
 
-	LastX = (GLfloat)x;
-	LastY = (GLfloat)y;
+	//LastX = (GLfloat)x;
+	//LastY = (GLfloat)y;
 
-	xPassiveOffset *= MouseSensitivity;
-	yPassiveOffset *= MouseSensitivity;
+	//xPassiveOffset *= MouseSensitivity;
+	//yPassiveOffset *= MouseSensitivity;
 
-	Yaw -= xPassiveOffset;
-	Pitch -= yPassiveOffset;
+	//Yaw -= xPassiveOffset;
+	//Pitch -= yPassiveOffset;
 
-	// Clamp 'Pitch' so screen doesn’t flip
-	if (Pitch > 89.0f)
-	{
-		Pitch = 89.0f;
-	}
-	if (Pitch < -89.0f)
-	{
-		Pitch = -89.0f;
-	}
+	//// Clamp 'Pitch' so screen doesn’t flip
+	//if (Pitch > 89.0f)
+	//{
+	//	Pitch = 89.0f;
+	//}
+	//if (Pitch < -89.0f)
+	//{
+	//	Pitch = -89.0f;
+	//}
 }
 
 /***********************
@@ -234,7 +222,7 @@ void Input::MousePassiveMovement(int x, int y)
 ***********************/
 void Input::MouseScrollHold(int x, int y)
 {
-	if (MouseState[0] == INPUT_HOLD)
+	if (MouseState[1] == INPUT_HOLD)
 	{
 		if (FirstMouse == true)// Run only once to initialize the 'Last' vars
 		{
@@ -268,10 +256,10 @@ void Input::MouseScrollHold(int x, int y)
 			Pitch = -89.0f;
 		}
 
-		/*glm::vec3 frontVector(-cos(glm::radians(Pitch))*sin(glm::radians(Yaw)),
+		glm::vec3 frontVector(-cos(glm::radians(Pitch))*sin(glm::radians(Yaw)),
 			sin(glm::radians(Pitch)),
 			-cos(glm::radians(Pitch)) * cos(glm::radians(Yaw)));
-		Camera::GetInstance()->SetCamFront(glm::normalize(frontVector));*/
+		Camera::GetInstance()->SetCamFront(glm::normalize(frontVector));
 	}
 }
 

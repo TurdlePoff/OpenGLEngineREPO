@@ -23,7 +23,7 @@ public:
 	~Input();
 
 	void Update();
-	bool UpdateMousePicking(glm::vec3& _position, float _posRadius);
+	glm::vec3 ScreenToWorldRay();
 
 	void Keyboard_Down(unsigned char keyPressed, int x, int y);
 	void Keyboard_Up(unsigned char keyPressed, int x, int y);
@@ -47,7 +47,7 @@ public:
 private:
 	Input() {};
 	static Input* s_pInputInstance;
-	GLfloat MouseSensitivity = 0.05f;
+	GLfloat MouseSensitivity = 0.2f;
 	GLfloat Yaw = 0.0f;
 	GLfloat Pitch = 0.0f;
 	GLfloat Roll = 0.0f;

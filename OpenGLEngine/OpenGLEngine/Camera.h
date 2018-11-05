@@ -68,6 +68,11 @@ private:
 	float cameraSpeed = 0.05f;
 	float camZMove = 0.0f;
 	float camYMove = 0.0f;
+	float m_fPitch = 0.0f;
+	float m_fYaw = 0.0f;
+	GLfloat m_fMouseSensitivity = 0.15f;
+	GLfloat LastX = (float)0.0f;
+	GLfloat LastY = (float)0.0f;
 
 	GLfloat currentTime;
 	static glm::mat4 MVP;

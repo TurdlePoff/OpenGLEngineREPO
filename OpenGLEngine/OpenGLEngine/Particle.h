@@ -17,8 +17,8 @@
 #include "Entity.h"
 
 /* Some physics constants */
-#define DAMPING 0.01f // how much to damp the cloth simulation each frame
-#define TIME_STEPSIZE2 0.5f * 0.5f // how large time step each particle takes each frame
+#define DAMPING 0.001f // how much to damp the cloth simulation each frame
+#define TIME_STEPSIZE2 1.0f // how large time step each particle takes each frame
 
 
 

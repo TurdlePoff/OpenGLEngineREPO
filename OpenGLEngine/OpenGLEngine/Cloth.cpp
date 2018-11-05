@@ -19,7 +19,6 @@ Cloth::Cloth()
 
 	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Plain");
 
-
 	m_vPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vRot = glm::vec3();
 	m_vScale = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -57,10 +56,22 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	for (int x = 0; x<_numParticlesWidth; x++)
 	{
 		for (int y = 0; y<_numParticlesHeight; y++)
-		{
-			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth) + _pos.x,
+		{ 
+			float xOffset = 0.0f;
+			/*if (x == 0)
+			{
+				xOffset -= 5.0f;
+			}*/
+
+			float z = 0.0f;
+
+			if (y % 2 == 0)
+			{
+				z = -0.5f;
+			}
+			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth) + _pos.x + xOffset,
 				-_height * (y / (float)_numParticlesHeight) + _pos.y,
-				0 + _pos.z);
+				z + _pos.z);
 			m_vParticles[y*_numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
 
 			m_vParticles[y*_numParticlesWidth + x].SetVertID(verticesID);
@@ -76,7 +87,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 		}
 	}
 
-	//// Connecting immediate neighbor particles with constraints (distance 1 and sqrt(2) in the grid)
+	// Make constraints for each square
 	for (int x = 0; x<_numParticlesWidth; x++)
 	{
 		for (int y = 0; y<_numParticlesHeight; y++)
@@ -92,7 +103,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 		}
 	}
 
-	// making the upper left most three and right most three particles unmovable
+	// Set pins at top of the cloth
 	float offsetX = -1;
 	for (int i = 0; i < _numParticlesWidth; i++)
 	{
@@ -261,6 +272,11 @@ void Cloth::Process(float _deltaTick)
 		m_fVerticesPoints[i + 1] = (particle->GetPos().y);
 		m_fVerticesPoints[i + 2] = (particle->GetPos().z);
 		i += 6;
+
+		if (Input::GetInstance()->MouseState[0] == INPUT_HOLD)
+		{
+			ProcessParticlePick(*particle);
+		}
 	}
 
 }
@@ -414,4 +430,51 @@ void Cloth::DeleteRandomParticle()
 	m_vConstraints[randIndices].Destroy();
 	//m_vParticles.erase(m_vParticles.begin() + (y * m_fParticlesWidth + x));
 	GenerateBuffers();
+}
+
+void Cloth::ProcessParticlePick(Particle& particle)
+{
+	glm::vec3 _position = particle.GetPos();
+	float _posRadius = 0.5f;
+	glm::vec3 camPos = Camera::GetInstance()->GetCamPos();
+	glm::vec3 dirVector = _position - camPos;
+	glm::vec3 rayDirection = Input::GetInstance()->ScreenToWorldRay();
+
+	float fA = glm::dot(rayDirection, rayDirection);
+	float fB = 2.0f * glm::dot(dirVector, rayDirection);
+	float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
+	float fD = fB * fB - 4.0f * fA * fC;
+
+
+	if (fD > 0.0f)
+	{
+		std::cout << "Picking!!" << std::endl;
+
+		float distance = glm::distance(camPos, _position);
+		_position = rayDirection * distance + camPos;
+		particle.SetPos(_position);
+
+		/*
+		float x1 = (-fB - sqrt(fD)) / 2;
+		float x2 = (-fB + sqrt(fD)) / 2;
+
+
+		if (x1 >= 0 && x2 >= 0)
+		{
+			//std::cout << "Ray cast hit!\n";
+		}
+		else if ((x1 < 0 && x2 >= 0))
+		{
+			//std::cout << "Ray cast hit from inside!\n";
+		}
+		else if (abs(x1 - x2) <= 0.3f)
+		{
+			//std::cout << "Ray cast hitting edge!!\n";
+		}
+		else
+		{
+			//std::cout << "Ray cast hit!\n";
+		}
+		*/
+	}
 }

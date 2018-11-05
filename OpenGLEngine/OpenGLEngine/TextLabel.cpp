@@ -25,7 +25,7 @@ TextLabel::TextLabel(std::string newText, std::string newFont, glm::vec2 pos)
 {
 	text = newText;
 	color = glm::vec3(1.0, 1.0, 1.0); 
-	scale = 0.5f;
+	scale = 0.3f;
 	SetPosition(pos);
 
 	textProgram = ShaderLoader::GetInstance()->GetProgram((char*)"Text");

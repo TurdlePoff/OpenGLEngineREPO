@@ -35,6 +35,8 @@ private:
 	Particle *m_p1, *m_p2;
 	float m_fRestDist;
 	bool m_bDestroyed;
+	float m_fSensitivity;
+
 	glm::vec3 p1_to_p2;
 };
 

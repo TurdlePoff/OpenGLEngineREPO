@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 
 	//OpenGL window
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(2300, 50);
+	glutInitWindowPosition(100, 50);
 
 	//glutInitWindowPosition(485, 50);
 	//glutInitWindowPosition(2300, 50);
