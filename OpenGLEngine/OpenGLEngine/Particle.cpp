@@ -26,6 +26,7 @@ Particle::Particle(glm::vec3 _pos)
 	, m_vAcceleration(glm::vec3(0, 0, 0))
 	, m_fMass(1)
 	, m_bIsPinned(false)
+	, m_constraintBroken(false)
 {
 }
 
@@ -49,7 +50,7 @@ void Particle::Process(float _deltaTick)
 	if (!m_bIsPinned)
 	{
 		glm::vec3 temp = m_vPos;
-		m_vPos = m_vPos + (m_vPos - m_vOldPosition) * (1.0f - DAMPING) + m_vAcceleration * (TIME_STEPSIZE2 * _deltaTick);
+		m_vPos = m_vPos + (m_vPos - m_vOldPosition) * (1.0f - DAMPING) + m_vAcceleration * _deltaTick;
 		m_vOldPosition = temp;
 		m_vAcceleration = glm::vec3(0, 0, 0); // acceleration is reset since it HAS been translated into a change in position (and implicitely into velocity)	
 	}
@@ -63,4 +64,17 @@ void Particle::Process(float _deltaTick)
 void Particle::AddForce(glm::vec3 _f)
 {
 	m_vAcceleration += _f / m_fMass;
+}
+
+
+
+/***********************
+* AddGravity: Adds Gravity to the cloth
+* @author: Vivian Ngo
+* @parameter: _deltaTick
+***********************/
+void Particle::AddGravity(const glm::vec3 _direction)
+{
+	AddForce(_direction);
+	m_vAcceleration -= 0.1f * DAMPING / m_fMass;
 }

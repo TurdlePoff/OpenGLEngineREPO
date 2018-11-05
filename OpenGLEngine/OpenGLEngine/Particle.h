@@ -33,6 +33,7 @@ public:
 
 	//Particle Functions
 	void AddForce(glm::vec3 _f);
+	void AddGravity(const glm::vec3 _direction);
 
 	void AdjusttPos(const glm::vec3 v) { if (!m_bIsPinned) m_vPos += v; }
 	void SetPinned(bool _isPinned) { m_bIsPinned = _isPinned; }
@@ -43,12 +44,15 @@ public:
 	int GetIndicesID() { return m_iIndicesID; }
 	void SetVertID(int _id) { m_iVertID = _id; }
 	void SetIndicesID(int _id) { m_iIndicesID = _id; }
+	void SetBroken(bool _broken) { m_constraintBroken = _broken; }
+	bool GetBroken() { return m_constraintBroken; }
 
 private:
 	bool m_bIsPinned;
 	float m_fMass;
 	int m_iVertID;
 	int m_iIndicesID;
+	bool m_constraintBroken;
 
 	glm::vec3 m_vPos;
 	glm::vec3 m_vOldPosition;

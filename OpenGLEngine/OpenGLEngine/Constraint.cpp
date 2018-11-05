@@ -23,8 +23,7 @@
 Constraint::Constraint(Particle* _p1, Particle* _p2) 
 	: m_p1(_p1), m_p2(_p2), m_bDestroyed(false)
 {
-	p1_to_p2 = m_p1->GetPos() - m_p2->GetPos();
-	m_fRestDist = p1_to_p2.length();
+	m_fRestDist = glm::length(m_p1->GetPos() - m_p2->GetPos());
 }
 
 /***********************
@@ -52,10 +51,11 @@ void Constraint::Render()
 ***********************/
 void Constraint::Process(float _deltaTick)
 {
-	p1_to_p2 = m_p2->GetPos() - m_p1->GetPos(); // vector from p1 to p2
-	float current_distance = p1_to_p2.length(); // current distance between p1 and p2
+	glm::vec3 p1_to_p2 = m_p2->GetPos() - m_p1->GetPos(); // vector from p1 to p2
+	float current_distance = glm::length(p1_to_p2); // current distance between p1 and p2
+	//std::cout << "Particle eg: x: " << current_distance << std::endl;
 
-	if (current_distance < m_fRestDist + 0.5f)
+	if (current_distance > m_fRestDist + 0.5f)
 	{
 		//Set this to destroy //erase constraint frm vec if destroyed
 		m_bDestroyed = true;

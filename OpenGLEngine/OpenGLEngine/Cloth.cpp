@@ -108,10 +108,10 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	// making the upper left most three and right most three particles unmovable
 	for (int i = 0; i<3; i++)
 	{
-		//GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
+		GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
 		GetParticle(0 + i, 0)->SetPinned(true);
 
-		//GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(-0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
+		GetParticle(0 + i, 0)->AdjusttPos(glm::vec3(-0.5, 0.0, 0.0)); // moving the particle a bit towards the center, to make it hang more natural - because I like it ;)
 		GetParticle(_numParticlesWidth - 1 - i, 0)->SetPinned(true);
 	}
 
@@ -241,6 +241,7 @@ void Cloth::Process(float _deltaTick)
 		for (constraint = m_vConstraints.begin(); constraint != m_vConstraints.end(); constraint++)
 		{
 			(*constraint).Process(_deltaTick); // satisfy constraint.
+			
 		}
 	}
 
@@ -272,8 +273,18 @@ void Cloth::AddForce(const glm::vec3 _direction)
 	std::vector<Particle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
-			(*particle).AddForce(_direction); // add the forces to each particle
+		(*particle).AddForce(_direction); // add the forces to each particle
 	}
+}
+
+/***********************
+* AddGravity: Adds Gravity to the cloth
+* @author: Vivian Ngo
+* @parameter: _deltaTick
+***********************/
+void Cloth::AddGravity(const glm::vec3 _direction)
+{
+	AddGravity(_direction);
 }
 
 /***********************
@@ -305,8 +316,8 @@ void Cloth::BallCollision(const glm::vec3 _center, const float _radius)
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
 		glm::vec3 v = (*particle).GetPos() - _center;
-		float l = v.length();
-		if (v.length() < _radius) // if the particle is inside the ball
+		float l = glm::length(v);
+		if (glm::length(v) < _radius) // if the particle is inside the ball
 		{
 			(*particle).AdjusttPos(glm::normalize(v) * (_radius - l)); // project the particle to the surface of the ball
 		}

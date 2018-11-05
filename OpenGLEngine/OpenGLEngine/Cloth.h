@@ -32,6 +32,7 @@ public:
 	void Render();
 	void Process(float _deltaTick);
 	void AddForce(const glm::vec3 _direction);
+	void AddGravity(const glm::vec3 _direction);
 	void WindForce(const glm::vec3 _direction);
 	void BallCollision(const glm::vec3 _center, const float _radius);
 

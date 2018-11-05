@@ -91,8 +91,27 @@ void Level::Process(float _deltaTick)
 	m_mTextList.find("MouseY")->second->SetText("y: " + std::to_string(Input::GetInstance()->m_fMouseY));
 	m_player->Process(_deltaTick);
 
-	//m_cloth->AddForce(glm::vec3(0, -0.0001f, 0)*TIME_STEPSIZE2*_deltaTick);
-	//m_cloth->WindForce(glm::vec3(0.0, 0.1f, 0.2)*_deltaTick/1000000.0f); // generate some wind each frame
+	m_cloth->AddForce(glm::vec3(0, -0.0000098f, 0)*_deltaTick);
+
+
+	if (Input::GetInstance()->KeyState['a'])
+	{
+		windHorizontal = 1.0f;
+	}
+	else if(Input::GetInstance()->KeyState['d'])
+	{
+		windHorizontal = 1.0f;
+	}
+	else if (Input::GetInstance()->KeyState['w'])
+	{
+		windVertical = 1.0f;
+	}
+	else if (Input::GetInstance()->KeyState['s'])
+	{
+		windVertical = 1.0f;
+	}
+
+	m_cloth->WindForce(glm::vec3(windHorizontal, windVertical, -0.2)*_deltaTick/100000.0f); // generate some wind each frame
 	m_cloth->Process(_deltaTick);
 	m_cloth->BallCollision(m_player->GetPos(), m_player->GetRadius()); // resolve collision with the ball
 

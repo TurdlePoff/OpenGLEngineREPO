@@ -29,7 +29,8 @@ public:
 	void Render();
 	void Process(float _deltaTick);
 
-
+	float windHorizontal = 0.0f;
+	float windVertical = 0.0f;
 private: 
 
 	//std::unique_ptr<CubeMap> m_cubeMap;
