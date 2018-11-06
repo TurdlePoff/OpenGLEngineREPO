@@ -235,7 +235,6 @@ glm::mat4 Camera::GetView()
 
 glm::mat4 Camera::GetRotation()
 {
-
 	glm::mat4 rotation;
 	rotation = glm::rotate(glm::mat4(), glm::radians(cameraRot.x), glm::vec3(1, 0, 0));
 	rotation = glm::rotate(glm::mat4(), glm::radians(cameraRot.y), glm::vec3(0, 1, 0));

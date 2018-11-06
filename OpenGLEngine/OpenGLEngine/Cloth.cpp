@@ -16,7 +16,6 @@
 
 Cloth::Cloth()
 {
-
 	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Plain");
 
 	m_vPos = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -42,6 +41,8 @@ Cloth::~Cloth()
 ***********************/
 void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numParticlesHeight, glm::vec3 _pos)
 {
+	m_fWidth = _width;
+	m_fHeight = _height;
 	//Reset particles and constraints
 	m_fParticlesWidth = _numParticlesWidth;
 	m_fParticlesHeight = _numParticlesHeight;
@@ -53,34 +54,38 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	
 	int verticesID = 0;
 	// creating particles in a grid of particles from (0,0,0) to (width,-height,0)
-	for (int x = 0; x<_numParticlesWidth; x++)
+	for (int y = 0; y<_numParticlesWidth; y++)
 	{
-		for (int y = 0; y<_numParticlesHeight; y++)
+		for (int x = 0; x<_numParticlesHeight; x++)
 		{ 
 			float xOffset = 0.0f;
-			/*if (x == 0)
+			
+			//Give x particles an offsetted x position .
+			//so it doesnt start off as a flat cloth
+			if (x % 2 == 0)
 			{
-				xOffset -= 5.0f;
-			}*/
-
-			float z = 0.0f;
-
-			if (y % 2 == 0)
-			{
-				z = -0.5f;
+				xOffset = -0.2f;
 			}
-			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth) + _pos.x + xOffset,
+			else
+			{
+				xOffset = 0.2f;
+			}
+
+			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth) + _pos.x,
 				-_height * (y / (float)_numParticlesHeight) + _pos.y,
-				z + _pos.z);
+				 _pos.z + xOffset);
 			m_vParticles[y*_numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
 
+			//Set vertices id and vertices for each particle
 			m_vParticles[y*_numParticlesWidth + x].SetVertID(verticesID);
 			++verticesID;
 
+			//Position values
 			m_fVerticesPoints.push_back(pos.x);
 			m_fVerticesPoints.push_back(pos.y);
 			m_fVerticesPoints.push_back(pos.z);
 
+			//Normal values
 			m_fVerticesPoints.push_back(0.0f);
 			m_fVerticesPoints.push_back(1.0f);
 			m_fVerticesPoints.push_back(1.0f);
@@ -92,14 +97,22 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	{
 		for (int y = 0; y<_numParticlesHeight; y++)
 		{
-			if (x<_numParticlesWidth - 1) 
+			if (x < _numParticlesWidth - 1)
+			{
 				MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y));
-			if (y<_numParticlesHeight - 1) 
+			}
+			if (y < _numParticlesHeight - 1)
+			{
 				MakeConstraint(GetParticle(x, y), GetParticle(x, y + 1));
-			if (x<_numParticlesWidth - 1 && y<_numParticlesHeight - 1) 
+			}
+			if (x < _numParticlesWidth - 1 && y < _numParticlesHeight - 1)
+			{
 				MakeConstraint(GetParticle(x, y), GetParticle(x + 1, y + 1));
-			if (x<_numParticlesWidth - 1 && y<_numParticlesHeight - 1) 
+			}
+			if (x < _numParticlesWidth - 1 && y < _numParticlesHeight - 1)
+			{
 				MakeConstraint(GetParticle(x + 1, y), GetParticle(x, y + 1));
+			}
 		}
 	}
 
@@ -107,12 +120,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 	float offsetX = -1;
 	for (int i = 0; i < _numParticlesWidth; i++)
 	{
-		if (i % 3 == 0 ||  i ==_numParticlesWidth -1)
-		{
-			GetParticle(0 + i, 0)->SetPinned(true);
-			GetParticle(0 + i, 0)->AdjustPos(glm::vec3(offsetX * 0.5f, 0.0f, 0.0f));
-			offsetX *= -1;
-		}
+		GetParticle(0 + i, 0)->SetPinned(true);
 	}
 	GenerateBuffers();
 }
@@ -123,23 +131,10 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 ***********************/
 void Cloth::GenerateBuffers()
 {
-	//Create vertices array
-	/*for (unsigned int i = 0; i < m_vParticles.size(); ++i)
-	{
-		m_vParticles[i].SetVertID(i);
-
-		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().x);
-		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().y);
-		m_fVerticesPoints.push_back(m_vParticles[i].GetPos().z);
-
-		m_fVerticesPoints.push_back(0.0f);
-		m_fVerticesPoints.push_back(0.0f);
-		m_fVerticesPoints.push_back(1.0f);
-	}*/
 	m_iIndicesPoints.clear();
 	for (auto& constraint : m_vConstraints)
 	{
-		if (!constraint.GetDestroyed())
+		if (!constraint.GetDestroyed() || constraint.GetParticleTwo()-constraint.GetParticleOne() < 5.0f)
 		{
 			m_iIndicesPoints.push_back(constraint.GetParticleOne()->GetVertID());
 			m_iIndicesPoints.push_back(constraint.GetParticleTwo()->GetVertID());
@@ -173,22 +168,6 @@ void Cloth::GenerateBuffers()
 ***********************/
 void Cloth::Render()
 {
-
-	/*for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
-	{
-		glLineWidth(2.0f);
-
-		glBegin(GL_LINES);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(m_vConstraints[i].GetParticleOne()->GetPos().x, 
-					m_vConstraints[i].GetParticleOne()->GetPos().y,
-					m_vConstraints[i].GetParticleOne()->GetPos().z);
-		glVertex3f(m_vConstraints[i].GetParticleTwo()->GetPos().x,
-					m_vConstraints[i].GetParticleTwo()->GetPos().y,
-					m_vConstraints[i].GetParticleTwo()->GetPos().z);
-		glEnd();
-	}*/
-
 	glUseProgram(m_program);
 	glDisable(GL_CULL_FACE);
 
@@ -217,7 +196,6 @@ void Cloth::Render()
 	glUniformMatrix4fv(glGetUniformLocation(m_program, "MVP"), 1, GL_FALSE, glm::value_ptr(VP * Model));
 	
 	//Draw the cloth
-
 	glDrawElements(GL_LINES, m_iIndicesCount, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
@@ -232,15 +210,14 @@ void Cloth::Render()
 void Cloth::Process(float _deltaTick)
 {
 	m_iIndicesPoints.clear();
-	for (auto& constraint : m_vConstraints)
+	for (unsigned int i = 0; i < m_vConstraints.size(); ++i)
 	{
-		if (!constraint.GetDestroyed())
+		if (!m_vConstraints[i].GetDestroyed())
 		{
-			m_iIndicesPoints.push_back(constraint.GetParticleOne()->GetVertID());
-			m_iIndicesPoints.push_back(constraint.GetParticleTwo()->GetVertID());
+			m_iIndicesPoints.push_back(m_vConstraints[i].GetParticleOne()->GetVertID());
+			m_iIndicesPoints.push_back(m_vConstraints[i].GetParticleTwo()->GetVertID());
 		}
 	}
-
 
 	std::vector<Constraint>::iterator constraint;
 	for (int i = 0; i < CONSTRAINT_ITERATIONS; i++) // iterate over all constraints several times
@@ -251,31 +228,38 @@ void Cloth::Process(float _deltaTick)
 			{
 				(*constraint).Process(_deltaTick); // satisfy constraint.
 			}
-			
 		}
 	}
 
-	//	for (auto& constraint : m_vConstraints)
 	int i = 0;
 	std::vector<Particle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
-		//if(Input::)
-		//Input::GetInstance()->UpdateMousePicking(particle->GetPos(), 1.0f);
+		//Process the particle
+		(*particle).Process(_deltaTick); 
 
-		(*particle).Process(_deltaTick); // calculate the position of each particle at the next time step.
-
-		/*std::cout << "Particle eg: x: " << particle->GetPos().x << ", y: "
-			<< particle->GetPos().y << ", z: " << particle->GetPos().z << std::endl;*/
-
+		//Update the positions of the particles
 		m_fVerticesPoints[i] = (particle->GetPos().x);
 		m_fVerticesPoints[i + 1] = (particle->GetPos().y);
 		m_fVerticesPoints[i + 2] = (particle->GetPos().z);
 		i += 6;
 
+		//Handle particle picking if left mouse clicked and dragged
 		if (Input::GetInstance()->MouseState[0] == INPUT_HOLD)
 		{
-			ProcessParticlePick(*particle);
+			if (!m_isHoldingParticle)
+			{
+				ProcessParticlePick(&(*particle));
+			}
+			else
+			{
+				ProcessParticlePick(pickedParticle);
+			}
+		}
+		else
+		{
+			//set as not holding a particle
+			m_isHoldingParticle = false;
 		}
 	}
 
@@ -296,25 +280,15 @@ void Cloth::AddForce(const glm::vec3 _direction)
 }
 
 /***********************
-* AddGravity: Adds Gravity to the cloth
-* @author: Vivian Ngo
-* @parameter: _deltaTick
-***********************/
-void Cloth::AddGravity(const glm::vec3 _direction)
-{
-	AddGravity(_direction);
-}
-
-/***********************
-* WindForce: Adds Wind Force to the cloth
+* WindForce: Adds World Wind Force to the cloth
 * @author: Vivian Ngo
 * @parameter: _direction - direction of wind to blow at the cloth
 ***********************/
 void Cloth::WindForce(const glm::vec3 _direction)
 {
-	for (int x = 0; x<m_fParticlesWidth - 1; x++)
+	for (int x = 0; x < m_fParticlesWidth - 1; ++x)
 	{
-		for (int y = 0; y<m_fParticlesHeight - 1; y++)
+		for (int y = 0; y<m_fParticlesHeight - 1; ++y)
 		{
 			AddWindForcesForTriangle(GetParticle(x + 1, y), GetParticle(x, y), GetParticle(x, y + 1), _direction);
 			AddWindForcesForTriangle(GetParticle(x + 1, y + 1), GetParticle(x + 1, y), GetParticle(x, y + 1), _direction);
@@ -323,21 +297,26 @@ void Cloth::WindForce(const glm::vec3 _direction)
 }
 
 /***********************
-* BallCollision: Adds Wind Force to the cloth
+* BallCollision: Adds Ball Collision to the cloth
 * @author: Vivian Ngo
 * @parameter: _center - center of ball
 * @parameter: _radius - radius of ball
 ***********************/
 void Cloth::BallCollision(const glm::vec3 _center, const float _radius)
 {
-	std::vector<Particle>::iterator particle;
-	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
+	float offset = 0.3f;
+
+	//Check collision with ball for each particle
+	for (std::vector<Particle>::iterator particle = m_vParticles.begin(); particle != m_vParticles.end(); ++particle)
 	{
-		glm::vec3 v = (*particle).GetPos() - _center + 0.3f;
-		float l = glm::distance((*particle).GetPos(), _center + 0.3f);
-		if (l < _radius) // if the particle is inside the ball
+		glm::vec3 v = (*particle).GetPos() - _center;
+		float pDist = glm::distance((*particle).GetPos(), _center);
+
+		//If the particle is inside the ball
+		if (pDist < _radius + offset)
 		{
-			(*particle).AdjustPos(glm::normalize(v) * (_radius - l)); // project the particle to the surface of the ball
+			//Adjust the position of the particle so that it is outside of the ball
+			(*particle).AdjustPos(glm::normalize(v) * ((_radius + offset) - pDist));
 		}
 	}
 }
@@ -369,8 +348,8 @@ Particle * Cloth::GetParticle(int x, int y)
 /***********************
 * MakeConstraint: Creates a constraint between two particles (connecion)
 * @author: Vivian Ngo
-* @parameter: p1 - particle 1
-* @parameter: p2 - particle 2
+* @parameter: p1 - particle 1 of the constraint
+* @parameter: p2 - particle 2 of the constraint
 ***********************/
 void Cloth::MakeConstraint(Particle * p1, Particle * p2)
 {
@@ -415,66 +394,99 @@ void Cloth::AddWindForcesForTriangle(Particle * p1, Particle * p2, Particle * p3
 }
 
 /***********************
-* AddWindForcesForTriangle: Applies wind force to the section applied
+* DeleteRandomParticle: Deletes a Random Particle
 * @author: Vivian Ngo
-* @parameter: p1 - particle 1
-* @parameter: p2 - particle 2
-* @parameter: p3 - particle 3
-* @parameter: direction - direction of force
 ***********************/
-void Cloth::DeleteRandomParticle()
+void Cloth::DeleteRandomConstraint()
 {
 	int randIndices = 0;
 
 	randIndices = rand() % (int)m_vConstraints.size();
 	m_vConstraints[randIndices].Destroy();
-	//m_vParticles.erase(m_vParticles.begin() + (y * m_fParticlesWidth + x));
-	GenerateBuffers();
 }
 
-void Cloth::ProcessParticlePick(Particle& particle)
+/***********************
+* ProcessParticlePick: Picks up a particle to move
+* @parameter: particle - particle to pick and move
+* @author: Vivian Ngo
+***********************/
+void Cloth::ProcessParticlePick(Particle* particle)
 {
-	glm::vec3 _position = particle.GetPos();
-	float _posRadius = 0.5f;
+	//Calculate mouse click from pointer to world space
+	glm::vec3 _position = particle->GetPos();
+	float _posRadius = 0.3f;
 	glm::vec3 camPos = Camera::GetInstance()->GetCamPos();
 	glm::vec3 dirVector = _position - camPos;
 	glm::vec3 rayDirection = Input::GetInstance()->ScreenToWorldRay();
 
-	float fA = glm::dot(rayDirection, rayDirection);
-	float fB = 2.0f * glm::dot(dirVector, rayDirection);
-	float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
-	float fD = fB * fB - 4.0f * fA * fC;
-
-
-	if (fD > 0.0f)
+	//If player is not already picking a particle
+	if (!m_isHoldingParticle)
 	{
-		std::cout << "Picking!!" << std::endl;
+		//Check if the particle collides with the mouse pointer 
+		//based on the radius of the particle
+		float fA = glm::dot(rayDirection, rayDirection);
+		float fB = 2.0f * glm::dot(dirVector, rayDirection);
+		float fC = glm::dot(dirVector, dirVector) - _posRadius * _posRadius;
+		float fD = fB * fB - 4.0f * fA * fC;
 
+		//if particle collides with mouse
+		if (fD > 0.0f)
+		{
+			//Set it's initial new position
+			float distance = glm::distance(camPos, _position);
+			_position = rayDirection * distance + camPos;
+			particle->SetPos(_position);
+
+			//Set particle as picked
+			pickedParticle = particle;
+			m_isHoldingParticle = true;
+		}
+	}
+	else
+	{
+		//If particle is already being held, calculate new position depending on mouse position
 		float distance = glm::distance(camPos, _position);
 		_position = rayDirection * distance + camPos;
-		particle.SetPos(_position);
+		particle->SetPos(_position);
+		pickedParticle = particle;
+	}
+}
 
-		/*
-		float x1 = (-fB - sqrt(fD)) / 2;
-		float x2 = (-fB + sqrt(fD)) / 2;
+/***********************
+* MoveRings: Moves the rings of the cloth
+* @parameter: _squish - Squishes the cloth horizontally when player presses z and spreads it out with x
+* @author: Vivian Ngo
+***********************/
+void Cloth::MoveRings(bool _squish)
+{
+	//Direction to move rings
+	float dir = 1.0f;
 
+	if (!_squish)
+	{
+		dir = -1.0f;
+	}
 
-		if (x1 >= 0 && x2 >= 0)
+	//Check each particle in the top row of the cloth
+	for(int i = 1; i <= m_fParticlesWidth; ++i)
+	{
+		int half = m_fParticlesWidth / 2; //Get the value of galf of the particles
+
+		//The speed/amount x to move for particles on the left
+		float left = dir * (half / i *0.01f);
+
+		//The speed/amount x to move for particles on the right
+		float right = dir * -(half / (m_fParticlesWidth+1 - i) * 0.01f);
+
+		if (i < m_fParticlesWidth/2)
 		{
-			//std::cout << "Ray cast hit!\n";
+			//if particles are on the left side, move towards the right
+			m_vParticles[i-1].AdjustPinnedPos(glm::vec3(left, 0.0f, 0.0f));
 		}
-		else if ((x1 < 0 && x2 >= 0))
+		else if (i > m_fParticlesWidth/2)
 		{
-			//std::cout << "Ray cast hit from inside!\n";
+			//if particles are on the right side, move towards the left
+			m_vParticles[i-1].AdjustPinnedPos(glm::vec3(right, 0.0f, 0.0f));
 		}
-		else if (abs(x1 - x2) <= 0.3f)
-		{
-			//std::cout << "Ray cast hitting edge!!\n";
-		}
-		else
-		{
-			//std::cout << "Ray cast hit!\n";
-		}
-		*/
 	}
 }

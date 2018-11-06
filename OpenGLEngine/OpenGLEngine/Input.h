@@ -29,7 +29,7 @@ public:
 	void Keyboard_Up(unsigned char keyPressed, int x, int y);
 	void MouseClicked(int buttonPressed, int glutState, int x, int y);
 	void MousePassiveMovement(int x, int y);
-	void MouseScrollHold(int x, int y);
+	void MouseClickHold(int x, int y);
 	void ScrollCallback(int button, int glutState, int xOffset, int yOffset);
 	void SpecialKeyPress(int key, int x, int y);
 	void SpecialKeyRelease(int key, int x, int y);

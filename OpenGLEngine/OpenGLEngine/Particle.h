@@ -17,8 +17,8 @@
 #include "Entity.h"
 
 /* Some physics constants */
-#define DAMPING 0.001f // how much to damp the cloth simulation each frame
-#define TIME_STEPSIZE2 1.0f // how large time step each particle takes each frame
+#define DAMPING 0.01f // how much to damp the cloth simulation each frame
+#define TIME_STEPSIZE2 0.5f*0.5f // how large time step each particle takes each frame
 
 
 
@@ -35,6 +35,7 @@ public:
 	void AddForce(glm::vec3 _f);
 	void AddGravity(const glm::vec3 _direction);
 
+	void AdjustPinnedPos(const glm::vec3 v) { m_vPos += v; }
 	void AdjustPos(const glm::vec3 v) { if (!m_bIsPinned) m_vPos += v; }
 	void SetPinned(bool _isPinned) { m_bIsPinned = _isPinned; }
 	void SetPos(glm::vec3 Movement) { m_vPos = Movement; }
@@ -46,6 +47,8 @@ public:
 	void SetIndicesID(int _id) { m_iIndicesID = _id; }
 	void SetBroken(bool _broken) { m_broken = _broken; }
 	bool GetBroken() { return m_broken; }
+	bool GetMass() { return m_fMass; }
+	void SetMass(float _mass) { m_fMass = _mass; }
 
 private:
 	bool m_bIsPinned;

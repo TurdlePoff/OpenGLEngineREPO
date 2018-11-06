@@ -26,10 +26,14 @@ public:
 
 	void Render();
 	void Process(float _deltaTick);
+	void CheckConstraintLength(glm::vec3 _length, float _currentDistance);
+
 	void Destroy() { m_bDestroyed = true; };
 	bool GetDestroyed() { return m_bDestroyed; };
 	Particle* GetParticleOne() { return m_p1; };
 	Particle* GetParticleTwo() { return m_p2; };
+	float GetRestDist() {
+		return m_fRestDist;	}
 
 private:
 	Particle *m_p1, *m_p2;

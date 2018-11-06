@@ -182,9 +182,6 @@ void Input::MouseClicked(int button, int glutState, int x, int y)
 ***********************/
 void Input::MousePassiveMovement(int x, int y)
 {
-	m_fMousePickingX = (2.0f * x) / (float)Utils::SCR_WIDTH - 1.0f;
-	m_fMousePickingY = 1.0f - (2.0f * y) / (float)Utils::SCR_HEIGHT;
-
 	m_fMouseX = (float)x;
 	m_fMouseY = (float)y;
 	//if (FirstMouse == true)// Run only once to initialize the 'Last' vars
@@ -215,12 +212,12 @@ void Input::MousePassiveMovement(int x, int y)
 }
 
 /***********************
-* MousePassiveMovement: Allows screen to change pitch and yaw when navigating window
+* MouseClickHold: Allows user to click hold to move the camera view
 * @author: Vivian Ngo
 * @parameter: x - x position of the mouse
 * @parameter: y - y position of the mouse
 ***********************/
-void Input::MouseScrollHold(int x, int y)
+void Input::MouseClickHold(int x, int y)
 {
 	if (MouseState[1] == INPUT_HOLD)
 	{
@@ -260,6 +257,12 @@ void Input::MouseScrollHold(int x, int y)
 			sin(glm::radians(Pitch)),
 			-cos(glm::radians(Pitch)) * cos(glm::radians(Yaw)));
 		Camera::GetInstance()->SetCamFront(glm::normalize(frontVector));
+	}
+
+	if (MouseState[0] == INPUT_HOLD)
+	{
+		m_fMousePickingX = (2.0f * x) / (float)Utils::SCR_WIDTH - 1.0f;
+		m_fMousePickingY = 1.0f - (2.0f * y) / (float)Utils::SCR_HEIGHT;
 	}
 }
 
@@ -418,7 +421,7 @@ void LMousePassiveMovement(int x, int y)
 ***********************/
 void LMouseScrollHold(int x, int y)
 {
-	Input::GetInstance()->MouseScrollHold(x, y);
+	Input::GetInstance()->MouseClickHold(x, y);
 }
 
 /***********************

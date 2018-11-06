@@ -13,7 +13,7 @@
 * Mail			: vivian.ngo7572@mediadesign.school.nz
 ******************************************************/
 
-#define CONSTRAINT_ITERATIONS 15
+#define CONSTRAINT_ITERATIONS 5
 
 #include "Utility.h"
 #include "Particle.h"
@@ -32,20 +32,25 @@ public:
 	void Render();
 	void Process(float _deltaTick);
 	void AddForce(const glm::vec3 _direction);
-	void AddGravity(const glm::vec3 _direction);
 	void WindForce(const glm::vec3 _direction);
 	void BallCollision(const glm::vec3 _center, const float _radius);
 	void UnpinAll();
-	void DeleteRandomParticle();
-	void ProcessParticlePick(Particle& particle);
+	void DeleteRandomConstraint();
+	void ProcessParticlePick(Particle* particle);
+	void MoveRings(bool _squish);
 
 private:
 	std::vector<float> m_fVerticesPoints;
 	std::vector<int> m_iIndicesPoints;
 
+	float m_fWidth;
+	float m_fHeight;
+
 	int m_fParticlesWidth; // number of particles in "width" direction
 	int m_fParticlesHeight; // number of particles in "height" direction
 
+	bool m_isHoldingParticle = false;
+	Particle* pickedParticle;
 
 	std::vector<Particle> m_vParticles; // all particles that are part of this cloth
 	std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth

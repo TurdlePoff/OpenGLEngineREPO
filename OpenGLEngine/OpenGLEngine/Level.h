@@ -28,19 +28,19 @@ public:
 	void Init();
 	void Render();
 	void Process(float _deltaTick);
+	void ClothInput(float _deltaTick);
 
-	float windHorizontal = 0.0f;
-	float windVertical = 0.0f;
 private: 
 
-	//std::unique_ptr<CubeMap> m_cubeMap;
-	//std::unique_ptr<Terrain> m_terrain;
-	//std::unique_ptr<Shapes> m_Sphere;
-	std::unique_ptr<Shapes> m_player;
+	std::unique_ptr<Player> m_player;
 
 	bool m_bIsOnGround;
+
 	float m_fHeightOffset = 5.0f;
 	float previousHeight = 0.0f;
 	std::shared_ptr<Cloth> m_cloth;
 
+	float windX = 0.0f;
+	float windY = 0.0f;
+	float windZ = 0.0f;
 };

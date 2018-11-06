@@ -50,9 +50,10 @@ void Particle::Process(float _deltaTick)
 	if (!m_bIsPinned)
 	{
 		glm::vec3 temp = m_vPos;
-		m_vPos = m_vPos + (m_vPos - m_vOldPosition) * (1.0f - DAMPING) + m_vAcceleration * _deltaTick;
+		m_vPos = m_vPos + (m_vPos - m_vOldPosition) * (1.0f - DAMPING) + m_vAcceleration * TIME_STEPSIZE2 * _deltaTick;
 		m_vOldPosition = temp;
-
+		
+		//Handle floor collision
 		if (m_vPos.y < -5.0f)
 		{
 			m_vPos.y = -5.0f;

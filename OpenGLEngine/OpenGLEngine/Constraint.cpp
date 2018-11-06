@@ -55,16 +55,12 @@ void Constraint::Process(float _deltaTick)
 	{
 		glm::vec3 p1_to_p2 = m_p2->GetPos() - m_p1->GetPos(); // vector from p1 to p2
 
-		if (m_p1->GetVertID() == 0)
-		{
-			std::cout << "yEEET";
-		}
 
 		//Try this in cloth class
 		float current_distance = glm::length(p1_to_p2); // current distance between p1 and p2
 														//std::cout << "Particle eg: x: " << current_distance << std::endl;
 
-		if (current_distance > 2.0f)
+		if (current_distance > m_fRestDist + 0.5f || current_distance < -0.1f)
 		{
 			//Set this to destroy //erase constraint frm vec if destroyed
 			m_bDestroyed = true;
@@ -78,4 +74,9 @@ void Constraint::Process(float _deltaTick)
 		m_p2->AdjustPos(-correctionVectorHalf); // we must move p2 the negative direction of correctionVectorHalf since it points from p2 to p1, and not p1 to p2.	
 	}
 	
+}
+
+void Constraint::CheckConstraintLength(glm::vec3 _length, float _currentDistance)
+{
+
 }
