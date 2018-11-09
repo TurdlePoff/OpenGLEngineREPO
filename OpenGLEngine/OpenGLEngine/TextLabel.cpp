@@ -104,7 +104,6 @@ TextLabel::TextLabel(std::string newText, std::string newFont, glm::vec2 pos)
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
 	glBindVertexArray(0);
 	glUseProgram(0);
-
 }
 
 /***********************

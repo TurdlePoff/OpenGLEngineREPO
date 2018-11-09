@@ -31,6 +31,6 @@ public:
 	virtual void Process(float _deltaTick);
 
 protected:
-	std::map<std::string, std::unique_ptr<TextLabel>> m_mTextList;
-	std::map<std::string, std::unique_ptr<Entity>> m_mEntitiesList;
+	std::map<std::string, std::shared_ptr<TextLabel>> m_mTextList;
+	std::map<std::string, std::shared_ptr<Entity>> m_mEntitiesList;
 };

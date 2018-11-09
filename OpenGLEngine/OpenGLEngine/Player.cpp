@@ -54,7 +54,7 @@ void Player::Process(float _deltaTick)
 ***********************/
 void Player::MovePlayer(float _deltaTick)
 {
-	m_fMovementSpeed = 0.002f * _deltaTick;
+	m_fMovementSpeed = 0.02f * _deltaTick;
 
 	if (Input::GetInstance()->KeyState['W'] == INPUT_HOLD || 
 		Input::GetInstance()->KeyState['w'] == INPUT_HOLD)
@@ -76,6 +76,8 @@ void Player::MovePlayer(float _deltaTick)
 	{
 		m_vPos.x += m_fMovementSpeed;
 	}
+	/*
+	//Turn off up and down as player should be stuck to the terrain
 	if (Input::GetInstance()->KeyState['Q'] == INPUT_HOLD || 
 		Input::GetInstance()->KeyState['q'] == INPUT_HOLD)
 	{
@@ -85,5 +87,5 @@ void Player::MovePlayer(float _deltaTick)
 		Input::GetInstance()->KeyState['e'] == INPUT_HOLD)
 	{
 		m_vPos.y -= m_fMovementSpeed;
-	}
+	}*/
 }

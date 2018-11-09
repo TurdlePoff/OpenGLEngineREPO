@@ -32,7 +32,7 @@ public:
 
 private: 
 
-	std::unique_ptr<Player> m_player;
+	std::shared_ptr<Terrain> m_terrain;
 
 	bool m_bIsOnGround;
 

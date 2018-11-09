@@ -20,7 +20,7 @@ public:
 	bool GetMoveable() { return m_bPlayerMoveable; }
 
 private:
-	int m_iLives; 
+	int m_iLives = 1;
 	float m_fMovementSpeed = 1.0f;
 	bool m_bPlayerMoveable = true;;
 
