@@ -68,9 +68,9 @@ void Level::Init()
 	terrain->InitialiseTerrain();
 	m_terrain = std::move(terrain);
 
-	/*auto ps = std::make_shared<ParticleSystem>(glm::vec3(6.4f, 10.0f, 2.45f), SPR_BIRD);
-	ps->SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_particleSystem = std::move(ps);*/
+	//auto ps = std::make_shared<ParticleSystem>(glm::vec3(6.4f, 10.0f, 2.45f), SPR_BIRD);
+	//ps->SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
+	//m_particleSystem = std::move(ps);
 
 
 	m_bIsOnGround = true;

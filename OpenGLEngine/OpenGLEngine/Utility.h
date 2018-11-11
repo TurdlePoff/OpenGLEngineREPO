@@ -39,6 +39,18 @@
 #include "Dependencies\glm\gtc\matrix_transform.hpp"
 #include "Dependencies\glm\gtc\type_ptr.hpp"
 #include "Dependencies\FMOD\fmod.hpp"
+
+#include "Dependencies\glm\gtx\quaternion.hpp"
+#include "Dependencies\glm\gtc\quaternion.hpp"
+
+#include "Dependencies/assimp/Importer.hpp"
+#include "Dependencies/assimp/scene.h"
+#include "Dependencies/assimp/postprocess.h"
+
+#include "Dependencies/assimp/vector3.h"
+#include "Dependencies/assimp/matrix3x3.h"
+#include "Dependencies/assimp/matrix4x4.h"
+
 //#include <glm/gtx/compatibility.hpp>
 
 //#include  <Box2D/Box2D.h>
@@ -51,6 +63,7 @@
 #include <algorithm>
 #include <memory>
 #include <fstream>
+#include <sstream>
 #include <filesystem>
 #include <stdio.h>
 #include <stdlib.h>

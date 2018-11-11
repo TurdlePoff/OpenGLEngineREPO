@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(ProjectDir)\Dependencies\assimp;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(ProjectDir)\Dependencies\assimp;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;opengl32.lib;freeglut.lib;glew32.lib;freetype.lib;fmod_vc.lib;vld.lib;assimp-vc130-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -151,6 +151,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ClothParticle.cpp" />
+    <ClCompile Include="Math_3d.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="Shapes.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="ssAnimatedModel.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TextLabel.cpp" />
@@ -174,6 +176,9 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="ClothParticle.h" />
+    <ClInclude Include="Math_3d.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelMesh.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
@@ -182,6 +187,7 @@
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="ssAnimatedModel.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TextLabel.h" />

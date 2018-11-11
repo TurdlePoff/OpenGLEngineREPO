@@ -28,6 +28,9 @@ ParticleSystem::ParticleSystem(glm::vec3 _origin, const char* _textureName)
 	for (int i = 0; i < m_iParticles; i++) 
 	{
 		m_vecPosition.push_back(glm::vec3()); //initialize position vector
+		//m_vecPosition.push_back(glm::vec3(1.0f, 1.0f, 1.0f)); //initialize position vector
+		//m_vecPosition.push_back(glm::vec3(0.5f, 0.5f, 0.5f)); //initialize texture vector
+
 		Particle p = Particle(
 			_origin, // pos
 			glm::vec3(0.25 * cos(i * 0.0167) + 0.25f * Utils::RandomFloat() - 0.125f, // vel
@@ -43,12 +46,39 @@ ParticleSystem::ParticleSystem(glm::vec3 _origin, const char* _textureName)
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
-	glGenVertexArrays(1, &m_vbo);
+	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vecPosition.size(), &m_vecPosition[0],	GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(1);
+	////Texture attribute
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(2);
+
+	////Generating and biding the texture
+	//glGenTextures(1, &m_texture);
+	//glBindTexture(GL_TEXTURE_2D, m_texture);
+
+	////Loading the image
+	//unsigned char* image = SOIL_load_image(_textureName, &m_iWidth, &m_iHeight, 0, SOIL_LOAD_RGBA);
+	////Defining the texture
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_iWidth, m_iHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	//glGenerateMipmap(GL_TEXTURE_2D);
+
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	////Generating the texture, freeing up the data and binding it
+	//SOIL_free_image_data(image);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -68,6 +98,7 @@ ParticleSystem::~ParticleSystem()
 ***********************/
 void ParticleSystem::Render()
 {
+
 	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 
@@ -103,10 +134,10 @@ void ParticleSystem::Render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vecPosition.size(), &m_vecPosition[0], GL_STATIC_DRAW);
-
+	
 	glDrawArrays(GL_POINTS, 0, m_iParticles);
-
 	glBindVertexArray(0);
+
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 }
@@ -118,7 +149,6 @@ void ParticleSystem::Render()
 ***********************/
 void ParticleSystem::Process(float _deltaTick)
 {
-
 	for (int i = 0; i < m_iParticles; i++) {
 		m_vecParticles[i].Process(_deltaTick);
 		m_vecPosition[i] = m_vecParticles[i].GetPos();

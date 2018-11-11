@@ -20,10 +20,9 @@
 * Particle Constructor
 * @author: Vivian Ngo
 ***********************/
-Particle::Particle(glm::vec3 _pos, glm::vec3 _vec, float _elapsedTime, int _id) :
-	m_vVelocity(_vec), m_fElapsedTime(_elapsedTime), m_iParticleID(_id)
+Particle::Particle(glm::vec3 _origin, glm::vec3 _vec, float _elapsedTime, int _id) :
+	m_vPos(_origin), m_vVelocity(_vec), m_fElapsedTime(_elapsedTime), m_iParticleID(_id)
 {
-	m_vPos = _pos;
 }
 
 /***********************
@@ -39,16 +38,26 @@ Particle::~Particle(){}
 ***********************/
 void Particle::Process(float _deltaTick)
 {
-	m_vVelocity.y += -0.2f * 0.0167f;
+	if (m_fElapsedTime >= 5.0f) {
+		m_vPos = m_vOrigin;
+		m_vVelocity = glm::vec3(1.5f * cos(m_iParticleID * _deltaTick) + 0.25f * Utils::RandomFloat() - 0.125f,
+			1.5f + 0.25f * Utils::RandomFloat() - 0.125f,
+			1.5f * sin(m_iParticleID * _deltaTick) + 0.25f * Utils::RandomFloat() - 0.125f);
+		m_fElapsedTime = Utils::RandomFloat();
+	}
+	m_vPos -= (m_vVelocity * 0.01f * _deltaTick);
+	m_fElapsedTime += _deltaTick;
+
+	/*m_vVelocity.y += -0.2f * _deltaTick;
 	m_vPos += m_vVelocity;
 	m_fElapsedTime -= 0.000167f;
 	m_fCameraDistance = glm::distance(Camera::GetInstance()->GetCamPos(), m_vPos);
-	if (m_fElapsedTime <= 0.0f) 
+	if (m_fElapsedTime >= 5.0f) 
 	{
 		m_vPos = m_vOrigin;
-		m_vVelocity = glm::vec3(0.25f * cos(m_iParticleID * 0.0167f) + 0.25f * Utils::RandomFloat() - 0.125f, 
-				1.5f + 0.25f * Utils::RandomFloat() - 0.125f,
-				0.25f * sin(m_iParticleID * 0.0167f) + 0.25f * Utils::RandomFloat() - 0.125f);
+		m_vVelocity = glm::vec3(0.25 * cos(m_iParticleID * 0.0167f) + 0.25f * Utils::RandomFloat() - 0.125f, 
+								1.5 + 0.25f * Utils::RandomFloat() - 0.125f,
+								0.25 * sin(m_iParticleID * 0.0167f) + 0.25f * Utils::RandomFloat() - 0.125f);
 		m_fElapsedTime = Utils::RandomFloat() + 0.125f;
-	}
+	}*/
 }

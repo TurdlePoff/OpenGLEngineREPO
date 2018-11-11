@@ -64,7 +64,11 @@ void Terrain::InitialiseTerrain()
 ***********************/
 void Terrain::RenderTerrain()
 {
+	glEnable(GL_BLEND);
+	glDepthMask(GL_FALSE);
+
 	glUseProgram(m_program);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (m_meshOn)
 	{
