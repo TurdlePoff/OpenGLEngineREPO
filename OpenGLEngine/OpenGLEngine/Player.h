@@ -1,4 +1,17 @@
 #pragma once
+/****************************************************
+* Bachelor of Software Engineering
+* Media Design School
+* Auckland
+* New Zealand
+*
+* (c) 2005 - 2018 Media Design School
+*
+* File Name		: "Player.h"
+* Description	: Player Declaration file
+* Author		: Vivian Ngo
+* Mail			: vivian.ngo7572@mediadesign.school.nz
+******************************************************/
 
 #include "Shapes.h"
 

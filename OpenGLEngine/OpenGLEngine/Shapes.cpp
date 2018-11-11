@@ -13,15 +13,25 @@
 ******************************************************/
 #include "Shapes.h"
 
-Shapes::Shapes()
-{
-}
 
+/***********************
+* Shapes Constructor
+* @author: Vivian Ngo
+***********************/
+Shapes::Shapes(){}
 
-Shapes::~Shapes()
-{
-}                         
+/***********************
+* Shapes Deconstructor
+* @author: Vivian Ngo
+***********************/
+Shapes::~Shapes(){}                         
 
+/***********************
+* Init: Init Shapes class
+* @author: Vivian Ngo
+* @parameter: _imageType - texture name (a macro in Utility)
+* @parameter: _shape - a shape to generate (cube/2D square)
+***********************/
 void Shapes::Init(const char * _imageType, EShapes _shape)
 {
 	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
@@ -95,6 +105,12 @@ void Shapes::Init(const char * _imageType, EShapes _shape)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+/***********************
+* Init: Init Shapes class // Sphere version
+* @author: Vivian Ngo
+* @parameter: _imageType - texture name (a macro in Utility)
+* @parameter: _radius - radius size to make the sphere
+***********************/
 void Shapes::Init(const char * _imageType, float _radius)
 {
 	m_program = ShaderLoader::GetInstance()->GetProgram((char*)"Texture");
@@ -203,18 +219,23 @@ void Shapes::Init(const char * _imageType, float _radius)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+/***********************
+* Render: Render Shapes
+* @author: Vivian Ngo
+***********************/
 void Shapes::Render()
 {
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //Keep shapes filled and not wireframed
 
 
 	if (m_eShape == QUAD)
 	{
 		glDisable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
+
 		//Enabling back face culling
 		glCullFace(GL_BACK);        //Face to cull
 		glFrontFace(GL_CW);         //Defining the front face via vertex initialization order
@@ -222,12 +243,6 @@ void Shapes::Render()
 	}
 	else
 	{
-		/*glEnable(GL_DEPTH_TEST);
-		glCullFace(GL_BACK);
-		glFrontFace(GL_CW);
-		glEnable(GL_BLEND);
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CW);*/
 		glEnable(GL_DEPTH_TEST);
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CW);

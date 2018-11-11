@@ -16,7 +16,7 @@
 #include "Terrain.h"
 
 /***********************
-* Player: Player Constructor
+* Player Constructor
 * @author: Vivian Ngo
 ***********************/
 Player::Player(float _radius)
@@ -25,7 +25,7 @@ Player::Player(float _radius)
 }
 
 /***********************
-* Render: Render player
+* Render player
 * @author: Vivian Ngo
 ***********************/
 void Player::Render()

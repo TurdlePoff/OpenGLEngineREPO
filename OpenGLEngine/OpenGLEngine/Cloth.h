@@ -16,7 +16,7 @@
 #define CONSTRAINT_ITERATIONS 5
 
 #include "Utility.h"
-#include "Particle.h"
+#include "ClothParticle.h"
 #include "Constraint.h"
 #include "Entity.h"
 
@@ -36,7 +36,7 @@ public:
 	void BallCollision(const glm::vec3 _center, const float _radius);
 	void UnpinAll();
 	void DeleteRandomConstraint();
-	void ProcessParticlePick(Particle* particle);
+	void ProcessParticlePick(ClothParticle* particle);
 	void MoveRings(bool _squish);
 
 private:
@@ -50,15 +50,15 @@ private:
 	int m_fParticlesHeight; // number of particles in "height" direction
 
 	bool m_isHoldingParticle = false;
-	Particle* pickedParticle;
+	ClothParticle* pickedParticle;
 
-	std::vector<Particle> m_vParticles; // all particles that are part of this cloth
+	std::vector<ClothParticle> m_vParticles; // all particles that are part of this cloth
 	std::vector<Constraint> m_vConstraints; // alle constraints between particles as part of this cloth
 
-	Particle* GetParticle(int x, int y);
-	void MakeConstraint(Particle *p1, Particle *p2);
+	ClothParticle* GetParticle(int x, int y);
+	void MakeConstraint(ClothParticle *p1, ClothParticle *p2);
 
-	glm::vec3 CalcTriangleNormal(Particle *p1, Particle *p2, Particle *p3);
-	void AddWindForcesForTriangle(Particle *p1, Particle *p2, Particle *p3, const glm::vec3 direction);
+	glm::vec3 CalcTriangleNormal(ClothParticle *p1, ClothParticle *p2, ClothParticle *p3);
+	void AddWindForcesForTriangle(ClothParticle *p1, ClothParticle *p2, ClothParticle *p3, const glm::vec3 direction);
 };
 

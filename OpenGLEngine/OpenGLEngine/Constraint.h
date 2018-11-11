@@ -14,14 +14,14 @@
 ******************************************************/
 
 #include "Utility.h"
-#include "Particle.h"
+#include "ClothParticle.h"
 
 class Constraint
 {
 public:
 	Constraint() {};
 
-	Constraint(Particle* _p1, Particle* _p2);
+	Constraint(ClothParticle* _p1, ClothParticle* _p2);
 	~Constraint();
 
 	void Render();
@@ -30,13 +30,13 @@ public:
 
 	void Destroy() { m_bDestroyed = true; };
 	bool GetDestroyed() { return m_bDestroyed; };
-	Particle* GetParticleOne() { return m_p1; };
-	Particle* GetParticleTwo() { return m_p2; };
+	ClothParticle* GetParticleOne() { return m_p1; };
+	ClothParticle* GetParticleTwo() { return m_p2; };
 	float GetRestDist() {
 		return m_fRestDist;	}
 
 private:
-	Particle *m_p1, *m_p2;
+	ClothParticle *m_p1, *m_p2;
 	float m_fRestDist;
 	bool m_bDestroyed;
 	float m_fSensitivity;

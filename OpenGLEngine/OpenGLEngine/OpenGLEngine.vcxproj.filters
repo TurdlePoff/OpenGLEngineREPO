@@ -69,14 +69,20 @@
     <ClCompile Include="ClothLevel.cpp">
       <Filter>Cloth</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Cloth</Filter>
-    </ClCompile>
     <ClCompile Include="Cloth.cpp">
       <Filter>Cloth</Filter>
     </ClCompile>
     <ClCompile Include="Constraint.cpp">
       <Filter>Cloth</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothParticle.cpp">
+      <Filter>Cloth</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,14 +137,20 @@
     <ClInclude Include="ClothLevel.h">
       <Filter>Cloth</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Cloth</Filter>
-    </ClInclude>
     <ClInclude Include="Cloth.h">
       <Filter>Cloth</Filter>
     </ClInclude>
     <ClInclude Include="Constraint.h">
       <Filter>Cloth</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothParticle.h">
+      <Filter>Cloth</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

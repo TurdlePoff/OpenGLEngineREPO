@@ -95,6 +95,17 @@ namespace Utils
 
 	static const float DENSITY = 0.3f;
 	static const float FRICTION = 1.0f;
+
+	/***********************
+	* RandomFloat: Generates a random float
+	* @author: Vivian Ngo
+	* @return: r - a random float
+	***********************/
+	static float RandomFloat()
+	{
+		float r = (float)rand() / (float)RAND_MAX;
+		return r;
+	}
 }
 
 static const GLuint indicesSquare[] = {

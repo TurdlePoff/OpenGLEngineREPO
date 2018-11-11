@@ -16,6 +16,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Level.h"
+#include "ClothLevel.h"
 
 #include "Utility.h"
 

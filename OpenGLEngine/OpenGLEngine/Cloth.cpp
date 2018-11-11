@@ -74,7 +74,7 @@ void Cloth::Init(float _width, float _height, int _numParticlesWidth, int _numPa
 			glm::vec3 pos = glm::vec3(_width * (x / (float)_numParticlesWidth) + _pos.x,
 				-_height * (y / (float)_numParticlesHeight) + _pos.y,
 				 _pos.z + xOffset);
-			m_vParticles[y*_numParticlesWidth + x] = Particle(pos); // insert particle in column x at y'th row
+			m_vParticles[y*_numParticlesWidth + x] = ClothParticle(pos); // insert particle in column x at y'th row
 
 			//Set vertices id and vertices for each particle
 			m_vParticles[y*_numParticlesWidth + x].SetVertID(verticesID);
@@ -232,7 +232,7 @@ void Cloth::Process(float _deltaTick)
 	}
 
 	int i = 0;
-	std::vector<Particle>::iterator particle;
+	std::vector<ClothParticle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
 		//Process the particle
@@ -272,7 +272,7 @@ void Cloth::Process(float _deltaTick)
 ***********************/
 void Cloth::AddForce(const glm::vec3 _direction)
 {
-	std::vector<Particle>::iterator particle;
+	std::vector<ClothParticle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
 		(*particle).AddForce(_direction); // add the forces to each particle
@@ -307,7 +307,7 @@ void Cloth::BallCollision(const glm::vec3 _center, const float _radius)
 	float offset = 0.3f;
 
 	//Check collision with ball for each particle
-	for (std::vector<Particle>::iterator particle = m_vParticles.begin(); particle != m_vParticles.end(); ++particle)
+	for (std::vector<ClothParticle>::iterator particle = m_vParticles.begin(); particle != m_vParticles.end(); ++particle)
 	{
 		glm::vec3 v = (*particle).GetPos() - _center;
 		float pDist = glm::distance((*particle).GetPos(), _center);
@@ -327,7 +327,7 @@ void Cloth::BallCollision(const glm::vec3 _center, const float _radius)
 ***********************/
 void Cloth::UnpinAll()
 {
-	std::vector<Particle>::iterator particle;
+	std::vector<ClothParticle>::iterator particle;
 	for (particle = m_vParticles.begin(); particle != m_vParticles.end(); particle++)
 	{
 		(*particle).SetPinned(false);
@@ -340,7 +340,7 @@ void Cloth::UnpinAll()
 * @parameter: x - x pos of particle
 * @parameter: y - y pos of particle
 ***********************/
-Particle * Cloth::GetParticle(int x, int y)
+ClothParticle * Cloth::GetParticle(int x, int y)
 {
 	return &m_vParticles[y * m_fParticlesWidth + x];
 }
@@ -351,7 +351,7 @@ Particle * Cloth::GetParticle(int x, int y)
 * @parameter: p1 - particle 1 of the constraint
 * @parameter: p2 - particle 2 of the constraint
 ***********************/
-void Cloth::MakeConstraint(Particle * p1, Particle * p2)
+void Cloth::MakeConstraint(ClothParticle * p1, ClothParticle * p2)
 {
 	m_vConstraints.push_back(Constraint(p1, p2));
 }
@@ -363,7 +363,7 @@ void Cloth::MakeConstraint(Particle * p1, Particle * p2)
 * @parameter: p2 - particle 2
 * @parameter: p3 - particle 3
 ***********************/
-glm::vec3 Cloth::CalcTriangleNormal(Particle * p1, Particle * p2, Particle * p3)
+glm::vec3 Cloth::CalcTriangleNormal(ClothParticle * p1, ClothParticle * p2, ClothParticle * p3)
 {
 	glm::vec3 pos1 = p1->GetPos();
 	glm::vec3 pos2 = p2->GetPos();
@@ -383,7 +383,7 @@ glm::vec3 Cloth::CalcTriangleNormal(Particle * p1, Particle * p2, Particle * p3)
 * @parameter: p3 - particle 3
 * @parameter: direction - direction of force
 ***********************/
-void Cloth::AddWindForcesForTriangle(Particle * p1, Particle * p2, Particle * p3, const glm::vec3 direction)
+void Cloth::AddWindForcesForTriangle(ClothParticle * p1, ClothParticle * p2, ClothParticle * p3, const glm::vec3 direction)
 {
 	glm::vec3 normal = CalcTriangleNormal(p1, p2, p3);
 	glm::vec3 d = glm::normalize(normal);
@@ -410,7 +410,7 @@ void Cloth::DeleteRandomConstraint()
 * @parameter: particle - particle to pick and move
 * @author: Vivian Ngo
 ***********************/
-void Cloth::ProcessParticlePick(Particle* particle)
+void Cloth::ProcessParticlePick(ClothParticle* particle)
 {
 	//Calculate mouse click from pointer to world space
 	glm::vec3 _position = particle->GetPos();

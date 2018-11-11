@@ -51,6 +51,10 @@ void Init()
 		(char*)"Resources/Shaders/StarVertexShader.vs",
 		(char*)"Resources/Shaders/StarFragmentShader.fs", 
 		(char*)"Resources/Shaders/StarGeoShader.gs");
+	ShaderLoader::GetInstance()->CreateProgram((char*)"Fountain",
+		(char*)"Resources/Shaders/ParticleVertexShader.vs",
+		(char*)"Resources/Shaders/ParticleFragmentShader.fs",
+		(char*)"Resources/Shaders/ParticleGeoShader.gs");
 	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 		(char*)"Resources/Shaders/CMapVertexShader.vs",
 		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/

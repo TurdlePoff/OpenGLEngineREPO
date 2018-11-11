@@ -20,7 +20,7 @@
 * @parameter: _p1 - particle 1 of the connection
 * @parameter: _p2 - particle 2 of the connection
 ***********************/
-Constraint::Constraint(Particle* _p1, Particle* _p2) 
+Constraint::Constraint(ClothParticle* _p1, ClothParticle* _p2) 
 	: m_p1(_p1), m_p2(_p2), m_bDestroyed(false)
 {
 	m_fRestDist = glm::length(m_p1->GetPos() - m_p2->GetPos());

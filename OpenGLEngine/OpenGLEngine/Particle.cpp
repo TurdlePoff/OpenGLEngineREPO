@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************
 * Bachelor of Software Engineering
 * Media Design School
@@ -7,80 +6,49 @@
 *
 * (c) 2005 - 2018 Media Design School
 *
-* File Name		: "Particle.h"
+* File Name		: "Particle.cpp"
 * Description	: Particle Implementation file
 * Author		: Vivian Ngo
 * Mail			: vivian.ngo7572@mediadesign.school.nz
 ******************************************************/
 
 #include "Particle.h"
+#include "Camera.h"
 
 
 /***********************
-* Particle: Constructor
+* Particle Constructor
 * @author: Vivian Ngo
-* @parameter: _pos - position of the particle
 ***********************/
-Particle::Particle(glm::vec3 _pos) 
-	: m_vPos(_pos), m_vOldPosition(_pos)
-	, m_vAcceleration(glm::vec3(0, 0, 0))
-	, m_fMass(1)
-	, m_bIsPinned(false)
-	, m_broken(false)
+Particle::Particle(glm::vec3 _pos, glm::vec3 _vec, float _elapsedTime, int _id) :
+	m_vVelocity(_vec), m_fElapsedTime(_elapsedTime), m_iParticleID(_id)
 {
+	m_vPos = _pos;
 }
 
 /***********************
-* Particle: Destructor
+* Particle Destructor
 * @author: Vivian Ngo
 ***********************/
-Particle::~Particle()
-{
-}
+Particle::~Particle(){}
 
 /***********************
-* Process: Processes the individual particle
+* Process: Process Particle
 * @author: Vivian Ngo
-* @parameter: _deltaTick
+* @parameter: _deltaTick - machine time to process
 ***********************/
 void Particle::Process(float _deltaTick)
 {
-	//iterate through all connections and see if destroyed
-	//(get and set destroy) if destroyed, delete 
-	if (!m_bIsPinned)
+	m_vVelocity.y += -0.2f * 0.0167f;
+	m_vPos += m_vVelocity;
+	m_fElapsedTime -= 0.000167f;
+	m_fCameraDistance = glm::distance(Camera::GetInstance()->GetCamPos(), m_vPos);
+	if (m_fElapsedTime <= 0.0f) 
 	{
-		glm::vec3 temp = m_vPos;
-		m_vPos = m_vPos + (m_vPos - m_vOldPosition) * (1.0f - DAMPING) + m_vAcceleration * TIME_STEPSIZE2 * _deltaTick;
-		m_vOldPosition = temp;
-		
-		//Handle floor collision
-		if (m_vPos.y < -5.0f)
-		{
-			m_vPos.y = -5.0f;
-		}
-		m_vAcceleration = glm::vec3(0, 0, 0); // acceleration is reset since it HAS been translated into a change in position (and implicitely into velocity)	
+		m_vPos = m_vOrigin;
+		m_vVelocity = glm::vec3(0.25f * cos(m_iParticleID * 0.0167f) + 0.25f * Utils::RandomFloat() - 0.125f, 
+				1.5f + 0.25f * Utils::RandomFloat() - 0.125f,
+				0.25f * sin(m_iParticleID * 0.0167f) + 0.25f * Utils::RandomFloat() - 0.125f);
+		m_fElapsedTime = Utils::RandomFloat() + 0.125f;
 	}
-}
-
-/***********************
-* AddForce: Adds Force to the individual particle
-* @author: Vivian Ngo
-* @parameter: _f - amount of force added to particle
-***********************/
-void Particle::AddForce(glm::vec3 _f)
-{
-	m_vAcceleration += _f / m_fMass;
-}
-
-
-
-/***********************
-* AddGravity: Adds Gravity to the cloth
-* @author: Vivian Ngo
-* @parameter: _deltaTick
-***********************/
-void Particle::AddGravity(const glm::vec3 _direction)
-{
-	AddForce(_direction);
-	m_vAcceleration -= 0.1f * DAMPING / m_fMass;
 }
