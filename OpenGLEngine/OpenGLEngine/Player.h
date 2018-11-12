@@ -14,6 +14,7 @@
 ******************************************************/
 
 #include "Shapes.h"
+#include "ssAnimatedModel.h"
 
 class Player : public Shapes
 {
@@ -23,7 +24,9 @@ public:
 
 	~Player() {};
 
-	void Render();
+	//void Render();
+	void Render(Terrain* _terrain);
+
 	void Process(float _deltaTick);
 	void MovePlayer(float _deltaTick);
 
@@ -37,5 +40,6 @@ private:
 	float m_fMovementSpeed = 1.0f;
 	bool m_bPlayerMoveable = true;;
 
+	std::shared_ptr<ssAnimatedModel> m_chara;
 };
 

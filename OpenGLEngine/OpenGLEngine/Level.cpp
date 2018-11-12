@@ -76,7 +76,8 @@ void Level::Init()
 	auto model = std::make_shared<Model>("Resources/Sprites/pug/Dog 1.obj");
 	m_puggo = std::move(model);
 
-	/*auto cubeMap = std::make_shared<CubeMap>();
+
+	/*auto cubeMap = std::make_shared<CubeMap>();m_chara
 	cubeMap->InitCubeMap();
 	m_cubeMap = std::move(cubeMap);*/
 }
@@ -93,7 +94,6 @@ void Level::Render()
 	Scene::Render(); //Render last as entities and text should go on top
 	m_particleSystem->Render();
 	m_puggo->Render();
-
 }
 
 /***********************
@@ -138,7 +138,7 @@ void Level::Process(float _deltaTick)
 		m_mEntitiesList["Player"]->SetPos(glm::vec3(x, previousHeight, z));
 	}
 	m_particleSystem->Process(_deltaTick);
-
+	
 
 	Scene::Process(_deltaTick);
 

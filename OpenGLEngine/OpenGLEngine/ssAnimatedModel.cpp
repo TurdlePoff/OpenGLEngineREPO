@@ -6,6 +6,33 @@
 #define BONE_ID_LOCATION	  3
 #define BONE_WEIGHT_LOCATION  4 
 
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+REMEMBER TO SET VIEW PROJ THE RIGHT WAY
+
+
+
+
+
+
+
+
+
+
+
+*/
+
 
 void ssAnimatedModel::VertexBoneData::addBoneData(int BoneID, float Weight) {
 
