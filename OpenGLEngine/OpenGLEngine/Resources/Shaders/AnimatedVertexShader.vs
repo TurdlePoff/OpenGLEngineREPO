@@ -9,7 +9,7 @@ layout (location = 2) in vec3 normal;
 layout (location = 3) in ivec4 boneIds;
 layout (location = 4) in vec4 weights;
 
-out vec2 TexCoord;
+out vec2 fragTexCoords;
 out vec3 Normal;
 out vec3 FragPos;
 
@@ -30,7 +30,7 @@ void main(void){
 	}
 	
 	gl_Position = vp * model * totalLocalPosition;
-	TexCoord = texCoord;
+	fragTexCoords = texCoord;
 	FragPos = vec3(model* vec4(position, 1.0f));
 	Normal = mat3(transpose(inverse(model))) * normal;
 

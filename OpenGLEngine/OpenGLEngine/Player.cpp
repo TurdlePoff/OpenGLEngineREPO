@@ -21,29 +21,23 @@
 ***********************/
 Player::Player(float _radius)
 {
-	//Init(SPR_STRIPE, _radius);
-
-	auto chara = std::make_shared<ssAnimatedModel>("Resources/Sprites/dude/theDude.DAE", "Resources/Sprites/dude/theDude.png");
-	m_chara = std::move(chara);
-	m_vPos = glm::vec3();
-	m_vScale = glm::vec3();
-	m_vRot = glm::vec3();
+	Init(SPR_STRIPE, _radius);
 }
 //
-///***********************
-//* Render player
-//* @author: Vivian Ngo
-//***********************/
-//void Player::Render()
-//{
-//	Shapes::Render();
-//}
-
-void Player::Render(Terrain * _terrain)
+/***********************
+* Render player
+* @author: Vivian Ngo
+***********************/
+void Player::Render()
 {
-	m_chara->render(.016f, _terrain);
-
+	Shapes::Render();
 }
+
+//void Player::Render(Terrain * _terrain)
+//{
+//	m_chara->render(.016f, _terrain);
+//
+//}
 
 /***********************
 * Process: Process player

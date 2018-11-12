@@ -58,6 +58,9 @@ void Init()
 	ShaderLoader::GetInstance()->CreateProgram((char*)"Model",
 		(char*)"Resources/Shaders/ModelVertexShader.vs",
 		(char*)"Resources/Shaders/ModelFragmentShader.fs");
+	ShaderLoader::GetInstance()->CreateProgram((char*)"Animated",
+		(char*)"Resources/Shaders/AnimatedVertexShader.vs",
+		(char*)"Resources/Shaders/AnimatedFragmentShader.fs");
 	//ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
 	//	(char*)"Resources/Shaders/CMapVertexShader.vs",
 	//	(char*)"Resources/Shaders/CMapFragmentShader.fs");

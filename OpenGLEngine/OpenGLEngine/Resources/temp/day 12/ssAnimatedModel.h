@@ -9,10 +9,33 @@
 //aiMath to glm conversion
 // https://github.com/mackron/GTGameEngine/blob/master/source/ModelDefinition_Assimp.cpp
 
+#include "Dependencies\glew\glew.h"
+#include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\soil\SOIL.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/quaternion.hpp"
+
+#include "Dependencies/assimp/Importer.hpp"
+#include "Dependencies/assimp/scene.h"
+#include "Dependencies/assimp/postprocess.h"
+
+
+#include <iostream>
+#include <fstream>
+
+#include <vector>
+#include <map>
 
 #include "Camera.h"
+#include "Light.h"
+
+#include <fstream>
+
 #include "Math_3d.h"
+
 #include "Terrain.h"
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
@@ -26,14 +49,15 @@
 class ssAnimatedModel
 {
 public:
-	ssAnimatedModel(){};
 	ssAnimatedModel(std::string modelFilname,
-					std::string texFilename);
+					std::string texFilename,
+							Camera *_camera,
+							GLuint _program,
+							Light * _light);
 	~ssAnimatedModel();
 
 	bool loadMesh(std::string fileName);
 	void render(float dt, Terrain* terrain);
-	void Process(float _deltaTime);
 
 	GLuint numBones() {
 		return mNumBones;
@@ -45,9 +69,6 @@ public:
 	void setPosition(glm::vec3 _position);
 	void setRotation(glm::vec3 _rotation);
 	void setScale(glm::vec3 _scale);
-	glm::vec3 getPosition();
-	glm::vec3 getRotation();
-	glm::vec3 getScale();
 	void setSpeed(float _speed);
 
 	void move(float speed);
@@ -55,11 +76,13 @@ public:
 	
 	bool bMoving = false;
 
-protected:
+private:
+
+	Camera* camera;
+	Light* light;
 	GLuint program;
 
-	GLuint textureID;
-	bool bIsTextureSet = false;
+	//GLuint textureID;
 
 int mNumBones;
 
@@ -175,6 +198,8 @@ int mNumBones;
 	GLuint numMaterialsCounter;
 
 	float animTick;
+
+	
 	
 	int startFrame;
 	int endFrame;
@@ -193,5 +218,10 @@ int mNumBones;
 
 	float currentPlayerSpeed;
 	float currentRotationSpeed;
+
+
+
+
+
 };
 

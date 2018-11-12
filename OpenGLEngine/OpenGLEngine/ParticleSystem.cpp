@@ -113,12 +113,6 @@ void ParticleSystem::Render()
 	vQuad2 = glm::normalize(vQuad2);
 
 
-	for (int i = 0; i < m_iParticles; i++) {
-		m_vecParticles[i].Process(0.0167f);
-		m_vecPosition[i] = m_vecParticles[i].GetPos();
-	}
-	std::sort(m_vecParticles.begin(), m_vecParticles.end(), myComparison);
-
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);
 
@@ -153,6 +147,12 @@ void ParticleSystem::Render()
 ***********************/
 void ParticleSystem::Process(float _deltaTick)
 {
+
+	for (int i = 0; i < m_iParticles; i++) {
+		m_vecParticles[i].Process(_deltaTick);
+		m_vecPosition[i] = m_vecParticles[i].GetPos();
+	}
+	std::sort(m_vecParticles.begin(), m_vecParticles.end(), myComparison);
 
 }
 

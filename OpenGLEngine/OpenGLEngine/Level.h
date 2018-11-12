@@ -36,8 +36,9 @@ private:
 
 	std::shared_ptr<Terrain> m_terrain;
 	std::shared_ptr<ParticleSystem> m_particleSystem;
-	std::shared_ptr<CubeMap> m_cubeMap;
+	std::shared_ptr<Player> m_player;
 	std::shared_ptr<Model> m_puggo;
+	std::shared_ptr<ssAnimatedModel> m_animatedModel;
 
 	bool m_bIsOnGround;
 

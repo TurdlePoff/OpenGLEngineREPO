@@ -73,10 +73,15 @@ void Level::Init()
 
 	m_bIsOnGround = true;
 
-	auto model = std::make_shared<Model>("Resources/Sprites/pug/Dog 1.obj");
-	m_puggo = std::move(model);
+	/*auto model = std::make_shared<Model>("Resources/Sprites/pug/Dog 1.obj");
+	m_puggo = std::move(model);*/
 
-
+	auto anim = std::make_shared<ssAnimatedModel>("Resources/Sprites/dude/theDude_idle_run.dae", "Resources/Sprites/dude/theDude.png");
+	anim->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	anim->setScale(glm::vec3(0.001f));
+	anim->setRotation(glm::vec3(0.0f, 1.0f, 0.0f));
+	anim->setSpeed(2.0f);
+	m_animatedModel = std::move(anim);
 	/*auto cubeMap = std::make_shared<CubeMap>();m_chara
 	cubeMap->InitCubeMap();
 	m_cubeMap = std::move(cubeMap);*/
@@ -88,12 +93,12 @@ void Level::Init()
 ***********************/
 void Level::Render()
 {
-
 	//m_cubeMap->Render();
 	m_terrain->RenderTerrain(); //Render Terrain
 	Scene::Render(); //Render last as entities and text should go on top
 	m_particleSystem->Render();
-	m_puggo->Render();
+	//m_puggo->Render();
+	m_animatedModel->render(.016f, m_terrain.get());
 }
 
 /***********************
@@ -138,7 +143,7 @@ void Level::Process(float _deltaTick)
 		m_mEntitiesList["Player"]->SetPos(glm::vec3(x, previousHeight, z));
 	}
 	m_particleSystem->Process(_deltaTick);
-	
+	m_animatedModel->Process(_deltaTick);
 
 	Scene::Process(_deltaTick);
 

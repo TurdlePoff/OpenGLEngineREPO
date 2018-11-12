@@ -38,7 +38,7 @@ Particle::~Particle(){}
 ***********************/
 void Particle::Process(float _deltaTick)
 {
-	m_vVelocity.y += -0.1 * _deltaTick;
+	m_vVelocity.y += -0.0001f * _deltaTick;
 	m_vPos += m_vVelocity;
 	m_fCameraDistance = glm::distance(Camera::GetInstance()->GetCamPos(), m_vPos);
 

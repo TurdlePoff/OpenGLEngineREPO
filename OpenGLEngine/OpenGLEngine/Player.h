@@ -24,19 +24,19 @@ public:
 
 	~Player() {};
 
-	//void Render();
-	void Render(Terrain* _terrain);
+	void Render();
+	//void Render(Terrain* _terrain);
 
 	void Process(float _deltaTick);
 	void MovePlayer(float _deltaTick);
 
-	void SetLives(int newLives) { m_iLives = newLives; }
-	int GetLives() { return m_iLives; }
+	//void SetLives(int newLives) { m_iLives = newLives; }
+	//int GetLives() { return m_iLives; }
 	void SetMoveable(bool _move) {	m_bPlayerMoveable = _move;	}
 	bool GetMoveable() { return m_bPlayerMoveable; }
 
 private:
-	int m_iLives = 1;
+	//int m_iLives = 1;
 	float m_fMovementSpeed = 1.0f;
 	bool m_bPlayerMoveable = true;;
 
