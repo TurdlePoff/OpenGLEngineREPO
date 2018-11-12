@@ -37,6 +37,10 @@ ssAnimatedModel::ssAnimatedModel(std::string modelFilname, std::string texFilena
 
 
 	loadMesh(modelFilname);
+
+	bMoving = false;
+	move(0.1f);
+	setCurrentAnimation(0, 30); // run animation
 }
 
 
@@ -352,6 +356,9 @@ void ssAnimatedModel::rotate(float rotSpeed) {
 void ssAnimatedModel::setShaderEffectVariables(float dt, Terrain* terrain) {
 
 	glUseProgram(this->program);
+	//glEnable(GL_BLEND);
+	//glDepthMask(GL_FALSE);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (!bIsTextureSet)
 	{
@@ -364,19 +371,17 @@ void ssAnimatedModel::setShaderEffectVariables(float dt, Terrain* terrain) {
 
 	glm::mat4 model;
 
-	rotation.y += currentRotationSpeed * .016f;
+	//rotation.y += currentRotationSpeed * .016f;
 
 	float distance = currentPlayerSpeed * .016f;
 
 	//printf("speed %f, \n", currentRotationSpeed);
 
-	float dx = (float)(distance * sin(ToRadian(rotation.y)));
-	float dz = (float)(distance * cos(ToRadian(rotation.y)));
+	//float dx = (float)(distance * sin(ToRadian(rotation.y)));
+	//float dz = (float)(distance * cos(ToRadian(rotation.y)));
 
-	this->position.x += dx;
-	this->position.z += dz;
-
-	this->position.y = terrain->GetHeight(position);
+	//this->position.x = dx;
+	//this->position.z = dz;
 
 	glm::mat4 t = glm::translate(glm::mat4(), this->position);
 	glm::mat4 r = glm::rotate(glm::mat4(), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -428,11 +433,14 @@ void ssAnimatedModel::setShaderEffectVariables(float dt, Terrain* terrain) {
 	GLuint ambientStrengthLoc = glGetUniformLocation(program, "ambientStrength");
 	glUniform1f(ambientStrengthLoc, 0.5f);
 
-
 }
 
 
 void ssAnimatedModel::render(float dt, Terrain* terrain) {
+
+
+	glFrontFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
 
 	setShaderEffectVariables(dt, terrain);
 
@@ -446,11 +454,11 @@ void ssAnimatedModel::render(float dt, Terrain* terrain) {
 
 		if (m_Textures[MaterialIndex]) {
 			//m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_Textures[MaterialIndex]);
+			//glBindTexture(GL_TEXTURE_2D, m_Textures[MaterialIndex]);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, m_Textures[MaterialIndex]);
-			glUniform1i(glGetUniformLocation(program, "Texture"), m_Textures[MaterialIndex]);
+			glUniform1i(glGetUniformLocation(program, "Texture"), 0);
 		}
 
 		//glDrawElementsBaseVertex(GL_TRIANGLES,
@@ -464,6 +472,7 @@ void ssAnimatedModel::render(float dt, Terrain* terrain) {
 
 	// Make sure the VAO is not changed from the outside    
 	glBindVertexArray(0);
+	glDisable(GL_CULL_FACE);
 
 }
 
@@ -472,8 +481,7 @@ void ssAnimatedModel::Process(float _deltaTime)
 	if (Input::GetInstance()->KeyState['W'] == INPUT_HOLD ||
 		Input::GetInstance()->KeyState['w'] == INPUT_HOLD)
 	{
-		std::cout << "w pressed" << std::endl;
-		move(25.0f);
+		rotation.y = 180.0f;
 		if (bMoving == false) {
 			bMoving = true;
 			setCurrentAnimation(31, 50); // run animation
@@ -482,43 +490,60 @@ void ssAnimatedModel::Process(float _deltaTime)
 	else if (Input::GetInstance()->KeyState['S'] == INPUT_HOLD ||
 		Input::GetInstance()->KeyState['s'] == INPUT_HOLD)
 	{
-		std::cout << "s pressed" << std::endl;
+		rotation.y = 0.0f;
 
-		move(-25.0f);
 		if (bMoving == false) {
 			bMoving = true;
 			setCurrentAnimation(51, 70); // run animation
 		}
 	}
-	else if (Input::GetInstance()->KeyState[' '] == INPUT_FIRST_PRESS)
+	else if (Input::GetInstance()->KeyState['A'] == INPUT_HOLD ||
+		Input::GetInstance()->KeyState['a'] == INPUT_HOLD)
 	{
-		std::cout << "space pressed" << std::endl;
+		rotation.y = -90.0f;
+		if (bMoving == false) {
+			bMoving = true;
+			setCurrentAnimation(31, 50); // run animation
+		}
+	}
+	else if (Input::GetInstance()->KeyState['D'] == INPUT_HOLD ||
+		Input::GetInstance()->KeyState['d'] == INPUT_HOLD)
+	{
+		rotation.y = 90.0f;
 
-		move(0.0f);
-		if (bMoving == true) {
-			bMoving = false;
+		if (bMoving == false) {
+			bMoving = true;
 			setCurrentAnimation(51, 70); // run animation
 		}
 	}
-	else
+	else if (Input::GetInstance()->KeyState[' '] == INPUT_HOLD)
 	{
-		move(0.0f);
-		if (bMoving == true) {
-			bMoving = false;
+		if (bMoving == false) {
+			bMoving = true;
+			setCurrentAnimation(71, 80); // run animation
 		}
+	}
+	else if ((Input::GetInstance()->KeyState['W'] == INPUT_HOLD ||
+		Input::GetInstance()->KeyState['w'] == INPUT_HOLD) && (Input::GetInstance()->KeyState['A'] == INPUT_HOLD ||
+			Input::GetInstance()->KeyState['a'] == INPUT_HOLD))
+	{
+		rotation.y = 135.0f;
+	}
+	else if (Input::GetInstance()->KeyState['W'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['w'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['S'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['s'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['A'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['a'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['D'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState['d'] == INPUT_FIRST_RELEASE ||
+		Input::GetInstance()->KeyState[' '] == INPUT_FIRST_RELEASE)
+	{
+		bMoving = false;
 		setCurrentAnimation(0, 30); // run animation
 
 	}
-	/*if (Input::GetInstance()->KeyState['A'] == INPUT_HOLD ||
-		Input::GetInstance()->KeyState['a'] == INPUT_HOLD)
-	{
-		rotate(-90.0f);
-	}
-	if (Input::GetInstance()->KeyState['D'] == INPUT_HOLD ||
-		Input::GetInstance()->KeyState['d'] == INPUT_HOLD)
-	{
-		rotate(90.0f);
-	}*/
+
 }
 
 

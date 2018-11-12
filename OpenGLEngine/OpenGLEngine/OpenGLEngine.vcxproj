@@ -71,19 +71,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(ProjectDir)\Dependencies\assimp;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(ProjectDir)\Dependencies\assimp;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies\assimp;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(ProjectDir)\Dependencies\assimp;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies\assimp;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies\assimp;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\freetype;$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\glm;$(ProjectDir)\Dependencies\soil;$(ProjectDir)\Dependencies\assimp;$(ProjectDir)\Dependencies\FMOD;C:\apps\vld\2.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

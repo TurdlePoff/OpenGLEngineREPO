@@ -44,11 +44,11 @@ void Scene::Render()
 		it->second->Render();
 	}
 
-	////Render all text in text list 
-	//for (auto it = m_mTextList.begin(); it != m_mTextList.end(); ++it)
-	//{
-	//	it->second->Render();
-	//}
+	//Render all text in text list 
+	for (auto it = m_mTextList.begin(); it != m_mTextList.end(); ++it)
+	{
+		it->second->Render();
+	}
 }
 
 /***********************

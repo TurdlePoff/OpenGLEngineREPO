@@ -30,7 +30,7 @@ public:
 	void Init();
 	void Render();
 	void Process(float _deltaTick);
-	void ClothInput(float _deltaTick);
+	//void ClothInput(float _deltaTick);
 
 private: 
 
@@ -41,6 +41,7 @@ private:
 	std::shared_ptr<ssAnimatedModel> m_animatedModel;
 
 	bool m_bIsOnGround;
+	bool m_bIsJumping = false;
 
 	float m_fHeightOffset = 5.0f;
 	float previousHeight = 0.0f;
