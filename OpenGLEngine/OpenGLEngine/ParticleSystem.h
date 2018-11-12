@@ -32,8 +32,11 @@ public:
 		}
 	} myComparison;
 
+
 	void Render();
 	void Process(float _deltaTick);
+	float RandomWithinRange(float _min, float _max);
+
 	//bool myComparison(Particle a, Particle b);
 
 	std::vector<Particle> m_vecParticles;

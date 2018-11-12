@@ -28,6 +28,7 @@
 
 #define SPR_STRIPE "Resources/Sprites/stripe.jpg"
 #define SPR_RED "Resources/Sprites/red.jpg"
+#define SPR_SNOWFLAKE "Resources/Sprites/snowflake.png"
 
 #pragma endregion Sprite Locations
 

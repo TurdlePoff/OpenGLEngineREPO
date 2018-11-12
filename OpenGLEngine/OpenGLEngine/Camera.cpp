@@ -36,7 +36,7 @@ float Camera::m_fov = 45.0f; // field of view
 Camera::Camera() 
 {
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	projection = glm::perspective(45.0f, (float)Utils::SCR_WIDTH / (float)Utils::SCR_HEIGHT, 0.1f, 10000.0f);
+	projection = glm::perspective(45.0f, (float)Utils::SCR_WIDTH / (float)Utils::SCR_HEIGHT, 0.1f, 100000.0f);
 
 	//projection = glm::ortho(0, Utils::SCR_WIDTH, 0, Utils::SCR_HEIGHT, 0.1f, 1000.0f);
 	//projection = glm::ortho(-(GLfloat)Utils::SCR_WIDTH/2, (GLfloat)Utils::SCR_WIDTH/2, (GLfloat)Utils::SCR_HEIGHT/2, 0.1f, 10000.0f);

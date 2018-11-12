@@ -68,12 +68,13 @@ void Level::Init()
 	terrain->InitialiseTerrain();
 	m_terrain = std::move(terrain);
 
-	//auto ps = std::make_shared<ParticleSystem>(glm::vec3(6.4f, 10.0f, 2.45f), SPR_BIRD);
-	//ps->SetPos(glm::vec3(0.0f, 0.0f, 0.0f));
-	//m_particleSystem = std::move(ps);
-
+	auto ps = std::make_shared<ParticleSystem>(glm::vec3(0.0f, 0.0f, 0.0f), SPR_SNOWFLAKE);
+	m_particleSystem = std::move(ps); 
 
 	m_bIsOnGround = true;
+
+	auto model = std::make_shared<Model>("Resources/Sprites/pug/Dog 1.obj");
+	m_puggo = std::move(model);
 
 	/*auto cubeMap = std::make_shared<CubeMap>();
 	cubeMap->InitCubeMap();
@@ -86,11 +87,13 @@ void Level::Init()
 ***********************/
 void Level::Render()
 {
-	//m_particleSystem->Render();
 
 	//m_cubeMap->Render();
 	m_terrain->RenderTerrain(); //Render Terrain
 	Scene::Render(); //Render last as entities and text should go on top
+	m_particleSystem->Render();
+	m_puggo->Render();
+
 }
 
 /***********************
@@ -134,7 +137,7 @@ void Level::Process(float _deltaTick)
 	{
 		m_mEntitiesList["Player"]->SetPos(glm::vec3(x, previousHeight, z));
 	}
-	//m_particleSystem->Process(_deltaTick);
+	m_particleSystem->Process(_deltaTick);
 
 
 	Scene::Process(_deltaTick);

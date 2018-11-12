@@ -38,7 +38,7 @@ public:
 	}
 
 	// Render the mesh
-	void Render(Camera* camera, GLuint program)
+	void Render(GLuint program)
 	{
 
 		glUseProgram(program);

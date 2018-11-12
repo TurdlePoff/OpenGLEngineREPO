@@ -19,6 +19,7 @@
 #include "Star.h"
 #include "Cloth.h"
 #include "ParticleSystem.h"
+#include "Model.h"
 
 class Level : public Scene
 {
@@ -35,6 +36,8 @@ private:
 
 	std::shared_ptr<Terrain> m_terrain;
 	std::shared_ptr<ParticleSystem> m_particleSystem;
+	std::shared_ptr<CubeMap> m_cubeMap;
+	std::shared_ptr<Model> m_puggo;
 
 	bool m_bIsOnGround;
 

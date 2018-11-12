@@ -4,6 +4,7 @@ using namespace std;
 
 #include "ModelMesh.h"
 #include "Camera.h"
+#include "ShaderLoader.h"
 
 class Model
 {
@@ -14,10 +15,9 @@ public:
 	
 	/*  Functions   */
 	// Constructor, expects a filepath to a 3D model.
-	Model(std::string path, Camera* camera, GLuint program){
+	Model(std::string path){
 
-		this->program = program;
-		this->camera = camera;
+		this->program = ShaderLoader::GetInstance()->GetProgram((char*)"Model");
 		this->loadModel(path);
 	}
 
@@ -28,7 +28,7 @@ public:
 
 		//printf("mesh size: %d \n", meshes.size());
 
-			this->meshes[i].Render(camera, program);
+			this->meshes[i].Render(program);
 		}
 	}
 

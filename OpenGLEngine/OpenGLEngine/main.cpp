@@ -55,9 +55,12 @@ void Init()
 		(char*)"Resources/Shaders/ParticleVertexShader.vs",
 		(char*)"Resources/Shaders/ParticleFragmentShader.fs",
 		(char*)"Resources/Shaders/ParticleGeoShader.gs");
-	/*ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
-		(char*)"Resources/Shaders/CMapVertexShader.vs",
-		(char*)"Resources/Shaders/CMapFragmentShader.fs");*/
+	ShaderLoader::GetInstance()->CreateProgram((char*)"Model",
+		(char*)"Resources/Shaders/ModelVertexShader.vs",
+		(char*)"Resources/Shaders/ModelFragmentShader.fs");
+	//ShaderLoader::GetInstance()->CreateProgram((char*)"CubeMap",
+	//	(char*)"Resources/Shaders/CMapVertexShader.vs",
+	//	(char*)"Resources/Shaders/CMapFragmentShader.fs");
 
 	SceneManager::GetInstance()->InitScenes();
 }
@@ -121,6 +124,7 @@ int main(int argc, char **argv)
 	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
 	glutCreateWindow("3DProject");
 	glClearColor(0.2f, 0.5f, 1.0f, 1.0f);	//clear blue
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	//clear blue
 
 	glewInit();
 	Init();
